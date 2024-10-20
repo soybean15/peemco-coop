@@ -34,7 +34,7 @@ new class extends Component {
     <x-table :headers="$userHeaders" :rows="$users" with-pagination >
 
         @scope('cell_action', $user)
-        <x-button icon='o-eye' class="btn-error btn-sm"/>
+        <x-button icon='o-eye' class="btn-ghost btn-sm"/>
         <x-button icon='o-archive-box' class="btn-error btn-sm"/>
         @endscope
     </x-table>

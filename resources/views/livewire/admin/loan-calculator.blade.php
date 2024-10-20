@@ -4,7 +4,7 @@ use Livewire\Volt\Component;
 
 new class extends Component {
     public $totalprincipalAmount;
-    public $principalAmount;
+    public $principalAmount=0;
     public $termsYears;
     public $terms;
     public $monthlyInstallment;
@@ -45,7 +45,7 @@ new class extends Component {
 
         $this->monthlyInstallment = $this->termsYears * 12;
         $this->totalprincipalAmount = number_format($this->principalAmount, 2, '.', ',');
-        dd($this->totalprincipalAmount);
+        dd($this->principalAmount);
 
         if($this->termsYears == 5 || $this->termsYears == 4 || $this->termsYears == 3) {
             $this->annualInterestRate = 0.0966;
@@ -65,7 +65,7 @@ new class extends Component {
 <div>
 
     <x-form wire:submit.prevent="compute">
-        <x-input label="Principal Amount" wire:model="principalAmount" prefix="PHP" money hint="It submits an unmasked value" />
+        <x-input label="Principal Amount" wire:model.defer="principalAmount" prefix="PHP" money hint="It submits an unmasked value" />
         <x-select label="Terms" :options="$terms" wire:model="termsYears" />
         <x-slot:actions>
             <x-button label="Cancel" />
