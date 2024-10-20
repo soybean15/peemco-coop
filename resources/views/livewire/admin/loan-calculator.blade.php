@@ -53,5 +53,5 @@ new class extends Component {
                 <x-button label="Click me!" class="btn-primary" type="submit" spinner="save" />
             </x-slot:actions>
         </x-form>
-        Sonuç : {{ $result }}
+        <!-- Sonuç : {{ $result }} -->
 </div>
