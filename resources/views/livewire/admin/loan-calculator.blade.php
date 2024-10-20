@@ -25,7 +25,7 @@ new class extends Component {
     public $month;
     public $interest;
     public $principalPaid;
-    public $netPay;
+    public $netP;
     public $Charges;
     public $totalOtherCharges;
 
@@ -95,7 +95,7 @@ new class extends Component {
             $this->principalPaid = $this->monthlyPayment - $this->interest;
             $this->Charges = $this->principalAmount * $this->otherChargesInterest;
             $this->netProceeds = -($this->principalPaid + $this->interest);
-            $this->netPay = $this->principalAmount - $this->Charges;
+            $this->netP = $this->principalAmount - $this->Charges;
             // Update outstanding balance for the next iteration
             $this->outstandingBalance = $this->outstandingBalance - $this->principalPaid;
             // Store installment details in the array
