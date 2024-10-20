@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\View\Components\Layout\SideBar;
+use App\View\Components\UserProfileView;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
@@ -24,5 +25,6 @@ class AppServiceProvider extends ServiceProvider
         //
 
         Blade::component('side-bar',SideBar::class);
+        Blade::component('profile-view',UserProfileView::class);
     }
 }
