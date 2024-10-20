@@ -90,6 +90,8 @@ new class extends Component {
         $this->totalMonthlyPaymentRound = round($this->monthlyPayment,2);
         $this->totalMonthlyPayment = number_format($this->totalMonthlyPaymentRound, 2, '.', ',');
 
+        $this->outstandingBalance = $this->principalAmount;
+
         for ($this->month = 1; $this->month <= $this->monthlyInstallment; $this->month++) {
             $this->interest = $this->outstandingBalance * $this->monthlyInterestRate;
             $this->principalPaid = $this->monthlyPayment - $this->interest;
