@@ -5,9 +5,7 @@
     <x-main full-width>
         {{-- SIDEBAR --}}
         <x-slot:sidebar drawer="main-drawer" collapsible class="bg-base-100 lg:bg-inherit">
- 
-            {{-- BRAND --}}
-            <div class="ml-5 pt-5">App</div>
+
  
             {{-- MENU --}}
             <x-menu activate-by-route>
