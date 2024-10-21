@@ -45,8 +45,7 @@ new class extends Component {
     
             
             <div class="flex justify-center my-5 md:p-20">
-    
-            
+
                 <x-file wire:model="photo" accept="image/png, image/jpeg">
                     <img src="{{ $user->avatar ?? '/default/default-user.png' }}" class="!w-52" />
                 </x-file>

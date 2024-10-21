@@ -14,19 +14,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-       $user = User::factory(200)->create();
+      $user = User::factory(200)->create();
 
-        $user =  User::factory()->create([
-            'mid' => 'MID00000201',
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-         ]);
+      $user =  User::factory()->create([
+        'mid' => 'MID00000201',
+        'name' => 'Test User',
+        'email' => 'test@example.com',
+      ]);
  
          
-       $superAdmin=  Role::create(['name'=> 'SuperAdmin', 'guard_name'=>'web']);
-         Role::create(['name'=> 'Bookkeeper', 'guard_name'=>'web']);
-         Role::create(['name'=> 'Member', 'guard_name'=>'web']);
- 
-         $user->assignRole($superAdmin);
+      $superAdmin=  Role::create(['name'=> 'SuperAdmin', 'guard_name'=>'web']);
+        Role::create(['name'=> 'Bookkeeper', 'guard_name'=>'web']);
+        Role::create(['name'=> 'Member', 'guard_name'=>'web']);
+        $user->assignRole($superAdmin);
+
+      
     }
 }
