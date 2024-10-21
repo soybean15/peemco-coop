@@ -13,7 +13,6 @@ new class extends Component {
     public $photo;
 
     public $form=[
-     
         'name'=>null
     ];
 
@@ -21,18 +20,13 @@ new class extends Component {
 
 
     public function save(){
-
         $this->validate([
             'form.name'=>'required|max:50',
-    
             'photo'=>'image|max:5120',
     ]);
 
 
-            $this->user
-        ->addMedia($this->photo)
-        ->toMediaCollection('profile');
-
+        $this->user->addMedia($this->photo)->toMediaCollection('profile');
 
         $this->user->update($this->form);
 

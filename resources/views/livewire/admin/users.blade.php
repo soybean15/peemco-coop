@@ -7,18 +7,20 @@ new class extends Component {
     use WithPagination;
     public $search;
     public function with(){
-        return [
-            
+        return
+        [
             'userHeaders'=>[
-        ['key' => 'id', 'label' => '#', 'class' => 'bg-red-500/20 w-1'],
-        ['key' => 'name', 'label' => 'Username'],
-        ['key' => 'email', 'label' => 'E-mail', 'class' => 'hidden lg:table-cell'], 
-        ['key' => 'action', 'label' => 'Action', 'class' => 'hidden lg:table-cell'], 
-
-         // Alternative approach
-    ],
-            'users'=>User::search($this->search)->paginate(5)
-    ];
+                ['key' => 'mid', 'label' => 'MID', 'class' => 'bg-red-500/20 w-1'],
+                ['key' => 'name', 'label' => 'First Name'],
+                ['key' => 'middlename', 'label' => 'Middle Name'],
+                ['key' => 'lastname', 'label' => 'Last Name'],
+                ['key' => 'username', 'label' => 'Username'],
+                ['key' => 'email', 'label' => 'E-mail', 'class' => 'hidden lg:table-cell'], 
+                ['key' => 'action', 'label' => 'Action', 'class' => 'hidden lg:table-cell'], 
+                // Alternative approach
+            ],
+            'users'=>User::search($this->search)->paginate(10)
+        ];
     }
 
     
@@ -34,8 +36,6 @@ new class extends Component {
     <x-table :headers="$userHeaders" :rows="$users" with-pagination >
 
         @scope('cell_action', $user)
-
-        
         <x-button icon='o-eye' class="btn-ghost btn-sm" link="{{route('admin.user',['user'=>$user->id])}}"/>
         <x-button icon='o-archive-box' class="btn-error btn-sm"/>
         @endscope

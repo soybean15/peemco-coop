@@ -21,14 +21,28 @@ class UserFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    protected $index = 1;
     public function definition(): array
     {
+
+        
+
+        $this->index++;
+
+        $formattedNumber = sprintf('%07d', $this->index-1);
+
+        $mid = 'MID' . $formattedNumber;
+
         return [
+            'mid' => $mid,
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            'middlename'=>fake()->lastName(),
+            'username'=> fake()->userName(),
+            'lastname'=>fake()->lastName()
         ];
     }
 
