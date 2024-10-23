@@ -3,7 +3,7 @@
 namespace App\Services\LoanCalculator;
 
 
-class  LoanItem{
+class  LoanItem {
 
 
     protected $period;
@@ -29,6 +29,8 @@ class  LoanItem{
         $this->monthly_payment = $loanCalculator->monthly_payment;
         $this->monthly_rate = $loanCalculator->monthly_rate;
 
+        $this->net_proceed= $this->monthly_payment;
+
 
         $this->compute();
     }
@@ -39,10 +41,56 @@ class  LoanItem{
     }
 
     public function getBalance(){
-        return $this->balance-$this->principal;
+
+        $this->outstanding_balance =  $this->balance-$this->principal;
+    //    debugbar()->info($this->outstanding_balance);
+        return $this->outstanding_balance;
     }
 
+
+    public function getPeriod()
+    {
+        return $this->period;
+    }
+
+    public function getGross()
+    {
+        return $this->gross;
+    }
+
+    public function getPrincipal()
+    {
+        return $this->principal;
+    }
+
+    public function getInterest()
+    {
+        return $this->interest;
+    }
+
+    public function getNetProceed()
+    {
+        return $this->net_proceed;
+    }
+
+    public function getOutstandingBalance()
+    {
+        return $this->outstanding_balance;
+    }
+
+    public function getMonthlyPayment()
+    {
+        return $this->monthly_payment;
+    }
+
+    public function getMonthlyRate()
+    {
+        return $this->monthly_rate;
+    }
+
+
+
     public function save(){
-        
+
     }
 }

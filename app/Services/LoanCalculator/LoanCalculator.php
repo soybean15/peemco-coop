@@ -63,18 +63,20 @@ class LoanCalculator
         $this->monthly_payment = round($this->principal * ($numerator / $denominator), 2);
 
 
-        // dd([
-        //     'monthly' => $this->monthly_rate,
-        //     'annual' => $this->annual_rate,
-        //     'principal' => $this->principal,
-        //     'number_of_installment' => $this->number_of_installment,
-        //     'part1' => $numerator,
-        //     'part2' => $denominator,
 
-        //     '$this->monthly_rate' => $this->monthly_rate,
-        //     'result' => ($numerator / $denominator),
-        //     'monthly_payment' => $this->monthly_payment
-        // ]);
+        //separate function
+
+        // dd($this->loanItems);
+        // dd($this->principal,$this->number_of_installment,$this->monthly_payment);//50000 ,12
+
+        // dd($this->monthly_payment);//this is 0 why?
+
+        return $this;
+
+    }
+
+    public function getLoanItems()
+    {
 
         $i=1;
         $initial_interest = $this->principal * $this->monthly_rate;
@@ -84,22 +86,26 @@ class LoanCalculator
 
 
 
-
+            // $this->loanItems[]=[
+            //     'period'=>$loanItem->getPeriod(),
+            //     'principal'=>$loanItem->getPrincipal(),
+            //     'net_proceed'=>$loanItem->getNetProceed(),
+            //     'balance'=>$loanItem->getOutstandingBalance()
+            // ];
             $loanItem = new LoanItem($this, $balance, $i);
-            $this->loanItems[]=$loanItem;
+            // $this->loanItems[]=$loanItem;
+
+            $this->loanItems[]=[
+                'period'=>$loanItem->getPeriod(),
+                'interest'=>$loanItem->getInterest(),
+                'principal'=>$loanItem->getPrincipal(),
+                'net_proceed'=>$loanItem->getNetProceed(),
+                'balance'=>$balance
+            ];
             $balance =$loanItem->getBalance();
             $i++;
         }
-
-        dd($this->loanItems);
-        // dd($this->principal,$this->number_of_installment,$this->monthly_payment);//50000 ,12
-
-        // dd($this->monthly_payment);//this is 0 why?
-
-    }
-
-    public function getLoanItems()
-    {
+        // dd($this->loanItems);
         return $this->loanItems;
     }
 }
