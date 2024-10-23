@@ -41,4 +41,8 @@ class  LoanItem{
     public function getBalance(){
         return $this->balance-$this->principal;
     }
+
+    public function save(){
+        
+    }
 }
