@@ -17,6 +17,7 @@ class LoginForm extends Form
 
 
 
+
     #[Validate('required|string')]
     public string $password = '';
 
@@ -30,6 +31,8 @@ class LoginForm extends Form
      */
     public function authenticate(): void
     {
+
+
         // dd('here');
         $this->ensureIsNotRateLimited();
 
