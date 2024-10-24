@@ -126,7 +126,7 @@ new class extends Component {
             <div class="grid grid-cols-2">
 
                 <span  >Principal :</span>
-                <span>{{ $principal }} .00</span>
+                <span>{{ $principal }}</span>
             </div>
             <div class="grid grid-cols-2">
 
