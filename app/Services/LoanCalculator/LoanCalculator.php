@@ -51,7 +51,7 @@ class LoanCalculator
 
     public function setAnnualRate(){
 
-      
+
         $this->annual_rate=  match((int)$this->terms){
              1  =>0.0750,
              2  =>0.090,
@@ -122,5 +122,25 @@ class LoanCalculator
         }
         // dd($this->loanItems);
         return $this->loanItems;
+    }
+
+    public function getAnnualRate(){
+
+        $percentage = number_format($this->annual_rate * 100, 2);
+        return "$percentage%";
+    }
+
+    public function getMonthlyRate()
+    {
+
+        $percentage = number_format($this->monthly_rate * 100, 2);
+        return "$percentage%";
+    }
+
+    public function getMonthlyPayment(){
+        return $this->monthly_payment;
+    }
+    public function getNumberOfInstallment(){
+        return $this->number_of_installment;
     }
 }
