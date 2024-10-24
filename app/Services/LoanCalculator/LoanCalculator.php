@@ -80,7 +80,7 @@ class LoanCalculator
 
         $i=1;
         $initial_interest = $this->principal * $this->monthly_rate;
-        $balance = $this->principal-($this->monthly_payment-$initial_interest);
+        $balance = $this->principal;
 
         while($i<=$this->number_of_installment){
 
@@ -92,6 +92,7 @@ class LoanCalculator
             //     'net_proceed'=>$loanItem->getNetProceed(),
             //     'balance'=>$loanItem->getOutstandingBalance()
             // ];
+
             $loanItem = new LoanItem($this, $balance, $i);
             // $this->loanItems[]=$loanItem;
 
@@ -100,7 +101,7 @@ class LoanCalculator
                 'interest'=>$loanItem->getInterest(),
                 'principal'=>$loanItem->getPrincipal(),
                 'net_proceed'=>$loanItem->getNetProceed(),
-                'balance'=>$balance
+                'balance'=>$loanItem->getOutstandingBalance()
             ];
             $balance =$loanItem->getBalance();
             $i++;

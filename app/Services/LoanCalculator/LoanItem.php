@@ -2,6 +2,7 @@
 
 namespace App\Services\LoanCalculator;
 
+use App\Helpers\NumberHelper;
 
 class  LoanItem {
 
@@ -36,15 +37,17 @@ class  LoanItem {
     }
 
     public function compute(){
-        $this->interest = $this->balance * $this->monthly_rate;
-        $this->principal = $this->monthly_payment-$this->interest;
+        // dd($this->balance,$this->monthly_rate);
+        $this->interest =   NumberHelper::parse($this->balance * $this->monthly_rate) ;
+        $this->principal =NumberHelper::parse($this->monthly_payment-$this->interest);
     }
 
     public function getBalance(){
 
         $this->outstanding_balance =  $this->balance-$this->principal;
     //    debugbar()->info($this->outstanding_balance);
-        return $this->outstanding_balance;
+        return
+        $this->outstanding_balance ;
     }
 
 
@@ -75,7 +78,7 @@ class  LoanItem {
 
     public function getOutstandingBalance()
     {
-        return $this->outstanding_balance;
+        return $this->balance - $this->principal;
     }
 
     public function getMonthlyPayment()
