@@ -1,16 +1,21 @@
 <?php
 
 use Livewire\Volt\Component;
+use Livewire\WithPagination;
 
 new class extends Component {
 
+    use WithPagination;
+    public $search;
 
     public function with(){
 
 
         return [
 
-        'loans'=>auth()->user()->loans,
+        'loans'=>auth()->user()->loans()
+        ->search($this->search)
+        ->paginate(5),
         'headers'=>[
 
             ['key'=>'loan_application_no' ,'label'=>'Loan Number'],
@@ -28,15 +33,20 @@ new class extends Component {
 <div>
 
     <x-header title="Loans" separator >
+        <x-slot:middle class="!justify-end">
+            <x-input icon="o-bolt" placeholder="Search..." wire:model.live='search' />
+        </x-slot:middle>
         <x-slot:actions>
 
 
-        <x-button class="btn-success" label='Add Loan' link="{{ route('user.loan-calculator') }}"/>
+        <x-button class="btn-success" label='Add Loan' link="{{ route('user.loan-calculator') }}" />
 
     </x-slot:actions>
     </x-header>
 
-    <x-table :headers="$headers" :rows="$loans">
+    <x-table :headers="$headers" :rows="$loans"
+
+     with-pagination>
         {{-- Overrides `name` header --}}
         @scope('cell_loan_application_no', $loan)
         <strong>{{ $loan->loan_application_no }}</strong>

@@ -24,6 +24,7 @@ class LoanApplication implements HasLoan
             'no_of_installment' => 'required|integer|min:1',
             'terms_of_loan' => 'required|min:1',
             'other_charges' => 'nullable|min:0', // Optional field
+            'monthly_payment'=>'required'
         ]);
 
         if ($validator->fails()) {
@@ -40,7 +41,7 @@ class LoanApplication implements HasLoan
         $no_of_installment = $data['no_of_installment'];
         $terms_of_loan = $data['terms_of_loan'];
         $other_charges = $data['other_charges'] ?? 0;  // Default to 0 if not provided
-
+        $monthly_payment = $data['monthly_payment'];
 
         return Loan::create(
             [
@@ -53,6 +54,7 @@ class LoanApplication implements HasLoan
                 'other_charges' => $other_charges,
                 'annual_interest_rate' => $annual_rate,
                 'monthly_interest_rate' => $monthly_rate,
+                'monthly_payment'=>$monthly_payment,
                 'status' => 'pending'
             ]
         );
