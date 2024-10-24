@@ -20,9 +20,6 @@ new class extends Component {
 
     public function mount(){
 
-
-
-
     }
     public function compute(){
         $loanService = app(LoanCalculator::class);
@@ -87,7 +84,7 @@ new class extends Component {
             <div class="grid grid-cols-2">
 
                 <span  >Principal :</span>
-                <span>{{ $principal }}</span>
+                <span>{{ $principal }} .00</span>
             </div>
             <div class="grid grid-cols-2">
 
