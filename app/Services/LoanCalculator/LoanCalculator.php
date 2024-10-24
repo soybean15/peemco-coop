@@ -29,6 +29,8 @@ class LoanCalculator
     {
 
         $this->user = $user;
+
+
     }
 
     public function setPrincipal($principal)
@@ -43,14 +45,26 @@ class LoanCalculator
 
         $this->number_of_installment = $terms * 12;
 
-
+        $this->setAnnualRate();
         return $this;
+    }
+
+    public function setAnnualRate(){
+
+      
+        $this->annual_rate=  match((int)$this->terms){
+             1  =>0.0750,
+             2  =>0.090,
+             3  =>0.0966,
+             4  =>0.0966,
+             5  =>0.0966,
+        };
+
     }
 
     public function calculateLoan()
     {
 
-        $this->annual_rate = 0.0750;
         $this->monthly_rate = $this->annual_rate / 12;;
 
         // Step 1: Calculate the numerator

@@ -39,7 +39,9 @@ new class extends Component {
 }; ?>
 
 <div>
-    <x-form wire:submit.prevent="compute">
+    <x-header title="Loan Calculator" separator />
+    <div class="flex my-5 md:max-w-1/2">
+    <x-form wire:submit.prevent="compute" >
         <x-input label="Principal Amount" wire:model.defer="principal" prefix="PHP" money
             hint="It submits an unmasked value" />
         <x-select label="Terms" :options=" [
@@ -65,12 +67,12 @@ new class extends Component {
             ]
         ]" wire:model="terms" placeholder="Select Terms" />
         <x-slot:actions>
-            <x-button label="Cancel" />
-            <x-button label="Compute" class="btn-primary" type="compute" spinner="compute" />
+            <x-button label="Cancel" class="btn-sm" />
+            <x-button label="Compute" class="btn-primary btn-sm" type="compute" spinner="compute" />
         </x-slot:actions>
     </x-form>
 
-
+</div>
 
     @php
 
@@ -115,11 +117,11 @@ new class extends Component {
                         {{ $loanItem['period'] }}
 
                     </td>
-                    <td> {{ $loanItem['principal'] }}</td>
-                    <td> {{ $loanItem['interest'] }}</td>
+                    <td> {{number_format($loanItem['principal'],2) }}</td>
+                    <td> {{ number_format($loanItem['interest'] ,2)}}</td>
 
-                    <td>{{ $loanItem['net_proceed'] }}</td>
-                    <td> {{ $loanItem['balance'] }}</td>
+                    <td>{{ number_format($loanItem['net_proceed'],2) }}</td>
+                    <td> {{ number_format($loanItem['balance'],2) }}</td>
                 </tr>
                 @endforeach
 

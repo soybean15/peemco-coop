@@ -3,6 +3,7 @@
 namespace App\Services\LoanCalculator;
 
 use App\Helpers\NumberHelper;
+use App\Models\Loan;
 
 class  LoanItem {
 
@@ -24,6 +25,7 @@ class  LoanItem {
 
     public function __construct(LoanCalculator $loanCalculator,$balance,$terms){
 
+        
 
         $this->balance =$balance;
         $this->period =$terms;
@@ -31,8 +33,6 @@ class  LoanItem {
         $this->monthly_rate = $loanCalculator->monthly_rate;
 
         $this->net_proceed= $this->monthly_payment;
-
-
         $this->compute();
     }
 

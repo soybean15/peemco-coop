@@ -11,13 +11,13 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
         using: function () {
             Route::middleware(['web', 'role:SuperAdmin|Bookkeeper'])
-    
+
                 ->prefix('admin')
                 ->group(base_path('routes/admin.php'));
-    
+
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
-    
+
             Route::middleware('web')
                 ->prefix('user')
                 ->group(base_path('routes/user.php'));
@@ -27,7 +27,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
             // 'role' => \App\Http\Middleware\RoleMiddleware::class,
-        
+
 
 
         ]);
