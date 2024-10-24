@@ -27,10 +27,7 @@ class LoanCalculator
 
     public function __construct($user)
     {
-
         $this->user = $user;
-
-
     }
 
     public function setPrincipal($principal)
@@ -51,10 +48,9 @@ class LoanCalculator
 
     public function setAnnualRate(){
 
-
         $this->annual_rate=  match((int)$this->terms){
              1  =>0.0750,
-             2  =>0.090,
+             2  =>0.0900,
              3  =>0.0966,
              4  =>0.0966,
              5  =>0.0966,
