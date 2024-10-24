@@ -14,7 +14,8 @@ class LoanService{
 
 
     public function handle($data){
-        // dd($data);
+
         $this->loanHandler->handle($data);
+
     }
 }

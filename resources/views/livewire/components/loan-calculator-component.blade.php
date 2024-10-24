@@ -63,7 +63,8 @@ new class extends Component {
                 'user_id'=>auth()->user()->id,
                 'no_of_installment'=>$this->number_of_installment,
                 'terms_of_loan'=>$this->terms,
-                'other_charges'=>$this->other_charges
+                'other_charges'=>$this->other_charges,
+                'monthly_payment'=>$this->monthly_payment
             ]
           );
 
@@ -153,14 +154,6 @@ new class extends Component {
                 <span>Monthly Payment :</span>
                 <span>{{ $monthly_payment }}</span>
             </div>
-            {{--
-            <x-input label="Principal" value="{{ $principal }}" disabled />
-            <x-input label="Terms Of Loans in Years" value="{{ $terms }}" disabled />
-            <x-input label="Number Of Installment" value="{{ $number_of_installment }}" disabled />
-            <x-input label="Other Charges" value="It is disabled" disabled />
-            <x-input label="Annual Rate" value="{{ $annual_rate }}" disabled />
-            <x-input label="Monthly Rate" value="{{ $monthly_rate }}" disabled />
-            <x-input label="Monthly Payment" value="{{ $monthly_payment }}" disabled /> --}}
 
 
 
@@ -182,7 +175,6 @@ new class extends Component {
 
 
     ]
-
 
     @endphp
 
