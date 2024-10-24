@@ -84,9 +84,13 @@ class User extends Authenticatable implements HasMedia
                 }
 
                 return null;
-           
-            
+
+
             }
         );
+    }
+
+    public function loans(){
+        return $this->hasMany(Loan::class,'user_id');
     }
 }

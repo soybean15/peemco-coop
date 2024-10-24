@@ -126,15 +126,17 @@ class LoanCalculator
 
     public function getAnnualRate(){
 
-        $percentage = number_format($this->annual_rate * 100, 2);
-        return "$percentage%";
+        return $this->annual_rate;
+        // $percentage = number_format($this->annual_rate * 100, 2);
+        // return "$percentage%";
     }
 
     public function getMonthlyRate()
     {
 
-        $percentage = number_format($this->monthly_rate * 100, 2);
-        return "$percentage%";
+        return $this->monthly_rate;
+        // $percentage = number_format($this->monthly_rate * 100, 2);
+        // return "$percentage%";
     }
 
     public function getMonthlyPayment(){

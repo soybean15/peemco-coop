@@ -4,11 +4,12 @@ use Livewire\Volt\Component;
 
 use App\Services\LoanCalculator\LoanCalculator;
 use App\Services\LoanCalculator\LoanItem;
-
-
+use App\Actions\Loan\LoanApplication;
+use App\Services\Loans\LoanService;
+use Mary\Traits\Toast;
 
 new class extends Component {
-
+    use Toast;
     public $loanItems=[];
     public $terms;
     public $principal;
@@ -17,7 +18,6 @@ new class extends Component {
     public $monthly_rate;
     public $monthly_payment;
     public $number_of_installment;
-
     public function mount(){
 
 
@@ -46,10 +46,52 @@ new class extends Component {
         $this->number_of_installment = $loanService->getNumberOfInstallment();
     }
 
+
+    public function applyLoan(){
+
+        // $monthly_rate = $data['monthly_rate'];
+        // $annual_rate = $data['annual_rate'];
+        // $principal = $data['principal'];
+        // $user_id = $data['user_id'];
+        // $no_of_installment = $data['no_of_installment'];
+        // $terms_of_loan = $data['terms_of_loan'];
+        // $other_charges = $data['other_charges'] ?? 0;  // Default to 0 if not provided
+
+        try{
+          (new LoanService(new LoanApplication()))->handle(
+            [
+                'monthly_rate'=>$this->monthly_rate,
+                'annual_rate'=>$this->annual_rate,
+                'principal'=>$this->principal,
+                'user_id'=>auth()->user()->id,
+                'no_of_installment'=>$this->number_of_installment,
+                'terms_of_loan'=>$this->terms,
+                'other_charges'=>$this->other_charges
+            ]
+          );
+
+          $this->success('Loan Application Successful');
+        }catch(\Exception $e){
+
+            $this->error($e->getMessage());
+        }
+
+    }
+
 }; ?>
 
 <div>
 
+
+    <x-header title="Loan Calculator" separator>
+        <x-slot:actions>
+
+            @if(auth()->user()->hasRole('Member'))
+            <x-button class="btn-success" label='Apply Loan' wire:confirm='Are you sure you want to apply this loan?'
+                wire:click='applyLoan' />
+            @endif
+        </x-slot:actions>
+    </x-header>
     <div class="grid grid-cols-1 my-5 md:grid-cols-3 ">
         <x-form wire:submit.prevent="compute">
             <x-input label="Principal Amount" wire:model.defer="principal" prefix="PHP" money
@@ -86,7 +128,7 @@ new class extends Component {
 
             <div class="grid grid-cols-2">
 
-                <span  >Principal :</span>
+                <span>Principal :</span>
                 <span>{{ $principal }}</span>
             </div>
             <div class="grid grid-cols-2">
@@ -114,7 +156,8 @@ new class extends Component {
                 <span>Monthly Payment :</span>
                 <span>{{ $monthly_payment }}</span>
             </div>
-            {{-- <x-input label="Principal" value="{{ $principal }}" disabled />
+            {{--
+            <x-input label="Principal" value="{{ $principal }}" disabled />
             <x-input label="Terms Of Loans in Years" value="{{ $terms }}" disabled />
             <x-input label="Number Of Installment" value="{{ $number_of_installment }}" disabled />
             <x-input label="Other Charges" value="It is disabled" disabled />
@@ -183,22 +226,6 @@ new class extends Component {
             </tbody>
         </table>
     </div>
-    {{--
-    <x-table :headers="$headers" :rows="$loanItems" no-headers no-hover>
 
-        @scope('cell_period', $loanItem)
-
-        @endscope
-        @scope('cell_principal', $loanItem)
-        {{ $loanItem->getPrincipal() }}
-
-        @endscope
-        @scope('cell_net_proceed', $loanItem)
-        {{ $loanItem->getNetProceed() }}
-        @endscope
-        @scope('cell_balance', $loanItem)
-        {{ $loanItem->getOutstandingBalance() }}
-        @endscope
-    </x-table> --}}
 
 </div>
