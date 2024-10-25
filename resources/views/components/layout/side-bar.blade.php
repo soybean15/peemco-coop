@@ -29,8 +29,16 @@
                     <x-menu-item title="List" link="{{route('admin.users')}}" />
                     <x-menu-item title="Archives"  link="####" />
                 </x-menu-sub>
-                <x-menu-item title="Loans" icon="o-calculator" link="{{route('admin.loans')}}" />
-                <x-menu-item title="Loan Calculator" icon="o-credit-card" link="{{route('admin.loan-calculator')}}" />
+
+                <x-menu-sub title="Loans" icon="o-credit-card">
+                    <x-menu-item title="List" icon="s-numbered-list" link="{{route('admin.loans')}}" />
+                    <x-menu-item title="Pending" icon="s-numbered-list" link="{{route('admin.loans')}}" />
+                    <x-menu-item title="Active" icon="s-numbered-list" link="{{route('admin.loans')}}" />
+                    <x-menu-item title="Completed" icon="s-numbered-list" link="{{route('admin.loans')}}" />
+                    <x-menu-item title="Loan Calculator" icon="o-calculator" link="{{route('admin.loan-calculator')}}"/>
+                </x-menu-sub>
+
+
             </x-menu>
         </x-slot:sidebar>
 
