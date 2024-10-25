@@ -13,12 +13,12 @@ new class extends Component {
         [
             'cbuHeaders'=>[
                 ['key' => 'id', 'label' => 'ID', 'class' => 'bg-red-500/20 w-1'],
-                ['key' => 'date', 'label' => 'Date', 'class' => 'bg-red-500/20 w-1'],
-                ['key' => 'or_cdv', 'label' => 'OR CDV', 'class' => 'bg-red-500/20 w-1'],
-                ['key' => 'amount_received', 'label' => 'Amount Received', 'class' => 'hidden lg:table-cell'], 
+                ['key' => 'date', 'label' => 'Date', ],
+                ['key' => 'or_cdv', 'label' => 'OR CDV', ],
+                ['key' => 'amount_received', 'label' => 'Amount Received', 'class' => 'hidden lg:table-cell'],
                 // Alternative approach
             ],
-            'capitalBuildUp'=>CapitalBuildUp::paginate()
+            'capitalBuildUp'=>auth()->user()->capitalBuildUp()->search($this->search)->paginate(5)
         ];
     }
 
@@ -26,18 +26,27 @@ new class extends Component {
 
 <div>
     <x-header title="Users" subtitle="Your home address" separator>
+        <x-slot:actions>
+            <x-button label="Add Capital Buildup" x-on:click="$dispatch('add-capital-build-up')"/>
 
-    <x-slot:actions>
+
+
+    {{-- upsert-capital-build-up.blade --}}
+        </x-slot:actions>
+
+
+
+    <x-slot:middle>
         <x-input icon="o-magnifying-glass" wire:model.live='search' placeholder="Search..." />
-    </x-slot:actions>
+    </x-slot:middle>
     </x-header>
     <x-table :headers="$cbuHeaders" :rows="$capitalBuildUp" with-pagination >
     @scope('cell_action', $capitalBuildUp)
 
     @endscope
-  
+
     </x-table>
 
- 
 
+    <livewire:components.upsert-capital-build-up/>
 </div>
