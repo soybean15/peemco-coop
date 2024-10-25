@@ -5,8 +5,10 @@ use Livewire\Volt\Component;
 use App\Services\LoanCalculator\LoanCalculator;
 use App\Services\LoanCalculator\LoanItem;
 use App\Actions\Loan\LoanApplication;
+use App\Actions\Loan\LoanApproval;
 use App\Services\Loans\LoanService;
 use Mary\Traits\Toast;
+use App\Models\Loan;
 
 new class extends Component {
     use Toast;
@@ -18,7 +20,18 @@ new class extends Component {
     public $monthly_rate;
     public $monthly_payment;
     public $number_of_installment;
-    public function mount(){
+
+    public function mount($loan =null){
+
+
+
+        if($loan){
+            $this->principal = $loan->principal_amount;
+            $this->terms = $loan->terms_of_loan;
+
+            $this->compute();
+        }
+
 
     }
     public function compute(){
@@ -30,6 +43,9 @@ new class extends Component {
                 'principal'=>'required'
             ]
     );
+
+
+
 
         $this->loanItems =$loanService
         ->setPrincipal($this->principal)
@@ -45,15 +61,6 @@ new class extends Component {
 
 
     public function applyLoan(){
-
-        // $monthly_rate = $data['monthly_rate'];
-        // $annual_rate = $data['annual_rate'];
-        // $principal = $data['principal'];
-        // $user_id = $data['user_id'];
-        // $no_of_installment = $data['no_of_installment'];
-        // $terms_of_loan = $data['terms_of_loan'];
-        // $other_charges = $data['other_charges'] ?? 0;  // Default to 0 if not provided
-
         try{
           (new LoanService(new LoanApplication()))->handle(
             [
@@ -76,6 +83,37 @@ new class extends Component {
 
     }
 
+    public function approveLoan(){
+        try{
+          (new LoanService(new LoanApplication()))->handle(
+            [
+                'loan'=>$this->loan
+            ]
+          );
+
+          $this->success('Loan Approved');
+        }catch(\Exception $e){
+
+            $this->error($e->getMessage());
+        }
+
+    }
+    public function rejectLoan(){
+        try{
+          (new LoanService(new LoanApplication()))->handle(
+            [
+                'loan'=>$this->loan
+            ]
+          );
+
+          $this->success('Loan Rejected');
+        }catch(\Exception $e){
+
+            $this->error($e->getMessage());
+        }
+
+    }
+
 }; ?>
 
 <div>
@@ -84,15 +122,23 @@ new class extends Component {
     <x-header title="Loan Calculator" separator>
         <x-slot:actions>
 
-            @if(auth()->user()->hasRole('Member'))
-            <x-button class="btn-success" label='Apply Loan' wire:confirm='Are you sure you want to apply this loan?'
+
+            @if(auth()->user()->hasRole('SuperAdmin'))
+            <x-button class="btn-success" label='Approve' wire:confirm='Are you sure you want to approve this loan?'
                 wire:click='applyLoan' />
+            <x-button class="btn-error" label='Reject' wire:confirm='Are you sure you want to reject this loan?'
+                wire:click='applyLoan' />
+
+            @else
+
+            <x-button class="btn-success" label='Apply Loan' wire:confirm='Are you sure you want to apply this loan?'
+            wire:click='applyLoan' />
             @endif
         </x-slot:actions>
     </x-header>
     <div class="grid grid-cols-1 my-5 md:grid-cols-3 ">
         <x-form wire:submit.prevent="compute">
-            <x-input label="Principal Amount" wire:model.defer="principal" prefix="PHP" money
+            <x-input label="Principal Amount" wire:model="principal" prefix="PHP" money
                 hint="It submits an unmasked value" />
             <x-select label="Terms" :options=" [
             [
@@ -117,8 +163,11 @@ new class extends Component {
             ]
         ]" wire:model="terms" placeholder="Select Terms" />
             <x-slot:actions>
+
+
                 <x-button label="Cancel" class="btn-sm" />
                 <x-button label="Compute" class="btn-primary btn-sm" type="compute" spinner="compute" />
+
             </x-slot:actions>
         </x-form>
 

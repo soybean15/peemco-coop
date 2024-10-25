@@ -35,7 +35,7 @@ new class extends Component {
     <x-table :headers="$headers" :rows="$loans" with-pagination>
         {{-- Overrides `name` header --}}
         @scope('cell_loan_application_no', $loan)
-        <a href=""><strong>{{ $loan->loan_application_no }}</strong></a>
+        <a href="{{ route('admin.loan-profile',['loan'=>$loan]) }}"><strong>{{ $loan->loan_application_no }}</strong></a>
         @endscope
         {{-- Overrides `city.name` header --}}
         @scope('cell_date_applied', $loan)

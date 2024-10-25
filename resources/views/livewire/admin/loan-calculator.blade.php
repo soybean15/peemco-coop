@@ -119,6 +119,8 @@ new class extends Component {
 
 <div>
 
+
+ 
     <livewire:components.loan-calculator-component />
 
     {{-- <x-form wire:submit.prevent="compute">
