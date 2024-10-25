@@ -51,7 +51,6 @@ new class extends Component {
         @scope('cell_loan_application_no', $loan)
         <strong>{{ $loan->loan_application_no }}</strong>
         @endscope
-
         {{-- Overrides `city.name` header --}}
         @scope('cell_date_applied', $loan)
         <i>{{ $loan->date_applied }}</i>
