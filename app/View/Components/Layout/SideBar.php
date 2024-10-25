@@ -2,6 +2,7 @@
 
 namespace App\View\Components\Layout;
 
+use App\Models\Loan;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
@@ -13,11 +14,13 @@ class SideBar extends Component
      * Create a new component instance.
      */
     public $isAdmin;
+    public $pendingCount;
     public function __construct()
     {
         //
 
         $this->isAdmin = Auth::user()->hasAnyRole(['SuperAdmin','Bookkeeper']);
+        $this->pendingCount = Loan::pending()->count();
 
     }
 

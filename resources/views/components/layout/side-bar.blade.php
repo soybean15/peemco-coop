@@ -32,7 +32,7 @@
 
                 <x-menu-sub title="Loans" icon="o-credit-card">
 
-                    <x-menu-item title="Pending" icon="o-clock" link="{{route('admin.pending')}}" />
+                    <x-menu-item title="Pending"  badge="{{ $pendingCount }}"   badge-classes="!badge-error" icon="o-clock" link="{{route('admin.pending')}}" />
                     <x-menu-item title="Active" icon="o-check-circle" link="{{route('admin.active')}}" />
                     <x-menu-item title="Completed" icon="s-check-circle" link="{{route('admin.completed')}}" />
                     <x-menu-item title="Loan Calculator" icon="o-calculator" link="{{route('admin.loan-calculator')}}"/>

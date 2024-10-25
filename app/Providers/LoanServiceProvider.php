@@ -14,6 +14,7 @@ class LoanServiceProvider extends ServiceProvider
      */
 
     const LOAN_PREFIX='LN';
+    const LOAN_LEN=12;
     public function register(): void
     {
         $this->app->singleton(LoanCalculator::class, function (Application $app) {

@@ -45,7 +45,7 @@ class LoanApplication implements HasLoan
 
         return Loan::create(
             [
-                'loan_application_no'=>IdGenerator::generateId(LoanServiceProvider::LOAN_PREFIX, 7),
+                'loan_application_no'=>IdGenerator::generateId(LoanServiceProvider::LOAN_PREFIX, LoanServiceProvider::LOAN_LEN),
                 'user_id' => $user_id,
                 'principal_amount' => $principal,
                 'date_applied' => Carbon::now(),
