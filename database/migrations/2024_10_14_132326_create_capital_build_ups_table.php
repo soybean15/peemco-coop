@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('capital_build_up', function (Blueprint $table) {
+        Schema::create('capital_build_ups', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
@@ -19,7 +19,8 @@ return new class extends Migration
             $table->foreign('added_by')->references('id')->on('users');
             $table->date('date')->nullable();
             $table->string('or_cdv')->nullable();
-            $table->double('amount_received', 11, 2)->nullable();  
+            $table->decimal('amount_received', 11, 2)->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

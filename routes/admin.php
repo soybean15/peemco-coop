@@ -16,11 +16,21 @@ Route::prefix('/')->group(function(){
 
     });
 
-    Volt::route('/capital-build-up','admin.capital-build-up')->name('admin.capital-build-up');
-    Volt::route('/loans','admin.loans')->name('admin.loans');
+    Volt::route('/capital-build-up','admin.capital-build-up')->name(name: 'admin.capital-build-up');
+
+
+
+    Route::prefix('loan')->group(function(){
+
+        Volt::route('/pending','admin.loan.pending')->name('admin.pending');
+        Volt::route('/active','admin.loan.active')->name('admin.active');
+        Volt::route('/completed','admin.loan.completed')->name('admin.completed');
+
+
+    });
     Volt::route('/loan-calculator','admin.loan-calculator')->name('admin.loan-calculator');
 
 
 
-    
+
 });

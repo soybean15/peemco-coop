@@ -16,5 +16,9 @@ new class extends Component {
 }; ?>
 
 <div>
-    //rrr
+
+    <x-header title="Pending Loans" subtitle="Pending Loan Requet" separator />
+
+
+
 </div>

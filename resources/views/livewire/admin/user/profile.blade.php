@@ -73,7 +73,7 @@ new class extends Component {
 
                 </x-tab>
                 <x-tab name="capital_build_up" label="Capital Build up" icon="o-credit-card">
-                   <livewire:components.capital-build-up-list/>
+                   <livewire:components.capital-build-up-list :user_id='$user->id'/>
 
                 </x-tab>
 
