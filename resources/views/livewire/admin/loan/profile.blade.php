@@ -14,6 +14,23 @@ new class extends Component {
 }; ?>
 
 <div>
+    <x-header title="Loan Details"  separator />
 
-    <livewire:components.loan-calculator-component :loan="$loan"/>
+    <div>
+
+        <x-stat
+        title="Member"
+        description="{{ $this->loan->user->name }}"
+
+        />
+
+        <x-stat
+        title="Loan Amount"
+        description="{{ $this->loan->loan_amount }}"
+
+        />
+    </div>
+
+
+
 </div>

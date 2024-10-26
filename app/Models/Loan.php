@@ -18,6 +18,11 @@ class Loan extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
+
+
+    public function items(){
+        return $this->hasMany(LoanItem::class);
+    }
     public function scopeSearch(Builder $builder,$search){
         if(empty($search))
         return $builder;
@@ -28,20 +33,19 @@ class Loan extends Model
     }
 
     //fromMember if role member
-    public function scopeRetrieve(Builder $builder, $renderFrom,$fromMember=false){
+    public function scopeRetrieve(Builder $builder, $renderFrom){
 
+
+        // dd(Auth::id());
         $query =  match($renderFrom) {
             LoanStatuEnum::PENDING->value => $builder->pending(),
             LoanStatuEnum::ACTIVE->value=>$builder->active(),
             LoanStatuEnum::COMPLETED->value => $builder->completed(),
-            default => $builder,
+            default => $builder->where('user_id',Auth::id()),
         };
 
-        if($fromMember){
-            return $query->where('user_id',Auth::id());
-        }
 
-        return $builder;
+        return $query;
 
 
     }
