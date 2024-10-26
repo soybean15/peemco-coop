@@ -138,7 +138,7 @@ new class extends Component {
     </x-header>
     <div class="grid grid-cols-1 my-5 md:grid-cols-3 ">
         <x-form wire:submit.prevent="compute">
-            <x-input label="Principal Amount" wire:model="principal" prefix="PHP" money
+            <x-input label="Principal Amount" wire:model.live.debounce.250="principal" prefix="PHP" money
                 hint="It submits an unmasked value" />
             <x-select label="Terms" :options=" [
             [
