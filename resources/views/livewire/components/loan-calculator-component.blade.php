@@ -88,36 +88,7 @@ new class extends Component {
 
     }
 
-    public function approveLoan(){
-        try{
-          (new LoanService(new LoanApproval()))->handle(
-            [
-                'loan'=>$this->loan
-            ]
-          );
 
-          $this->success('Loan Approved');
-        }catch(\Exception $e){
-
-            $this->error($e->getMessage());
-        }
-
-    }
-    public function rejectLoan(){
-        try{
-          (new LoanService(new LoanRejection()))->handle(
-            [
-                'loan'=>$this->loan
-            ]
-          );
-
-          $this->success('Loan Rejected');
-        }catch(\Exception $e){
-
-            $this->error($e->getMessage());
-        }
-
-    }
 
 }; ?>
 
@@ -128,17 +99,8 @@ new class extends Component {
         <x-slot:actions>
 
 
-            @if($loan)
+            @if(!$loan)
 
-                @if($loan->status=='pending')
-                <x-button class="btn-success" label='Approve' wire:confirm='Are you sure you want to approve this loan?'
-                    wire:click='approveLoan' />
-                <x-button class="btn-error" label='Reject' wire:confirm='Are you sure you want to reject this loan?'
-                    wire:click='rejectLoan' />
-
-                @endif
-
-            @else
 
             <x-button class="btn-success" label='Apply Loan' wire:confirm='Are you sure you want to apply this loan?'
                 wire:click='applyLoan' />

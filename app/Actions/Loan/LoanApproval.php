@@ -5,6 +5,8 @@ namespace App\Actions\Loan;
 use App\Contracts\HasLoan;
 
 use App\Models\Loan;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class LoanApproval implements HasLoan
 
@@ -17,7 +19,12 @@ class LoanApproval implements HasLoan
     {
 
         $loan = $data['loan'];
-        $loan->update(['status'=>'approved']);
+        $loan->update(
+            [
+                'status'=>'approved',
+                'confirmed_by'=>Auth::id(),
+                'date_confirmed'=>Carbon::today()
+        ]);
 
 
         //create Loan Items
