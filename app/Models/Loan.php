@@ -14,6 +14,10 @@ class Loan extends Model
 
     protected $guarded=[];
 
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
     public function scopeSearch(Builder $builder,$search){
         if(empty($search))
         return $builder;
@@ -28,8 +32,8 @@ class Loan extends Model
 
         $query =  match($renderFrom) {
             LoanStatuEnum::PENDING->value => $builder->pending(),
-            LoanStatuEnum::ACTIVE->value,
-            LoanStatuEnum::COMPLETED->value => $builder->active(),
+            LoanStatuEnum::ACTIVE->value=>$builder->active(),
+            LoanStatuEnum::COMPLETED->value => $builder->completed(),
             default => $builder,
         };
 
@@ -46,7 +50,7 @@ class Loan extends Model
         return $builder->where('status','pending');
     }
     public function scopeActive(Builder $builder){
-        return $builder->where('status','active');
+        return $builder->where('status','approved');
     }
     public function scopeCompleted(Builder $builder){
         return $builder->where('status','completed');

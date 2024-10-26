@@ -5,7 +5,10 @@ namespace App\Actions\Loan;
 use App\Contracts\HasLoan;
 use App\Helpers\IdGenerator;
 use App\Models\Loan;
+use App\Models\LoanItem;
 use App\Providers\LoanServiceProvider;
+use App\Services\LoanCalculator\LoanCalculator;
+use App\Services\Loans\LoanService;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -24,7 +27,7 @@ class LoanApplication implements HasLoan
             'no_of_installment' => 'required|integer|min:1',
             'terms_of_loan' => 'required|min:1',
             'other_charges' => 'nullable|min:0', // Optional field
-            'monthly_payment'=>'required'
+            'monthly_payment' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -43,9 +46,16 @@ class LoanApplication implements HasLoan
         $other_charges = $data['other_charges'] ?? 0;  // Default to 0 if not provided
         $monthly_payment = $data['monthly_payment'];
 
-        return Loan::create(
+        $loanService = app(LoanCalculator::class);
+
+
+
+
+
+
+        $loan = Loan::create(
             [
-                'loan_application_no'=>IdGenerator::generateId(LoanServiceProvider::LOAN_PREFIX, LoanServiceProvider::LOAN_LEN),
+                'loan_application_no' => IdGenerator::generateId(LoanServiceProvider::LOAN_PREFIX, LoanServiceProvider::LOAN_LEN),
                 'user_id' => $user_id,
                 'principal_amount' => $principal,
                 'date_applied' => Carbon::now(),
@@ -54,9 +64,40 @@ class LoanApplication implements HasLoan
                 'other_charges' => $other_charges,
                 'annual_interest_rate' => $annual_rate,
                 'monthly_interest_rate' => $monthly_rate,
-                'monthly_payment'=>$monthly_payment,
+                'monthly_payment' => $monthly_payment,
                 'status' => 'pending'
             ]
         );
+
+        // $this->loanItems[]=[
+        //     'period'=>$loanItem->getPeriod(),
+        //     'interest'=>$loanItem->getInterest(),
+        //     'principal'=>$loanItem->getPrincipal(),
+        //     'net_proceed'=>$loanItem->getNetProceed(),
+        //     'balance'=>$loanItem->getOutstandingBalance()
+        // ];
+
+
+
+
+        $loanService
+            ->setPrincipal($principal)
+            ->setTerms($terms_of_loan)
+            ->calculateLoan()
+            ->getLoanItems(function ($loanItem)use ($loan) {
+                LoanItem::create(
+                    [
+                        'loan_id'=>$loan->id,
+                        'loan_period'=>$loanItem->getPeriod(),
+                        'interest'  => $loanItem->getInterest(),
+                        'amount_due'=>$loanItem->getNetProceed(),
+                        'running_balance'=>$loanItem->getNetProceed(),
+                        'status'=>'pending'
+
+                    ]
+                );
+            });
+
+        return $loan;
     }
 }

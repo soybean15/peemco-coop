@@ -12,7 +12,7 @@ new class extends Component {
 
         return [
 
-        'loans'=>Loan::where('status','pending')->paginate(5),
+
         'renderFrom'=> LoanStatuEnum::PENDING->value
         ];
     }

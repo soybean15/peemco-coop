@@ -18,7 +18,9 @@ new class extends Component {
             'headers'=>[
 
                 ['key'=>'loan_application_no' ,'label'=>'Loan Number'],
+                ['key'=>'user_id' ,'label'=>'Member Name'],
                 ['key'=>'date_applied' ,'label'=>'Date Applied'],
+
                 ['key'=>'principal_amount' ,'label'=>'Principal Amount'],
                 ['key'=>'terms_of_loan' ,'label'=>'Terms of loan'],
                 ['key'=>'monthly_interest_rate' ,'label'=>'Monthly Rate'],
@@ -36,6 +38,9 @@ new class extends Component {
         {{-- Overrides `name` header --}}
         @scope('cell_loan_application_no', $loan)
         <a href="{{ route('admin.loan-profile',['loan'=>$loan]) }}"><strong>{{ $loan->loan_application_no }}</strong></a>
+        @endscope
+        @scope('cell_user_id', $loan)
+        <i>{{ $loan->user->name }}</i>
         @endscope
         {{-- Overrides `city.name` header --}}
         @scope('cell_date_applied', $loan)

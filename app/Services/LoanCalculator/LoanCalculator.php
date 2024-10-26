@@ -85,11 +85,11 @@ class LoanCalculator
 
     }
 
-    public function getLoanItems()
+
+    public function getLoanItems($callback=null)
     {
 
         $i=1;
-        $initial_interest = $this->principal * $this->monthly_rate;
         $balance = $this->principal;
 
         while($i<=$this->number_of_installment){
@@ -113,6 +113,10 @@ class LoanCalculator
                 'net_proceed'=>$loanItem->getNetProceed(),
                 'balance'=>$loanItem->getOutstandingBalance()
             ];
+
+            if($callback){
+                $callback($loanItem);
+            }
             $balance =$loanItem->getBalance();
             $i++;
         }

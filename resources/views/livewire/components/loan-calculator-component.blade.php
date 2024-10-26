@@ -21,6 +21,7 @@ new class extends Component {
     public $monthly_payment;
     public $number_of_installment;
 
+    public $loan;
     public function mount($loan =null){
 
 
@@ -29,6 +30,7 @@ new class extends Component {
             $this->principal = $loan->principal_amount;
             $this->terms = $loan->terms_of_loan;
 
+            $this->loan=$loan;
             $this->compute();
         }
 
@@ -76,6 +78,9 @@ new class extends Component {
           );
 
           $this->success('Loan Application Successful');
+
+          return redirect()->to(route('user.loans'));
+
         }catch(\Exception $e){
 
             $this->error($e->getMessage());
@@ -85,7 +90,7 @@ new class extends Component {
 
     public function approveLoan(){
         try{
-          (new LoanService(new LoanApplication()))->handle(
+          (new LoanService(new LoanApproval()))->handle(
             [
                 'loan'=>$this->loan
             ]
@@ -100,7 +105,7 @@ new class extends Component {
     }
     public function rejectLoan(){
         try{
-          (new LoanService(new LoanApplication()))->handle(
+          (new LoanService(new LoanRejection()))->handle(
             [
                 'loan'=>$this->loan
             ]
@@ -123,24 +128,34 @@ new class extends Component {
         <x-slot:actions>
 
 
-            @if(auth()->user()->hasRole('SuperAdmin'))
-            <x-button class="btn-success" label='Approve' wire:confirm='Are you sure you want to approve this loan?'
-                wire:click='applyLoan' />
-            <x-button class="btn-error" label='Reject' wire:confirm='Are you sure you want to reject this loan?'
-                wire:click='applyLoan' />
+            @if($loan)
+
+                @if($loan->status=='pending')
+                <x-button class="btn-success" label='Approve' wire:confirm='Are you sure you want to approve this loan?'
+                    wire:click='approveLoan' />
+                <x-button class="btn-error" label='Reject' wire:confirm='Are you sure you want to reject this loan?'
+                    wire:click='rejectLoan' />
+
+                @endif
 
             @else
 
             <x-button class="btn-success" label='Apply Loan' wire:confirm='Are you sure you want to apply this loan?'
-            wire:click='applyLoan' />
+                wire:click='applyLoan' />
             @endif
         </x-slot:actions>
     </x-header>
     <div class="grid grid-cols-1 my-5 md:grid-cols-3 ">
+
+
         <x-form wire:submit.prevent="compute">
+
+
+
+            @if($loan)
             <x-input label="Principal Amount" wire:model.live.debounce.250="principal" prefix="PHP" money
-                hint="It submits an unmasked value" />
-            <x-select label="Terms" :options=" [
+                hint="It submits an unmasked value" readonly />
+            <x-select disabled label="Terms" :options=" [
             [
                 'id' => 1,
                 'name' => '1 Year'
@@ -162,12 +177,45 @@ new class extends Component {
                 'name' => '5 Years',
             ]
         ]" wire:model="terms" placeholder="Select Terms" />
-            <x-slot:actions>
 
+
+            @else
+
+            <x-input label="Principal Amount" wire:model.live.debounce.250="principal" prefix="PHP" money
+                hint="It submits an unmasked value" />
+            <x-select label="Terms" :options=" [
+    [
+        'id' => 1,
+        'name' => '1 Year'
+    ],
+    [
+        'id' => 2,
+        'name' => '2 Years',
+    ],
+    [
+        'id' => 3,
+        'name' => '3 Years',
+    ],
+    [
+        'id' => 4,
+        'name' => '4 Years',
+    ],
+    [
+        'id' => 5,
+        'name' => '5 Years',
+    ]
+]" wire:model="terms" placeholder="Select Terms" />
+
+            @endif
+
+
+            <x-slot:actions>
+                @if(!$loan)
 
                 <x-button label="Cancel" class="btn-sm" />
                 <x-button label="Compute" class="btn-primary btn-sm" type="compute" spinner="compute" />
 
+                @endif
             </x-slot:actions>
         </x-form>
 
@@ -175,7 +223,7 @@ new class extends Component {
 
             <div class="grid grid-cols-2">
 
-                <span  >Principal :</span>
+                <span>Principal :</span>
                 <span>{{ $principal }}</span>
             </div>
             <div class="grid grid-cols-2">
