@@ -28,7 +28,7 @@ new class extends Component {
                 // Alternative approach
             ],
             'capitalBuildUp'=> CapitalBuildUp::where('user_id',$this->users)
-                ->where('or_cdv', 'LIKE', $this->search)
+                ->where('or_cdv', 'LIKE', "%$this->search%")
                 ->paginate(2)
         ];
     }
@@ -43,7 +43,6 @@ new class extends Component {
             <x-input icon="o-magnifying-glass" wire:model.live='search' placeholder="Search..." />
         </x-slot:actions>
     </x-header>
-    {{$search}}
     <x-table :headers="$cbuHeaders" :rows="$capitalBuildUp" striped with-pagination x-on:refresh-table.window='$wire.$refresh()' />   
    
 </div>
