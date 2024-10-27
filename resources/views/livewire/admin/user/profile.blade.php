@@ -40,7 +40,7 @@ new class extends Component {
     // }
 }; ?>
 <div>
-    <div class="p-3 m-1 border-2 border-gray-600 rounded shadow-md ">
+    <div class="p-3 m-1 border-2 rounded shadow-md ">
         <div class="flex flex-col justify-start md:flex-row">
 
 
@@ -73,8 +73,12 @@ new class extends Component {
                         </div>
                 </x-tab>
 
-                <x-tab name="capital_build_up" label="Capital Build up" icon="o-credit-card">
+                <x-tab name="capital_build_up" label="Capital Build up" icon="o-arrow-trending-up">
                    <livewire:components.capital-build-up-list :user_id='$user->id'/>
+                </x-tab>    
+
+                <x-tab name="member_loan_list" label="Loans" icon="o-credit-card">
+                   <livewire:components.member-loan-list :user_id='$user->id'/>
                 </x-tab>    
         
 

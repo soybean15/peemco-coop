@@ -19,7 +19,7 @@
                 </label>
 
                 {{-- Brand --}}
-                <div>App</div>
+                <div><b>PEEMCO-COOP</b></div>
             </x-slot:brand>
 
             {{-- Right side actions --}}

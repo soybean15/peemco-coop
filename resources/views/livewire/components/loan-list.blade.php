@@ -31,11 +31,14 @@ new class extends Component {
 }; ?>
 
 <div>
+  
+
     <x-header title="" subtitle="">
         <x-slot:actions>
             <x-input icon="o-magnifying-glass" wire:model.live='search' placeholder="Search..." />
         </x-slot:actions>
     </x-header>
+    
 
     <x-table :headers="$headers" :rows="$loans" with-pagination>
         {{-- Overrides `name` header --}}
