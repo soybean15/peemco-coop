@@ -60,8 +60,6 @@ new class extends Component {
                 <x-tabs wire:model="selectedTab">
                 <x-tab name="profile" label="Profile" icon="o-users">
                     <x-header title="{{html_entity_decode($user->name)}}" subtitle="{{$user->email}}" separator />
-
-
                         <div class="grid grid-cols-1 gap-2 md:grid-cols-2 ">
 
                             <x-input label="Name" wire:model="form.name" />
@@ -70,28 +68,25 @@ new class extends Component {
                             {{-- <x-input label="Prefix & Suffix" wire:model="name" />
                             <x-input label="Prefix & Suffix" wire:model="name"/> --}}
                         </div>
-
+                        <div class="flex justify-end px-5">
+                            <x-button label='Save' class="btn-primary btn-sm" wire:click='save'/>
+                        </div>
                 </x-tab>
+
                 <x-tab name="capital_build_up" label="Capital Build up" icon="o-credit-card">
                    <livewire:components.capital-build-up-list :user_id='$user->id'/>
-
-                </x-tab>
+                </x-tab>    
+        
 
             </x-tabs>
-
-
-
-                {{-- {{html_entity_decode($user->name)}} --}}
-
+                {{-- {{html_entity_decode($user->)}} --}}
             </div>
 
 
         </div>
 
 
-        <div class="flex justify-end px-5">
-            <x-button label='Save' class="btn-primary btn-sm" wire:click='save'/>
-        </div>
+   
 
     </div>
 </div>
