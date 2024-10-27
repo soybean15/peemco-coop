@@ -16,17 +16,14 @@ new class extends Component {
         return [
             'loans'=>Loan::retrieve($this->renderFrom)->paginate(4),
             'headers'=>[
-
                 ['key'=>'loan_application_no' ,'label'=>'Loan Number'],
                 ['key'=>'user_id' ,'label'=>'Member Name'],
                 ['key'=>'date_applied' ,'label'=>'Date Applied'],
-
                 ['key'=>'principal_amount' ,'label'=>'Principal Amount'],
                 ['key'=>'terms_of_loan' ,'label'=>'Terms of loan'],
                 ['key'=>'monthly_interest_rate' ,'label'=>'Monthly Rate'],
                 ['key'=>'monthly_payment' ,'label'=>'Monthly Payment'],
                 ['key'=>'status' ,'label'=>'Status'],
-
                 ]
             ];
     }

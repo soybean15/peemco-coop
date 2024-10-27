@@ -23,20 +23,13 @@ new class extends Component {
 }; ?>
 
 <div>
-
     <x-header title="Loans" separator >
         <x-slot:middle class="!justify-end">
             <x-input icon="o-bolt" placeholder="Search..." wire:model.live='search' />
         </x-slot:middle>
         <x-slot:actions>
-
-
         <x-button class="btn-success" label='Add Loan' link="{{ route('user.loan-calculator') }}" />
-
     </x-slot:actions>
     </x-header>
-
     <livewire:components.loan-list :renderFrom='$renderFrom'/>
-
-
 </div>

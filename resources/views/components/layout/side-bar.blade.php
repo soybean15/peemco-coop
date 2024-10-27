@@ -77,6 +77,8 @@
                     <x-menu-item title="List" icon="s-numbered-list" link="{{route('user.loans')}}" />
                     <x-menu-item title="Loan Calculator" icon="o-calculator" link="{{route('user.loan-calculator')}}"/>
                 </x-menu-sub>
+                <x-menu-item title="Capital Build Up" icon="o-arrow-trending-up" link="{{route('user.capital-build-up')}}" />
+
 
             </x-menu>
         </x-slot:sidebar>

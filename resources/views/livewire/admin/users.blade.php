@@ -30,7 +30,7 @@ new class extends Component {
     <x-header title="Users" subtitle="Your home address" separator>
         <x-slot:actions>
             <x-input icon="o-magnifying-glass" wire:model.live='search' placeholder="Search Members" />
-            <x-button icon="o-user-plus" label="Add Member" link="{{route('add-users')}}" class="btn-warning"  />
+            <x-button icon="o-user-plus" label="Add Member" link="{{route('add-users')}}" class="btn-primary"  />
         </x-slot:actions>
     </x-header>
     <x-table :headers="$userHeaders" :rows="$users" with-pagination >

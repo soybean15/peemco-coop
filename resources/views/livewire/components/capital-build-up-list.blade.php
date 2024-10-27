@@ -40,14 +40,14 @@ new class extends Component {
     <x-header title="Capital Build up" subtitle="Your home address" separator>
         <x-slot:actions>
             <x-button label="Add Capital Buildup" x-on:click="$dispatch('add-capital-build-up',{user_id:{{ $this->user->id }}})"/>
-    {{-- upsert-capital-build-up.blade --}}
+            {{-- upsert-capital-build-up.blade --}}
         </x-slot:actions>
 
 
 
-    <x-slot:middle>
-        <x-input icon="o-magnifying-glass" wire:model.live='search' placeholder="Search..." />
-    </x-slot:middle>
+        <x-slot:middle>
+            <x-input icon="o-magnifying-glass" wire:model.live='search' placeholder="Search..." />
+        </x-slot:middle>
     </x-header>
 
 
