@@ -1,7 +1,6 @@
 <?php
 
 use Livewire\Volt\Component;
-use App\Models\User;
 use App\Models\Loan;
 use Livewire\WithPagination;
 
@@ -27,7 +26,7 @@ new class extends Component {
             ],
             'loans' => Loan::where('user_id',$this->users)
                 ->where('loan_application_no', 'LIKE', "%$this->search%")
-                ->paginate(1)
+                ->paginate(2)
         ];
     }
 }; ?>
@@ -51,7 +50,5 @@ new class extends Component {
         @scope('cell_action', $loans)
             <x-button icon="o-pencil-square" class="btn-ghost" x-on:click=""/>
         @endscope
-
-        <livewire:components.loan-payment-list/> 
     
 </div>
