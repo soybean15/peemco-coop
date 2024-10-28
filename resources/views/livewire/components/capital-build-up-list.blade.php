@@ -19,7 +19,7 @@ new class extends Component {
         return
         [
             'cbuHeaders'=>[
-                ['key' => 'or_cdv', 'label' => 'OR CDV', ],
+                ['key' => 'or_cdv', 'label' => 'OR CDV'],
                 ['key' => 'date', 'label' => 'Date', ],
                 ['key' => 'amount_received', 'label' => 'Amount Received', 'class' => 'hidden lg:table-cell'],
                 ['key' => 'added_by', 'label' => 'Added By', ],
@@ -60,32 +60,22 @@ new class extends Component {
 
 
     <x-table :headers="$cbuHeaders" :rows="$capitalBuildUp" with-pagination x-on:refresh-table.window='$wire.$refresh()'>
-    @scope('cell_or_cdv', $capitalBuildUp)
-    {{ $capitalBuildUp->or_cdv}}
-    @endscope
-    @scope('cell_date', $capitalBuildUp)
-    {{ $capitalBuildUp->date}}
-
-    @endscope
-    @scope('cell_amount_received', $capitalBuildUp)
-
-    {{ $capitalBuildUp->amount_received}}
-    @endscope
-    @scope('cell_added_by', $capitalBuildUp)
-    {{ $capitalBuildUp->addedBy->name}}
-
-    @endscope
-    @scope('cell_action', $capitalBuildUp)
-
-
-    <x-button icon="o-pencil-square" class="btn-ghost" x-on:click="$dispatch('edit-capital-build-up',{user_id:{{ $this->user->id }},id:{{ $capitalBuildUp->id }}})"/>
-    <x-button icon="o-trash" class="btn-error" wire:confirm='Are you sure you want to delete this item?' wire:click='delete({{ $capitalBuildUp->id }})'/>
-
-    @endscope
-
-
+        @scope('cell_or_cdv', $capitalBuildUp)
+            {{ $capitalBuildUp->or_cdv}}
+        @endscope
+        @scope('cell_date', $capitalBuildUp)
+            {{ $capitalBuildUp->date}}
+        @endscope
+        @scope('cell_amount_received', $capitalBuildUp)
+            {{ $capitalBuildUp->amount_received}}
+        @endscope
+        @scope('cell_added_by', $capitalBuildUp)
+            {{ $capitalBuildUp->addedBy->name}}
+        @endscope
+        @scope('cell_action', $capitalBuildUp)
+            <x-button icon="o-pencil-square" class="btn-ghost" x-on:click="$dispatch('edit-capital-build-up',{user_id:{{ $this->user->id }},id:{{ $capitalBuildUp->id }}})"/>
+            <x-button icon="o-trash" class="btn-error" wire:confirm='Are you sure you want to delete this item?' wire:click='delete({{ $capitalBuildUp->id }})'/>
+        @endscope
     </x-table>
-
-
     <livewire:components.upsert-capital-build-up/>
 </div>

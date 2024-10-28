@@ -21,7 +21,8 @@ new class extends Component {
         [
             'loanHeaders'=>[
                 ['key' => 'loan_application_no', 'label' => 'Loan Application', ],
-                ['key' => 'status', 'label' => 'Status', ]
+                ['key' => 'status', 'label' => 'Status', ],
+                ['key' => 'action', 'label' => 'Action', ],
                 // Alternative approach
             ],
             'loans' => Loan::where('user_id',$this->users)
@@ -40,6 +41,17 @@ new class extends Component {
         </x-slot:actions>
     </x-header>
 
-    <x-table :headers="$loanHeaders" :rows="$loans" striped with-pagination x-on:refresh-table.window='$wire.$refresh()' />   
+    <x-table :headers="$loanHeaders" :rows="$loans" striped with-pagination x-on:refresh-table.window='$wire.$refresh()'/>  
+        @scope('cell_loan_application_no', $loans)
+                {{ $loans->loan_application_no}}
+        @endscope
+        @scope('cell_status', $loans)
+            {{ $loans->status}}
+        @endscope
+        @scope('cell_action', $loans)
+            <x-button icon="o-pencil-square" class="btn-ghost" x-on:click=""/>
+        @endscope
+
+        <livewire:components.loan-payment-list/> 
     
 </div>

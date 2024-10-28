@@ -21,7 +21,6 @@ Route::prefix('/')->group(function(){
     Volt::route('/capital-build-up','admin.capital-build-up')->name(name: 'admin.capital-build-up');
 
 
-
     Route::prefix('loan')->group(function(){
 
         Volt::route('/pending','admin.loan.pending')->name('admin.pending');

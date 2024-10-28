@@ -79,7 +79,8 @@ new class extends Component {
 
                 <x-tab name="member_loan_list" label="Loans" icon="o-credit-card">
                    <livewire:components.member-loan-list :user_id='$user->id'/>
-                </x-tab>    
+                </x-tab>  
+                
         
 
             </x-tabs>
