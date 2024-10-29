@@ -40,7 +40,7 @@ new class extends Component {
             ],
             'loans' => Loan::where('user_id',$this->users)
                 ->where('loan_application_no', 'LIKE', "%$this->search%")
-                ->paginate(1)
+                ->paginate(2)
         ];
     }
 }; ?>

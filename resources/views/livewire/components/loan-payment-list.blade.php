@@ -26,10 +26,6 @@ new class extends Component {
       $this->isOpen = false;
    }
 
-
-  
-
-
 }; ?>
 
 <div>
@@ -48,20 +44,22 @@ new class extends Component {
                   <thead>
                      <tr>
                         <th class="border px-4 py-2">Loan ID</th>
+                        <th class="border px-4 py-2">Date</th>
                         <th class="border px-4 py-2">Amount</th>
                      </tr>
                   </thead>
                   <tbody>
                      @foreach($loanpaymentlist as $paymentdata)
                         <tr class="bg-base-200">
-                              <td>{{$paymentdata->loan_id}}</td>
-                              <td>₱{{ number_format($paymentdata->amount_received,2) }}</td>
+                           <td>{{$paymentdata->loan_id}}</td>
+                           <td>{{$paymentdata->date}}</td>
+                           <td>₱{{ number_format($paymentdata->amount_received,2) }}</td>
                         </tr>
                      @endforeach
                   </tbody>
             </table>
          </div>
-          @else
+         @else
             <p class="text-gray-500">No loan payment records found.</p>
          @endif
             </div>
