@@ -10,6 +10,19 @@ new class extends Component {
     public $search;
     public $users;
 
+    public $loanApplicationNo;
+    public $user_id;
+    public $isOpen = false;
+
+    public function showModal($loanApplicationNo, $user_id)
+    {
+        $this->dispatch('openModal', $loanApplicationNo, $user_id);
+    }
+    public function closeModal()
+    {
+        $this->isOpen = false;
+    }
+
     public function mount($user_id)
     {
         $this->users = $user_id;
@@ -41,16 +54,36 @@ new class extends Component {
         </x-slot:actions>
     </x-header>
 
-    <x-table :headers="$loanHeaders" :rows="$loans" striped with-pagination x-on:refresh-table.window='$wire.$refresh()'/>  
-        @scope('cell_loan_application_no', $loans)
-                {{ $loans->loan_application_no}}
-        @endscope
-        @scope('cell_status', $loans)
-            {{ $loans->status}}
-        @endscope
-        @scope('cell_action', $loans)
-            <x-button icon="o-pencil-square" class="btn-ghost" x-on:click=""/>
-        @endscope
+    <div class="overflow-x-auto">
+        <table class="table" with-pagination x-on:refresh-table.window='$wire.$refresh()'>
+            <!-- head -->
+            <thead>
+            <tr>
+    
+                <th>Loan Application</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- row 1 -->
+             @foreach ($loans as $dataloan)
+                <tr>
+                    <th>{{$dataloan->loan_application_no}}</th>
+                    <td>{{$dataloan->status}}</td>
+                    <td>
+                    <button class="btn" wire:click="showModal('{{$dataloan->loan_application_no}}', {{$dataloan->user_id}})">View Payment</button>
+                </td>
+                </tr>
+            @endforeach
+          
+            </tbody>
+        </table>
+        {{ $loans->links()}}
+        </div>
+
+       
+        
 
         <livewire:components.loan-payment-list/> 
     
