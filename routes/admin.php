@@ -32,8 +32,12 @@ Route::prefix('/')->group(function(){
 
     });
     Volt::route('/loan-calculator','admin.loan-calculator')->name('admin.loan-calculator');
+
+    Route::prefix('settings')->group(function(){
+        Volt::route('/settings','admin.settings')->name('admin.settings');
+
+    });
+
     
-
-
 
 });

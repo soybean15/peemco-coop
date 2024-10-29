@@ -12,7 +12,10 @@ enum LoanStatuEnum :string
 
     case ARCHIVE = 'archive';
 
-    
+
+
+
+
 
 
 }

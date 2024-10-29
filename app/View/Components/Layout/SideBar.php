@@ -19,7 +19,7 @@ class SideBar extends Component
     {
         //
 
-        $this->isAdmin = Auth::user()->hasAnyRole(['SuperAdmin','Bookkeeper']);
+        $this->isAdmin = Auth::user()->hasAnyRole(['super admin','book keeper']);
         $this->pendingCount = Loan::pending()->count();
 
     }

@@ -10,6 +10,7 @@ use App\Services\Loans\LoanService;
 use Mary\Traits\Toast;
 use App\Models\Loan;
 
+
 new class extends Component {
     use Toast;
     public $loanItems=[];
@@ -25,7 +26,7 @@ new class extends Component {
     public function mount($loan =null){
 
 
-
+       
         if($loan){
             $this->principal = $loan->principal_amount;
             $this->terms = $loan->terms_of_loan;
