@@ -31,7 +31,6 @@ new class extends Component {
 <div>
 
 
-<div>
    <dialog id="my_modal_4" class="modal" {{ $isOpen ? 'open' : '' }}>
       <div class="modal-box w-11/12 max-w-5xl">
          <h3 class="text-lg font-bold">Loan Application Details</h3>
@@ -46,6 +45,7 @@ new class extends Component {
                         <th class="border px-4 py-2">Loan ID</th>
                         <th class="border px-4 py-2">Date</th>
                         <th class="border px-4 py-2">Amount</th>
+                        <th colspan="2" class="border px-4 py-2">Action</th>
                      </tr>
                   </thead>
                   <tbody>
@@ -54,6 +54,8 @@ new class extends Component {
                            <td>{{$paymentdata->loan_id}}</td>
                            <td>{{$paymentdata->date}}</td>
                            <td>₱{{ number_format($paymentdata->amount_received,2) }}</td>
+                           <td><a wire:navigate href="{{ route('admin.edit-amortization', $paymentdata->id)}} " class="link link-primary">Edit</a></td>
+                           <td><a class="link link-primary">{{$paymentdata->id}}Delete</a></td>
                         </tr>
                      @endforeach
                   </tbody>
@@ -68,7 +70,6 @@ new class extends Component {
          </div>
       </div>
    </dialog>
-</div>
 
 
 

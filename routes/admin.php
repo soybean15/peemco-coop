@@ -16,6 +16,9 @@ Route::prefix('/')->group(function(){
 
         Volt::route('/{user}','admin.user.profile')->name('admin.user');
 
+        
+
+
     });
 
     Volt::route('/capital-build-up','admin.capital-build-up')->name(name: 'admin.capital-build-up');
@@ -32,6 +35,7 @@ Route::prefix('/')->group(function(){
 
     });
     Volt::route('/loan-calculator','admin.loan-calculator')->name('admin.loan-calculator');
+    Volt::route('/edit-amortization/{payment_id}','admin.edit-amortization')->name('admin.edit-amortization');
     
 
 

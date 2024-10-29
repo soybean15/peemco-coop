@@ -72,8 +72,9 @@ new class extends Component {
                     <th>{{$dataloan->loan_application_no}}</th>
                     <td>{{$dataloan->status}}</td>
                     <td>
-                    <button class="btn" wire:click="showModal('{{$dataloan->loan_application_no}}', {{$dataloan->user_id}})">View Payment</button>
-                </td>
+                        <button class="btn" wire:click="showModal('{{$dataloan->loan_application_no}}', {{$dataloan->user_id}})">Paid Amotization</button>
+                        <button class="btn btn-primary">Payment</button>
+                    </td>
                 </tr>
             @endforeach
           
@@ -85,6 +86,6 @@ new class extends Component {
        
         
 
-        <livewire:components.loan-payment-list/> 
+        <livewire:components.paid-amotization/> 
     
 </div>
