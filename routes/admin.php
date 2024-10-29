@@ -16,7 +16,7 @@ Route::prefix('/')->group(function(){
 
         Volt::route('/{user}','admin.user.profile')->name('admin.user');
 
-        
+
 
 
     });
@@ -35,16 +35,16 @@ Route::prefix('/')->group(function(){
 
     });
     Volt::route('/loan-calculator','admin.loan-calculator')->name('admin.loan-calculator');
-<<<<<<< HEAD
+
     Volt::route('/edit-amortization/{payment_id}','admin.edit-amortization')->name('admin.edit-amortization');
-=======
+
 
     Route::prefix('settings')->group(function(){
         Volt::route('/settings','admin.settings')->name('admin.settings');
 
     });
 
->>>>>>> eaa27a6d8dc063e401a947f5f1ff7316c697686c
-    
+
+
 
 });
