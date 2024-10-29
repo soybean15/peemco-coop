@@ -30,7 +30,7 @@ new class extends Component {
     <x-header title="Users" subtitle="Your home address" separator>
         <x-slot:actions>
             <x-input icon="o-magnifying-glass" wire:model.live='search' placeholder="Search Members" />
-            @can('add user')
+            @can('can add user')
             <x-button icon="o-user-plus" label="Add Member" link="{{route('add-users')}}" class="btn-primary"  />
             @endcan
         </x-slot:actions>

@@ -21,9 +21,6 @@ class RolePermissionService{
 
         foreach(RolesEnum::cases() as $role){
             $permissions = $role->getPermissions()::cases();
-
-
-
             foreach($permissions as $permission){
 
                 $is_selected = $this->checkIfRoleHasPermission($role,$permission);
@@ -38,6 +35,9 @@ class RolePermissionService{
 
             }
         }
+
+        $_role = Role::where('name',RolesEnum::SUPER_ADMIN->value)->first();
+        $_role->givePermissionTo(SuperAdminPermissionsEnum::MANAGE_ALL->value);
 
         // dd($this->roleWithPermissions);
         return $this->roleWithPermissions;

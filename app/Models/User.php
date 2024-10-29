@@ -99,4 +99,15 @@ class User extends Authenticatable implements HasMedia
     public function capitalBuildUp(){
         return $this->hasMany(CapitalBuildUp::class,'user_id');
     }
+
+    public function hasPermission($permission)
+    {
+
+        return $this->roles->contains(function ($role) use ($permission) {
+            // dd($role->permissions->contains('name', $permission),$permission,$role,$role->permissions);
+            return $role->permissions->contains('name', $permission);
+        });
+    }
+
+
 }
