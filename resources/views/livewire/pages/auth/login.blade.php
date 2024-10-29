@@ -21,7 +21,7 @@ new #[Layout('layouts.guest')] class extends Component
 
         Session::regenerate();
         $route = 'dashboard';
-    if (Auth::check() && Auth::user()->hasRole('admin')) { // Checking if the user has the admin role
+    if (Auth::check() && Auth::user()->hasRole('super admin')) { // Checking if the user has the admin role
         $route = 'admin.dashboard';
     }
 

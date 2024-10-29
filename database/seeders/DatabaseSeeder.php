@@ -2,10 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Enums\RolesEnum;
 use App\Models\User;
+use App\Services\Seeders\RoleAndPermissionSeeder;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,9 +17,10 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
-        $superAdmin =  Role::create(['name' => 'SuperAdmin', 'guard_name' => 'web']);
-        Role::create(['name' => 'Bookkeeper', 'guard_name' => 'web']);
-        Role::create(['name' => 'Member', 'guard_name' => 'web']);
+
+
+        RoleAndPermissionSeeder::seed();
+
         $user = User::factory(200)->create();
 
         $user =  User::factory()->create([
@@ -27,7 +30,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
 
-
-        $user->assignRole($superAdmin);
+        $user->assignRole(RolesEnum::SUPER_ADMIN->value);
     }
 }

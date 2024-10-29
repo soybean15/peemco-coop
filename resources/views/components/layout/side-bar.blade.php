@@ -37,7 +37,7 @@
                     <x-menu-item title="Completed" icon="s-check-circle" link="{{route('admin.completed')}}" />
                     <x-menu-item title="Loan Calculator" icon="o-calculator" link="{{route('admin.loan-calculator')}}"/>
                 </x-menu-sub>
-
+                <x-menu-item title="Settings" icon="o-cog-6-tooth" link="{{route('admin.settings')}}" />
 
             </x-menu>
         </x-slot:sidebar>

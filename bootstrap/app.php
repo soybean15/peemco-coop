@@ -10,7 +10,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // commands: __DIR__.'/../routes/console.php',
         health: '/up',
         using: function () {
-            Route::middleware(['web', 'role:SuperAdmin|Bookkeeper'])
+            Route::middleware(['web', 'role:super admin|book keeper'])
 
                 ->prefix('admin')
                 ->group(base_path('routes/admin.php'));
