@@ -43,25 +43,27 @@ new class extends Component {
          <p class="py-4">User ID: {{$user_id}}</p>
          <div class="overflow-x-auto">
          @if($loanpaymentlist && $loanpaymentlist->count())
-        <table class="min-w-full">
-            <thead>
-                <tr>
-                    <th class="border px-4 py-2">Loan ID</th>
-                    <th class="border px-4 py-2">Amount</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($loanpaymentlist as $paymentdata)
-                    <tr class="bg-base-200">
-                        <td>{{$paymentdata->loan_id}}</td>
-                        <td>{{$paymentdata->amount_received}}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    @else
-        <p class="text-gray-500">No loan payment records found.</p>
-    @endif
+         <div class="overflow-x-auto">
+            <table class="table">
+                  <thead>
+                     <tr>
+                        <th class="border px-4 py-2">Loan ID</th>
+                        <th class="border px-4 py-2">Amount</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     @foreach($loanpaymentlist as $paymentdata)
+                        <tr class="bg-base-200">
+                              <td>{{$paymentdata->loan_id}}</td>
+                              <td>₱{{ number_format($paymentdata->amount_received,2) }}</td>
+                        </tr>
+                     @endforeach
+                  </tbody>
+            </table>
+         </div>
+          @else
+            <p class="text-gray-500">No loan payment records found.</p>
+         @endif
             </div>
          <div class="modal-action">
                <button class="btn" wire:click="closeModal">Close</button>
