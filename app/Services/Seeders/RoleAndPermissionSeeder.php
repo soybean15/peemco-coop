@@ -17,7 +17,7 @@ class RoleAndPermissionSeeder{
         self::createRoles();
 
 
-        
+
     }
 
 
@@ -25,9 +25,10 @@ class RoleAndPermissionSeeder{
 
         foreach(RolesEnum::cases() as $role){
 
-            Role::create(
+            $role = Role::create(
                 attributes: ['name'=>$role->value,'guard_name'=>'web']
             );
+
 
             foreach($role->getPermissions()::cases() as $permission){
                 $permission= Permission::create(
@@ -36,6 +37,9 @@ class RoleAndPermissionSeeder{
 
             }
 
+            if($role->value ==RolesEnum::SUPER_ADMIN->value){
+                $role->givePermissionTo(SuperAdminPermissionsEnum::MANAGE_ALL->value);
+            }
         }
 
     }
