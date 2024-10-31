@@ -20,7 +20,10 @@ Route::prefix('/')->group(function(){
 
     Route::prefix('loan-type')->group(function(){
         Volt::route('/','admin.loan-type')->name('admin.loan-type');
+        Volt::route('/{loanType}','admin.loan-type.loan-type-profile')->name('admin.loan-type-profile');
         Volt::route('/add','admin.loan-type.add-loan-type')->name('admin.add-loan-type');
+
+
 
     });
 

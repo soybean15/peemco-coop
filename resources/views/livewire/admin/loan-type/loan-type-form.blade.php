@@ -2,9 +2,10 @@
 
 use Livewire\Volt\Component;
 use App\Models\LoanType;
+use Mary\Traits\Toast;
 new class extends Component {
 
-
+    use Toast;
     public $loanType;
     public $type='regular';
 
@@ -23,9 +24,9 @@ new class extends Component {
 
     ];
 
-    public function mount(LoanType $loanType){
+    public function mount( $loanTypeId=null){
 // dd('here');
-        $this->loanType = $loanType;
+        $this->loanType = LoanType::find($loanTypeId);
 
         if ($this->loanType) {
             $this->form['loan_type'] = $this->loanType->loan_type;
@@ -36,25 +37,63 @@ new class extends Component {
             }
         }
 
+    public function save(){
+
+
+        $this->form['type']=$this->type;
+
+        // dd($this->form);
+        if($this->loanType){
+
+
+            $this->update();
+        }else{
+            $this->store();
+
+        }
+    }
+
+    public function store(){
+        $this->validate([
+                'form.loan_type'=>'required|max:50',
+                'form.maximum_amount'=>'required|numeric',
+                'form.minimum_amount'=>'required|numeric',
+                'form.annual_rate'=>'required|numeric',
+                'form.charges'=>'required|numeric',
+
+            ]);
+
+
+
+            LoanType::create($this->form);
+
+    }
+    public function update(){
+        $this->validate([
+                'form.loan_type'=>'required|max:50',
+                'form.maximum_amount'=>'required|numeric',
+                'form.minimum_amount'=>'required|numeric',
+                'form.charges'=>'required|numeric',
+
+            ]);
+        $this->loanType->update($this->forms);
+    }
+
 }; ?>
 
 <div>
-    <x-header title="{{ $loanType ?'Add ':'' }}Loan Types" separator />
+    <x-header title="{{ !$loanType ?'Add ':'' }}Loan Types" separator />
 
     <x-form wire:submit="save">
-        <x-input label="Loan Type" wire:model="name"  hint='ex: Salary loan, Calamity loan'/>
+        <x-input label="Loan Type" wire:model="form.loan_type"  hint='ex: Salary loan, Calamity loan'/>
 
         <x-select label="Type" icon="o-user" :options="$types" wire:model.live="type" />
 
-
         @if($type=='regular')
-
-        <x-input label="Annual Rate" wire:model="name" prefix="%" />
-
-        @else
+        <x-input label="Annual Rate" wire:model="form.annual_rate" prefix="%" />
 
         @endif
-        <x-input label="Charges" wire:model="form.charges" prefix="PHP" />
+        <x-input  label="Charges" wire:model="form.charges" prefix="%" />
 
         <x-input label="Maximum Amount" wire:model="form.maximum_amount" prefix="PHP" />
         <x-input label="Minimum Amount" wire:model="form.minimum_amount" prefix="PHP" />
@@ -62,8 +101,8 @@ new class extends Component {
 
 
         <x-slot:actions>
-            <x-button label="Cancel" />
-            <x-button label="Click me!" class="btn-primary" type="submit" spinner="save" />
+
+            <x-button label="Save" class="btn-primary" type="submit" spinner="save" />
         </x-slot:actions>
     </x-form>
 </div>

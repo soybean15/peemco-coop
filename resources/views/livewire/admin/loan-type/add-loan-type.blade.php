@@ -8,5 +8,7 @@ new class extends Component {
 
 <div>
 
-    <livewire:admin.loan-type.loan-type-form/>
+    <div class="grid grid-cols-1 md:grid-cols-2">
+        <livewire:admin.loan-type.loan-type-form/>
+    </div>
 </div>
