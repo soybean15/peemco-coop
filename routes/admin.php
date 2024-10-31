@@ -13,11 +13,14 @@ Route::prefix('/')->group(function(){
     Route::prefix('users')->group(function(){
         Volt::route('/','admin.users')->name('admin.users');
         Volt::route('/add-users','admin.add-users')->name('add-users');
-
         Volt::route('/{user}','admin.user.profile')->name('admin.user');
 
 
+    });
 
+    Route::prefix('loan-type')->group(function(){
+        Volt::route('/','admin.loan-type')->name('admin.loan-type');
+        Volt::route('/add','admin.loan-type.add-loan-type')->name('admin.add-loan-type');
 
     });
 
@@ -26,11 +29,11 @@ Route::prefix('/')->group(function(){
 
     Route::prefix('loan')->group(function(){
 
-        Volt::route('/pending','admin.loan.pending')->name('admin.pending');
-        Volt::route('/profile/{loan}','admin.loan.profile')->name('admin.loan-profile');
+        // Volt::route('/pending','admin.loan.pending')->name('admin.pending');
+        // Volt::route('/profile/{loan}','admin.loan.profile')->name('admin.loan-profile');
 
-        Volt::route('/active','admin.loan.active')->name('admin.active');
-        Volt::route('/completed','admin.loan.completed')->name('admin.completed');
+        // Volt::route('/active','admin.loan.active')->name('admin.active');
+        // Volt::route('/completed','admin.loan.completed')->name('admin.completed');
 
 
     });
