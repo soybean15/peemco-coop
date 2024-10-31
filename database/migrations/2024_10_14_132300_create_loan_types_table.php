@@ -27,6 +27,7 @@ return new class extends Migration
             $table->decimal('charges',8,3)->comment('%')->nullable();
 
 
+            $table->softDeletes();
             $table->timestamps();
         });
     }

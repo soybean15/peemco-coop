@@ -12,9 +12,6 @@ class RolePermissionService{
 
     public $roleWithPermissions=[];
 
-
-
-
     public function generateRolePermissions(){
 
 
@@ -74,4 +71,10 @@ class RolePermissionService{
         }
 
     }
+
+
+
+
+
+
 }

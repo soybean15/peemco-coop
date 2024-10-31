@@ -15,6 +15,7 @@ new class extends Component {
 
 
     public function mount(){
+
        $this->roles = (new RolePermissionService())->generateRolePermissions();
     }
 

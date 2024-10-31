@@ -64,9 +64,10 @@ new class extends Component {
             ]);
 
 
-
             LoanType::create($this->form);
 
+            return redirect()->to(route('admin.loan-type'));
+            $this->success('Added new Loan Type');
     }
     public function update(){
         $this->validate([
@@ -76,13 +77,13 @@ new class extends Component {
                 'form.charges'=>'required|numeric',
 
             ]);
-        $this->loanType->update($this->forms);
+        $this->loanType->update($this->form);
     }
 
 }; ?>
 
 <div>
-    <x-header title="{{ !$loanType ?'Add ':'' }}Loan Types" separator />
+    <x-header title="{{ !$loanType ?'Add ':'' }}Loan Type" separator />
 
     <x-form wire:submit="save">
         <x-input label="Loan Type" wire:model="form.loan_type"  hint='ex: Salary loan, Calamity loan'/>
