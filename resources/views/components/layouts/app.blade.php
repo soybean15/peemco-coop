@@ -3,6 +3,15 @@
     <head>
 
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+        <script src="https://unpkg.com/flatpickr/dist/plugins/monthSelect/index.js"></script>
+        <link href="https://unpkg.com/flatpickr/dist/plugins/monthSelect/style.css" rel="stylesheet">
+ 
+
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
             @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -14,7 +23,7 @@
 
             <x-slot:brand>
                 {{-- Drawer toggle for "main-drawer" --}}
-                <label for="main-drawer" class="lg:hidden mr-3">
+                <label for="main-drawer" class="mr-3 lg:hidden">
                     <x-icon name="o-bars-3" class="cursor-pointer" />
                 </label>
 

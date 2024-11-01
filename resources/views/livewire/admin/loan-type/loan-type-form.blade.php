@@ -3,11 +3,15 @@
 use Livewire\Volt\Component;
 use App\Models\LoanType;
 use Mary\Traits\Toast;
+use App\Models\LoanReleaseDate;
+use  App\Services\LoanType\LoanTypeService;
 new class extends Component {
 
     use Toast;
     public $loanType;
     public $type='regular';
+
+    public $releaseDates=[];
 
     public $form=[
         'loan_type'=>null,
@@ -42,6 +46,31 @@ new class extends Component {
 
         $this->form['type']=$this->type;
 
+
+        if($this->type =='regular'){
+            $this->validate([
+                'form.loan_type'=>'required|max:50',
+                'form.maximum_amount'=>'required|numeric|gte:form.minimum_amount',
+                'form.minimum_amount'=>'required|numeric',
+                'form.annual_rate'=>'required|numeric',
+                'form.charges'=>'required|numeric',
+
+
+            ]);
+
+        }else{
+
+            $this->validate([
+                'form.loan_type'=>'required|max:50',
+                'form.maximum_amount'=>'required|numeric|gte:form.minimum_amount',
+                'form.minimum_amount'=>'required|numeric',
+                'form.charges'=>'required|numeric',
+                'releaseDates.*.start'=>'required',
+                'releaseDates.*.end'=>'required',
+            ]);
+
+        }
+
         // dd($this->form);
         if($this->loanType){
 
@@ -54,52 +83,96 @@ new class extends Component {
     }
 
     public function store(){
-        $this->validate([
-                'form.loan_type'=>'required|max:50',
-                'form.maximum_amount'=>'required|numeric',
-                'form.minimum_amount'=>'required|numeric',
-                'form.annual_rate'=>'required|numeric',
-                'form.charges'=>'required|numeric',
-
-            ]);
 
 
-            LoanType::create($this->form);
 
+        LoanTypeService::store(
+            [
+                'form'=>$this->form,
+                'releaseDates'=>$this->releaseDates,
+                'type'=>$this->types
+            ]
+            );
             return redirect()->to(route('admin.loan-type'));
             $this->success('Added new Loan Type');
     }
     public function update(){
-        $this->validate([
-                'form.loan_type'=>'required|max:50',
-                'form.maximum_amount'=>'required|numeric',
-                'form.minimum_amount'=>'required|numeric',
-                'form.charges'=>'required|numeric',
 
-            ]);
         $this->loanType->update($this->form);
     }
 
+    public function addReleases(){
+
+
+        $this->releaseDates[] =[ 'start'=>null, 'end'=>null];
+
+    }
+
+    public function reduceReleases(){
+        array_pop($this->releaseDates);
+    }
 }; ?>
 
 <div>
     <x-header title="{{ !$loanType ?'Add ':'' }}Loan Type" separator />
 
     <x-form wire:submit="save">
-        <x-input label="Loan Type" wire:model="form.loan_type"  hint='ex: Salary loan, Calamity loan'/>
+        <x-input label="Loan Type" wire:model="form.loan_type" hint='ex: Salary loan, Calamity loan' />
 
         <x-select label="Type" icon="o-user" :options="$types" wire:model.live="type" />
 
         @if($type=='regular')
-        <x-input label="Annual Rate" wire:model="form.annual_rate" prefix="%" />
+        <x-input label="Annual Rate" type='number' wire:model="form.annual_rate" prefix="%" />
 
         @endif
-        <x-input  label="Charges" wire:model="form.charges" prefix="%" />
+        <x-input label="Charges" type='number' wire:model="form.charges" prefix="%" />
 
-        <x-input label="Maximum Amount" wire:model="form.maximum_amount" prefix="PHP" />
-        <x-input label="Minimum Amount" wire:model="form.minimum_amount" prefix="PHP" />
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <x-input label="Minimum Amount" wire:model="form.minimum_amount" prefix="PHP" />
+            <x-input label="Maximum Amount" wire:model="form.maximum_amount" prefix="PHP" />
 
 
+        </div>
+
+        @if($type=='cash_advance')
+        <div class="flex items-center">
+            <span>Date Releases</span>
+            <x-button icon="o-minus" class="mx-3 btn-circle btn-sm btn-success" wire:click='reduceReleases' />
+            <span>{{ count($releaseDates) }}</span>
+            <x-button icon="o-plus" class="mx-3 btn-circle btn-sm btn-success" wire:click='addReleases' />
+        </div>
+        <div class="grid grid-cols-1">
+            @php
+                $config = [
+                    'dateFormat'=> "m-d",
+                    'altFormat' => 'F J',
+
+            ];
+            @endphp
+
+            @foreach ( $releaseDates as $dates )
+
+            <div class="grid grid-cols-1 gap-4 my-2 md:grid-cols-2">
+                <x-datepicker label="Start" wire:model="releaseDates.{{ $loop->index }}.start" icon="o-calendar" :config="$config" />
+                <x-datepicker label="End" wire:model="releaseDates.{{ $loop->index }}.end" icon="o-calendar" :config="$config" />
+
+                {{-- <x-datetime label="Start" wire:model="releaseDates.{{ $loop->index }}.start" icon="o-calendar" />
+                <x-datetime label="End" wire:model="releaseDates.{{ $loop->index }}.end" icon="o-calendar" /> --}}
+
+
+            </div>
+
+
+
+
+
+            @endforeach
+
+
+        </div>
+
+
+        @endif
 
         <x-slot:actions>
 

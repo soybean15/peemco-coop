@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\LoanType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,6 +14,7 @@ return new class extends Migration
     {
         Schema::create('loan_release_dates', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(LoanType::class)->nullable();
             $table->string('from')->nullable()->comment('M-d');
             $table->string('to')->nullable()->comment('M-d');
 

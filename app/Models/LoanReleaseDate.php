@@ -7,4 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class LoanReleaseDate extends Model
 {
     //
+
+    protected $guarded = [];
 }

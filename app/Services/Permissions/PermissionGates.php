@@ -18,8 +18,8 @@ class PermissionGates{
 
         foreach($permissions as $permission){
 
-            Gate::define("can $permission->name", function (User $user) use ($permission) {
-                return $user->hasPermission('manage all') || $user->hasPermission("can delete user $permission->name");
+            Gate::define("$permission->name", function (User $user) use ($permission) {
+                return $user->hasPermission('manage all') || $user->hasPermission($permission->name);
             });
         }
 
