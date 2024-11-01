@@ -2,6 +2,7 @@
 
 namespace App\Services\LoanCalculator;
 
+use App\Models\LoanType;
 use App\Models\User;
 
 class LoanCalculator
@@ -20,6 +21,8 @@ class LoanCalculator
 
     public $nominal_rate;
 
+    public $loanType;
+
     public $otherChargesInterest = 0.06;
 
     protected $loanItems = [];
@@ -30,6 +33,23 @@ class LoanCalculator
         $this->user = $user;
     }
 
+    public function getLoanTypes(){
+        return LoanType::regular()->get()->map(function($item){
+            return [
+                'id'=>$item->id,
+                'name'=>$item->loan_type
+            ];
+        });
+    }
+
+    public function setLoanType($loanTypeId){
+
+
+        $this->loanType =LoanType::find($loanTypeId);
+
+
+        return $this;
+    }
     public function setPrincipal($principal)
     {
         $this->principal = $principal;
@@ -48,20 +68,26 @@ class LoanCalculator
 
     public function setAnnualRate(){
 
-        $this->annual_rate=  match((int)$this->terms){
-             1  =>0.0750,
-             2  =>0.0900,
-             3  =>0.0966,
-             4  =>0.0966,
-             5  =>0.0966,
-        };
+
+        if(!$this->loanType) return 0;
+
+        $rate =$this->loanType->annual_rate/100;
+
+        if ((int)$this->terms === 1) {
+            $this->annual_rate = $rate;
+        } elseif ((int)$this->terms === 2) {
+            $this->annual_rate = $rate * 1.20;
+
+        } else {
+            $this->annual_rate = $rate * 1.20 * 1.074;
+        }
+        $this->monthly_rate = $this->annual_rate / 12;;
 
     }
 
     public function calculateLoan()
     {
 
-        $this->monthly_rate = $this->annual_rate / 12;;
 
         // Step 1: Calculate the numerator
         $numerator = $this->monthly_rate * pow(1 + $this->monthly_rate, $this->number_of_installment);

@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('loan_types', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignIdFor(LoanReleaseDate::class)->nullable();
             $table->string('loan_type')->nullable();
             $table->string('type')->comment('regular, cash advance')->nullable();
             $table->decimal('annual_rate',8,3)->comment('for regular')->nullable();

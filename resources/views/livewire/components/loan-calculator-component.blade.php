@@ -22,35 +22,64 @@ new class extends Component {
     public $monthly_payment;
     public $number_of_installment;
 
+    public $loanType;
+    public $loanTypes=[];
+
+
     public $loan;
     public function mount($loan =null){
 
 
-       
+        $loanService = app(LoanCalculator::class);
+
         if($loan){
             $this->principal = $loan->principal_amount;
             $this->terms = $loan->terms_of_loan;
 
             $this->loan=$loan;
             $this->compute();
+        }else{
+            $this->loanTypes = $loanService->getLoanTypes();
+            // dd($this->loanTypes);
         }
 
+    }
+
+    public function updatedLoanType(){
+
+        $this->fetchData();
 
     }
+
+    public function updatedTerms(){
+        $this->fetchData();
+
+    }
+    public function fetchData(){
+        $loanService = app(LoanCalculator::class)
+        ->setLoanType($this->loanType)
+        ->setPrincipal($this->principal)
+        ->setTerms($this->terms);
+        $this->annual_rate = $loanService->getAnnualRate();
+        $this->monthly_rate =$loanService->getMonthlyRate();
+    }
     public function compute(){
+
         $loanService = app(LoanCalculator::class);
 
         $this->validate(
             [
                 'terms'=>'required',
-                'principal'=>'required'
+                'principal'=>'required',
+                'loanType'=>'required'
             ]
-    );
+        );
 
 
 
 
         $this->loanItems =$loanService
+        ->setLoanType($this->loanType)
         ->setPrincipal($this->principal)
         ->setTerms($this->terms)
         ->calculateLoan()
@@ -113,7 +142,7 @@ new class extends Component {
 
         <x-form wire:submit.prevent="compute">
 
-
+            <x-select  label="Loan Type" :options="$this->loanTypes"  wire:model.live="loanType" placeholder="Select Loan Type" />
 
             @if($loan)
             <x-input label="Principal Amount" wire:model.live.debounce.250="principal" prefix="PHP" money
