@@ -16,13 +16,18 @@ class LoanTypeService{
         $releaseDates = $data['releaseDates'];
 
         $type = $data['type'];
-        LoanType::create($form);
+
+        $loanType =LoanType::create($form);
         if($type =='cash_advance'){
             if(count($releaseDates)>0){
 
                 foreach ($releaseDates as $date) {
                     LoanReleaseDate::create(
-                        ['from'=>$date['start'],'to'=>$date['end']]
+                        [
+                            'loan_type_id'=>$loanType->id,
+                            'from'=>$date['start'],
+                            'to'=>$date['end']
+                            ]
                 );
                     # code...
                 }

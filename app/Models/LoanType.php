@@ -11,4 +11,19 @@ class LoanType extends Model
 
     use SoftDeletes;
     protected $guarded = [];
+
+
+    public function releaseDates(){
+        return $this->hasMany(LoanReleaseDate::class);
+    }
+
+    public function getReleaseDates(){
+        return $this->releaseDates->map(function ($item){
+
+                return [
+                    'start'=>$item->from,
+                    'end'=>$item->to
+                ];
+        });
+    }
 }

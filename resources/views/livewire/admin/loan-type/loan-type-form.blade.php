@@ -38,7 +38,11 @@ new class extends Component {
             $this->form['annual_rate'] = $this->loanType->annual_rate;
             $this->form['minimum_amount'] = $this->loanType->minimum_amount;
             $this->form['maximum_amount'] = $this->loanType->maximum_amount;
-            }
+            $this->type = $this->loanType->type;
+
+
+            $this->releaseDates = $this->loanType->getReleaseDates();
+        }
         }
 
     public function save(){
@@ -90,7 +94,7 @@ new class extends Component {
             [
                 'form'=>$this->form,
                 'releaseDates'=>$this->releaseDates,
-                'type'=>$this->types
+                'type'=>$this->type
             ]
             );
             return redirect()->to(route('admin.loan-type'));
