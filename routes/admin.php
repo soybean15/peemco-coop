@@ -33,10 +33,10 @@ Route::prefix('/')->group(function(){
 
     Route::prefix('loan')->group(function(){
 
-        // Volt::route('/pending','admin.loan.pending')->name('admin.pending');
-        // Volt::route('/profile/{loan}','admin.loan.profile')->name('admin.loan-profile');
+        Volt::route('/pending','admin.loan.pending')->name('admin.pending');
+        Volt::route('/profile/{loan}','admin.loan.profile')->name('admin.loan-profile');
 
-        // Volt::route('/active','admin.loan.active')->name('admin.active');
+        Volt::route('/active','admin.loan.active')->name('admin.active');
         // Volt::route('/completed','admin.loan.completed')->name('admin.completed');
 
 

@@ -11,7 +11,8 @@
 
         <!-- Fonts -->
 
-        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+       
+        <script src="{{ asset('js/apex-chart.min.js') }}"></script>
 
 
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -20,7 +21,7 @@
 
         <script src="https://unpkg.com/flatpickr/dist/plugins/monthSelect/index.js"></script>
         <link href="https://unpkg.com/flatpickr/dist/plugins/monthSelect/style.css" rel="stylesheet">
- 
+
 
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />

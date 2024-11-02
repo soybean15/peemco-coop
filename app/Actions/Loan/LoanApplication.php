@@ -6,6 +6,7 @@ use App\Contracts\HasLoan;
 use App\Helpers\IdGenerator;
 use App\Models\Loan;
 use App\Models\LoanItem;
+use App\Models\LoanType;
 use App\Providers\LoanServiceProvider;
 use App\Services\LoanCalculator\LoanCalculator;
 use App\Services\Loans\LoanService;
@@ -45,9 +46,21 @@ class LoanApplication implements HasLoan
         $terms_of_loan = $data['terms_of_loan'];
         $other_charges = $data['other_charges'] ?? 0;  // Default to 0 if not provided
         $monthly_payment = $data['monthly_payment'];
-        $loanType= $data['loan_type'];
+        $loanType= LoanType::find($data['loan_type']);
 
-   
+        // dd($loanType);
+
+        if($principal > $loanType->maximum_amount){
+            throw new \Exception("Maximum amount is $loanType->maximum_amount");
+
+        }
+        // dd($principal ,$loanType->minimum_amount);
+        if($principal <$loanType->minimum_amount){
+            throw new \Exception("Minimum amount is $loanType->minimum_amount");
+
+        }
+
+
         if (empty($principal)) {
             throw new \Exception('No Principal amount');
         }
@@ -90,6 +103,7 @@ class LoanApplication implements HasLoan
 
 
         $loanService
+            ->setLoanType($loanType->id)
             ->setPrincipal($principal)
             ->setTerms($terms_of_loan)
             ->calculateLoan()

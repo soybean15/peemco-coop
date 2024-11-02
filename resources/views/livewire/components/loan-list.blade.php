@@ -11,13 +11,15 @@ new class extends Component {
     public function mount($renderFrom){
         $this->renderFrom = $renderFrom;
     }
-    public function with(){
+public function with(){
         return [
-            
+
             'headers'=>[
                 ['key'=>'loan_application_no' ,'label'=>'Loan Number'],
                 ['key'=>'user_id' ,'label'=>'Member Name'],
                 ['key'=>'date_applied' ,'label'=>'Date Applied'],
+                ['key'=>'loan_type' ,'label'=>'Loan Type'],
+
                 ['key'=>'principal_amount' ,'label'=>'Principal Amount'],
                 ['key'=>'terms_of_loan' ,'label'=>'Terms of loan'],
                 ['key'=>'monthly_interest_rate' ,'label'=>'Monthly Rate'],
@@ -25,20 +27,20 @@ new class extends Component {
                 ['key'=>'status' ,'label'=>'Status'],
             ],'loans'=>Loan::retrieve($this->renderFrom)
                 ->where('loan_application_no', 'LIKE', "%$this->search%")
-                ->paginate(3)
+                ->paginate(5)
             ];
     }
 }; ?>
 
 <div>
-  
+
 
     <x-header title="" subtitle="">
         <x-slot:actions>
             <x-input icon="o-magnifying-glass" wire:model.live='search' placeholder="Search..." />
         </x-slot:actions>
     </x-header>
-    
+
 
     <x-table :headers="$headers" :rows="$loans" with-pagination>
         {{-- Overrides `name` header --}}

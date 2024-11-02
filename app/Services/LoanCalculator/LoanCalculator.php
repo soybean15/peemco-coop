@@ -95,6 +95,7 @@ class LoanCalculator
     public function calculateLoan()
     {
 
+        // dd($this->number_of_installment);
 
         // Step 1: Calculate the numerator
         $numerator = $this->monthly_rate * pow(1 + $this->monthly_rate, $this->number_of_installment);
