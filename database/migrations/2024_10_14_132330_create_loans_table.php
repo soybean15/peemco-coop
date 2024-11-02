@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\LoanType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,26 +18,31 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
 
+            // $table->foreignIdFor(LoanType::class)->nullable();
+            $table->unsignedBigInteger('loan_type_id')->nullable();
+            $table->foreign('loan_type_id')->references('id')->on('loan_types');
+
+            $table->string('loan_type')->nullable();
+
+
             $table->unsignedBigInteger('confirmed_by')->nullable();
             $table->foreign('confirmed_by')->references('id')->on('users');
 
             $table->date('date_applied')->nullable();
             $table->date('date_confirmed')->nullable();
-            $table->double('principal_amount', 11, 2)->nullable(); 
+            $table->double('principal_amount', 11, 2)->nullable();
 
-            $table->bigInteger('terms_of_loan')->nullable();  
-            $table->bigInteger('no_of_installment')->nullable();  
-            $table->double('other_charges', 11, 2)->nullable(); 
-            $table->double('annual_interest_rate', 11, 2)->nullable(); 
-            $table->double('monthly_interest_rate', 11, 2)->nullable(); 
-            $table->double('monthly_payment', 11, 2)->nullable(); 
+            $table->bigInteger('terms_of_loan')->nullable();
+            $table->bigInteger('no_of_installment')->nullable();
+            $table->double('other_charges', 11, 2)->nullable();
+            $table->double('annual_interest_rate', 11, 2)->nullable();
+            $table->double('monthly_interest_rate', 11, 2)->nullable();
+            $table->double('monthly_payment', 11, 2)->nullable();
 
             $table->string('status')->nullable(); //Approved or Pending
             $table->string('remarks')->nullable(); //Closed or Active(Renew) or Paid
 
-            $table->unsignedBigInteger('loan_type_id')->nullable();
-            $table->foreign('loan_type_id')->references('id')->on('loan_types');
-              
+
             $table->timestamps();
         });
     }

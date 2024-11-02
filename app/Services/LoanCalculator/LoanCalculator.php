@@ -23,7 +23,7 @@ class LoanCalculator
 
     public $loanType;
 
-    public $otherChargesInterest = 0.06;
+    public $charges;
 
     protected $loanItems = [];
 
@@ -42,10 +42,15 @@ class LoanCalculator
         });
     }
 
+    public function setUser($user){
+        $this->user =$user;
+        return $this;
+    }
     public function setLoanType($loanTypeId){
 
 
         $this->loanType =LoanType::find($loanTypeId);
+
 
 
         return $this;
@@ -62,11 +67,11 @@ class LoanCalculator
 
         $this->number_of_installment = $terms * 12;
 
-        $this->setAnnualRate();
+        $this->setLoanDetails();
         return $this;
     }
 
-    public function setAnnualRate(){
+    public function setLoanDetails(){
 
 
         if(!$this->loanType) return 0;
@@ -77,9 +82,11 @@ class LoanCalculator
             $this->annual_rate = $rate;
         } elseif ((int)$this->terms === 2) {
             $this->annual_rate = $rate * 1.20;
+        } elseif ((int)$this->terms > 2) {
+            $this->annual_rate = $rate * 1.20 * 1.074;
 
         } else {
-            $this->annual_rate = $rate * 1.20 * 1.074;
+            $this->annual_rate = $rate;
         }
         $this->monthly_rate = $this->annual_rate / 12;;
 
@@ -119,8 +126,6 @@ class LoanCalculator
         $balance = $this->principal;
 
         while($i<=$this->number_of_installment){
-
-
 
             // $this->loanItems[]=[
             //     'period'=>$loanItem->getPeriod(),

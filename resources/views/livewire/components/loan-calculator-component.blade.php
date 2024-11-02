@@ -9,10 +9,13 @@ use App\Actions\Loan\LoanApproval;
 use App\Services\Loans\LoanService;
 use Mary\Traits\Toast;
 use App\Models\Loan;
-
-
+use App\Models\User;
+use Livewire\WithPagination;
+use Illuminate\Support\Facades\Gate;
+use Livewire\Attributes\Computed;
 new class extends Component {
-    use Toast;
+    use Toast,WithPagination;
+
     public $loanItems=[];
     public $terms;
     public $principal;
@@ -27,6 +30,8 @@ new class extends Component {
 
 
     public $loan;
+    public $user_id;
+    public $users;
     public function mount($loan =null){
 
 
@@ -43,8 +48,25 @@ new class extends Component {
             // dd($this->loanTypes);
         }
 
+        $this->search();
+
     }
 
+
+
+
+    public function search(string $value = '')
+    {
+        // Besides the search results, you must include on demand selected option
+        $selectedOption = User::where('id', $this->user_id)->get();
+
+        $this->users = User::query()
+            ->search($value)
+            ->take(5)
+            ->orderBy('name')
+            ->get()
+            ->merge($selectedOption);     // <-- Adds selected option
+    }
     public function updatedLoanType(){
 
         $this->fetchData();
@@ -52,6 +74,7 @@ new class extends Component {
     }
 
     public function updatedTerms(){
+
         $this->fetchData();
 
     }
@@ -93,15 +116,21 @@ new class extends Component {
 
 
     public function applyLoan(){
+
+        if(!$this->user_id ){
+
+            $this->user_id = auth()->user()->id;
+        }
         try{
           (new LoanService(new LoanApplication()))->handle(
             [
                 'monthly_rate'=>$this->monthly_rate,
                 'annual_rate'=>$this->annual_rate,
                 'principal'=>$this->principal,
-                'user_id'=>auth()->user()->id,
+                'user_id'=>$this->user_id,
                 'no_of_installment'=>$this->number_of_installment,
                 'terms_of_loan'=>$this->terms,
+                'loan_type'=>$this->loanType,
                 'other_charges'=>$this->other_charges,
                 'monthly_payment'=>$this->monthly_payment
             ]
@@ -125,11 +154,12 @@ new class extends Component {
 <div>
 
 
-    <x-header title="Loan Calculator" separator>
+    <x-header title="Apply Loan" subtitle='Loan Calculator' separator>
         <x-slot:actions>
 
 
             @if(!$loan)
+
 
 
             <x-button class="btn-success" label='Apply Loan' wire:confirm='Are you sure you want to apply this loan?'
@@ -143,6 +173,15 @@ new class extends Component {
         <x-form wire:submit.prevent="compute">
 
             <x-select  label="Loan Type" :options="$this->loanTypes"  wire:model.live="loanType" placeholder="Select Loan Type" />
+
+
+
+            @can('process loan')
+
+            <x-choices label="Member" wire:model="user_id" :options="$this->users" single  searchable/>
+
+            @endcan
+
 
             @if($loan)
             <x-input label="Principal Amount" wire:model.live.debounce.250="principal" prefix="PHP" money
@@ -168,7 +207,7 @@ new class extends Component {
                 'id' => 5,
                 'name' => '5 Years',
             ]
-        ]" wire:model="terms" placeholder="Select Terms" />
+        ]" wire:model.live="terms" placeholder="Select Terms" />
 
 
             @else
@@ -196,7 +235,7 @@ new class extends Component {
         'id' => 5,
         'name' => '5 Years',
     ]
-]" wire:model="terms" placeholder="Select Terms" />
+]" wire:model.live="terms" placeholder="Select Terms" />
 
             @endif
 

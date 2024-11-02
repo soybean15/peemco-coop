@@ -126,14 +126,14 @@ new class extends Component {
         <x-select label="Type" icon="o-user" :options="$types" wire:model.live="type" />
 
         @if($type=='regular')
-        <x-input label="Annual Rate" type='number' wire:model="form.annual_rate" prefix="%" />
+        <x-input label="Annual Rate" type='number' wire:model="form.annual_rate" prefix="%" step="0.01" />
 
         @endif
-        <x-input label="Charges" type='number' wire:model="form.charges" prefix="%" />
+        <x-input label="Charges" type='number' wire:model="form.charges" prefix="%" step="0.01" />
 
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <x-input label="Minimum Amount" wire:model="form.minimum_amount" prefix="PHP" />
-            <x-input label="Maximum Amount" wire:model="form.maximum_amount" prefix="PHP" />
+            <x-input label="Minimum Amount" wire:model="form.minimum_amount" prefix="PHP" step="0.01" />
+            <x-input label="Maximum Amount" wire:model="form.maximum_amount" prefix="PHP" step="0.01" />
 
 
         </div>

@@ -45,6 +45,13 @@ class LoanApplication implements HasLoan
         $terms_of_loan = $data['terms_of_loan'];
         $other_charges = $data['other_charges'] ?? 0;  // Default to 0 if not provided
         $monthly_payment = $data['monthly_payment'];
+        $loanType= $data['loan_type'];
+
+   
+        if (empty($principal)) {
+            throw new \Exception('No Principal amount');
+        }
+
 
         $loanService = app(LoanCalculator::class);
 
@@ -57,6 +64,8 @@ class LoanApplication implements HasLoan
             [
                 'loan_application_no' => IdGenerator::generateId(LoanServiceProvider::LOAN_PREFIX, LoanServiceProvider::LOAN_LEN),
                 'user_id' => $user_id,
+                'loan_type_id'=>$loanType->id,
+                'loan_type'=>$loanType->loan_type,
                 'principal_amount' => $principal,
                 'date_applied' => Carbon::now(),
                 'no_of_installment' => $no_of_installment,
