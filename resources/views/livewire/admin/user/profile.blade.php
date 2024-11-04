@@ -59,18 +59,61 @@ new class extends Component {
             <div class="flex flex-col w-full px-5 md:p-5">
                 <x-tabs wire:model="selectedTab">
                 <x-tab name="profile" label="Profile" icon="o-users">
-                    <x-header title="{{html_entity_decode($user->name)}}" subtitle="{{$user->email}}" separator />
-                        <div class="grid grid-cols-1 gap-2 md:grid-cols-2 ">
+                    <x-header title="{{html_entity_decode($user->name)}} {{html_entity_decode($user->middlename)}} {{html_entity_decode($user->lastname)}}" subtitle="{{$user->email}}" separator />
+                    
+                    
+                    <div>
+                        <label class="label">
+                            <span class="text-base label-text">Member ID No:   <b>{{html_entity_decode($user->mid)}}</b></span>
+                        </label>
+            
+                    </div>
+                    <div>
+                        <label class="label">
+                            <span class="text-base label-text">TIN (Tax Identification Number):</span>
+                        </label>
+                    </div>
+                    <br>
+                    <hr>
+                    <br>
+                    <h6><b>I. Information on the Membership upon acceptance:</b></h6>
+                    <br>
+                    <div>
+                        <x-input label="Date Accepted: " wire:model="form.contact_number" />
+                        <label class="label">
+                            <span class="text-base label-text"></span>
+                        </label>
+            
+                        <x-input label="Board of Directors (BOD) Resolution Number: " wire:model="form.contact_number" />
+                        <label class="label">
+                            <span class="text-base label-text">sample</span>
+                        </label>
+                    </div>
+                    <div>
+                        <label class="label">
+                            <span class="text-base label-text">TIN (Tax Identification Number):</span>
+                        </label>
+                    </div>
+                    <hr>
+                    <h6><b>II. Membership Profile:</b></h6>
 
-                            <x-input label="Name" wire:model="form.name" />
-                            <x-input label="Contact Number" wire:model="form.contact_number" />
-                            <x-input label="Address" wire:model="form.address" />
-                            {{-- <x-input label="Prefix & Suffix" wire:model="name" />
-                            <x-input label="Prefix & Suffix" wire:model="name"/> --}}
-                        </div>
-                        <div class="flex justify-end px-5">
-                            <x-button label='Save' class="btn-primary btn-sm" wire:click='save'/>
-                        </div>
+                    <hr>
+                    <h6><b>III. Termination of Membership:</b></h6>
+                    <div class="grid grid-cols-1 gap-2 md:grid-cols-2 ">
+
+
+
+
+
+                        <x-input label="Contact Number" wire:model="form.contact_number" />
+                        <x-input label="Address" wire:model="form.address" />
+                        {{-- <x-input label="Prefix & Suffix" wire:model="name" />
+                        <x-input label="Prefix & Suffix" wire:model="name"/> --}}
+                    </div>
+                    <div class="flex justify-end px-5">
+                        <x-button label='Save' class="btn-primary btn-sm" wire:click='save'/>
+                    </div>
+                        
                 </x-tab>
 
                 <x-tab name="capital_build_up" label="Capital Build up" icon="o-arrow-trending-up">
