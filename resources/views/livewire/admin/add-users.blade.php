@@ -1,8 +1,10 @@
 <?php
 
+use App\Helpers\IdGenerator;
 use Livewire\Volt\Component;
 use Illuminate\Auth\Events\Registered;
 use App\Models\User;
+use App\Models\UserProfile;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 
@@ -25,12 +27,15 @@ new class extends Component {
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'username' => ['required', 'string', 'lowercase', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
-        ]);
+            ]
+        );
 
         //dd($validated);
         $validated['password'] = Hash::make($validated['password']);
+        $validated['mid'] = IdGenerator::generateId('MID',10);
 
-        User::create($validated);
+        $user = User::create($validated);
+        UserProfile::firstOrCreate(['user_id' => $user->id]);
         session()->flash('success','Member Created Successfully');
         $this->redirect(route('add-users', absolute: false), navigate: true);
      

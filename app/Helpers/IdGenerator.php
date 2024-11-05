@@ -19,10 +19,13 @@ class IdGenerator{
         } else {
             $prefix = '';
         }
-        $timestamp = now()->format('YmdHis');
+        //$timestamp = now()->format('YmdHis');
+        $randNumber =  random_int(1, 100000000000);
 
         // Extract the last $length characters of the timestamp
-        $paddedPart = substr($timestamp, -$length);
+        //$paddedPart = substr($timestamp, -$length);
+
+        $paddedPart = substr($randNumber, -$length);
 
         return $prefix . $paddedPart;
     }

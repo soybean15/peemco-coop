@@ -21,10 +21,10 @@ class DatabaseSeeder extends Seeder
 
         RoleAndPermissionSeeder::seed();
 
-        $user = User::factory(200)->create();
+        $user = User::factory(150)->create();
 
         $user =  User::factory()->create([
-            'mid' => 'MID00000201',
+            'mid' => 'MID-0000000',
             'name' => 'Test User',
             'username'=>'test_example',
             'email' => 'test@example.com',

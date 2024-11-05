@@ -13,31 +13,28 @@ new class extends Component {
     public $photo;
     public $selectedTab='profile';
 
-    public $form=[
-        'name'=>null
-    ];
+    public string $tinNo = '';
+
 
 
 
 
     public function save(){
-        $this->validate([
-            'form.name'=>'required|max:50',
-            'photo'=>'image|max:5120',
-    ]);
+        // $this->validate([
+        //     'form.name'=>'required|max:50',
+        //     'photo'=>'image|max:5120',
+        // ]);
 
 
-        $this->user->addMedia($this->photo)->toMediaCollection('profile');
+        // $this->user->addMedia($this->photo)->toMediaCollection('profile');
 
-        $this->user->update($this->form);
+        // $this->user->update($this->form);
 
-        $this->success('Profile Updated');
+        // $this->success('Profile Updated');
+
+        dd($this->tinNo);
     }
 
-    // public function mount(User $user){
-    //     $thi
-    //     // dd($user);
-    // }
 }; ?>
 <div>
     <div class="p-3 m-1 border-2 rounded shadow-md ">
@@ -60,8 +57,7 @@ new class extends Component {
                 <x-tabs wire:model="selectedTab">
                 <x-tab name="profile" label="Profile" icon="o-users">
                     <x-header title="{{html_entity_decode($user->name)}} {{html_entity_decode($user->middlename)}} {{html_entity_decode($user->lastname)}}" subtitle="{{$user->email}}" separator />
-                    
-                    
+                      
                     <div>
                         <label class="label">
                             <span class="text-base label-text">Member ID No:   <b>{{html_entity_decode($user->mid)}}</b></span>
@@ -69,8 +65,9 @@ new class extends Component {
             
                     </div>
                     <div>
+                        <x-input label="TIN (Tax Identification Number): " wire:model="tinNo" />
                         <label class="label">
-                            <span class="text-base label-text">TIN (Tax Identification Number):</span>
+                            <span class="text-base label-text">:123145</span>
                         </label>
                     </div>
                     <br>
@@ -88,33 +85,109 @@ new class extends Component {
                         <label class="label">
                             <span class="text-base label-text">sample</span>
                         </label>
-                    </div>
-                    <div>
+
+                        <x-input label="Type/Kind of Membership: " wire:model="form.contact_number" />
                         <label class="label">
-                            <span class="text-base label-text">TIN (Tax Identification Number):</span>
+                            <span class="text-base label-text">sample</span>
                         </label>
+
+                        <br>
+                        <b><span class="text-base label-text">Initial Capital Subscription</span></b>
+                        <x-input label="Number of Share: " wire:model="form.contact_number" />
+                        <label class="label">
+                            <span class="text-base label-text">sample</span>
+                        </label>
+
+                        <x-input label="Amount: " wire:model="form.contact_number" />
+                        <label class="label">
+                            <span class="text-base label-text">sample</span>
+                        </label>
+
+                        <x-input label="Initial Paid Up: " wire:model="form.contact_number" />
+                        <label class="label">
+                            <span class="text-base label-text">sample</span>
+                        </label>
+
+
                     </div>
-                    <hr>
+
                     <h6><b>II. Membership Profile:</b></h6>
+                    
+                    <x-input label="Address: " wire:model="form.contact_number" />
+                    <label class="label">
+                        <span class="text-base label-text">sample</span>
+                    </label>
+
+                    <x-input label="Date of Birth: " wire:model="form.contact_number" />
+                    <label class="label">
+                        <span class="text-base label-text">sample</span>
+                    </label>
+
+                    <x-input label="Age: " wire:model="form.contact_number" />
+                    <label class="label">
+                        <span class="text-base label-text">sample</span>
+                    </label>
+
+                    <x-input label="Gender: " wire:model="form.contact_number" />
+                    <label class="label">
+                        <span class="text-base label-text">sample</span>
+                    </label>
+
+                    <x-input label="Civil Status: " wire:model="form.contact_number" />
+                    <label class="label">
+                        <span class="text-base label-text">sample</span>
+                    </label>
+
+                    <x-input label="Highest Educational Attainment: " wire:model="form.contact_number" />
+                    <label class="label">
+                        <span class="text-base label-text">sample</span>
+                    </label>
+
+                    <x-input label="Occupation/Income Source: " wire:model="form.contact_number" />
+                    <label class="label">
+                        <span class="text-base label-text">sample</span>
+                    </label>
+
+                    <x-input label="Number of Dependents:" wire:model="form.contact_number" />
+                    <label class="label">
+                        <span class="text-base label-text">sample</span>
+                    </label>
+
+                    <x-input label="Religion/Social Affiliation:" wire:model="form.contact_number" />
+                    <label class="label">
+                        <span class="text-base label-text">sample</span>
+                    </label>
+
+                    <x-input label="Annual Income:" wire:model="form.contact_number" />
+                    <label class="label">
+                        <span class="text-base label-text">sample</span>
+                    </label>
+
 
                     <hr>
+                    <br>
                     <h6><b>III. Termination of Membership:</b></h6>
-                    <div class="grid grid-cols-1 gap-2 md:grid-cols-2 ">
+                    <br>
+                    <x-input label="BOD Resolution Number:" wire:model="form.contact_number" />
+                    <label class="label">
+                        <span class="text-base label-text">sample</span>
+                    </label>
 
+                    <x-input label="Date:" wire:model="form.contact_number" />
+                    <label class="label">
+                        <span class="text-base label-text">sample</span>
+                    </label>
 
-
-
-
-                        <x-input label="Contact Number" wire:model="form.contact_number" />
-                        <x-input label="Address" wire:model="form.address" />
-                        {{-- <x-input label="Prefix & Suffix" wire:model="name" />
-                        <x-input label="Prefix & Suffix" wire:model="name"/> --}}
-                    </div>
+            
                     <div class="flex justify-end px-5">
                         <x-button label='Save' class="btn-primary btn-sm" wire:click='save'/>
                     </div>
                         
                 </x-tab>
+                
+                <x-tab name="account_settings" label="Account Settings" icon="o-cog-6-tooth">
+                    <livewire:components.account-settings :user_id='$user->id'/>
+                </x-tab>   
 
                 <x-tab name="capital_build_up" label="Capital Build up" icon="o-arrow-trending-up">
                    <livewire:components.capital-build-up-list :user_id='$user->id'/>
@@ -123,6 +196,8 @@ new class extends Component {
                 <x-tab name="member_loan_list" label="Loans" icon="o-credit-card">
                    <livewire:components.member-loan-list :user_id='$user->id'/>
                 </x-tab>  
+
+
                 
         
 

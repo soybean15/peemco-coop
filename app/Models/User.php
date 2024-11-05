@@ -29,6 +29,7 @@ class User extends Authenticatable implements HasMedia
      * @var array<int, string>
      */
     protected $fillable = [
+        'mid',
         'name',
         'lastname',
         'username',
@@ -109,5 +110,9 @@ class User extends Authenticatable implements HasMedia
         });
     }
 
+    public function profile()
+    {
+            return $this->hasOne(UserProfile::class);
+    }
 
 }

@@ -2,10 +2,13 @@
 
 namespace Database\Factories;
 
+use App\Helpers\IdGenerator;
 use App\Models\User;
+use App\Models\UserProfile;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+
 use Spatie\Permission\Models\Role;
 
 /**
@@ -33,7 +36,7 @@ class UserFactory extends Factory
 
         $formattedNumber = sprintf('%07d', $this->index-1);
 
-        $mid = 'MID' . $formattedNumber;
+        $mid = IdGenerator::generateId('MID',10);
 
         return [
             'mid' => $mid,
@@ -55,7 +58,7 @@ class UserFactory extends Factory
 
 
         return $this->afterCreating(function (User $user) {
-   
+            UserProfile::firstOrCreate(['user_id' => $user->id]);
             $user->assignRole('Member');
         });
     }
