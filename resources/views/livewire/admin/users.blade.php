@@ -27,6 +27,10 @@ new class extends Component {
 }; ?>
 
 <div>
+    @if(session()->has('success'))
+        <x-icon name="o-check" class="text-2xl text-green-500 w-9 h-9" label=" {{session('success')}}"/>
+    @endif
+
     <x-header title="Users" subtitle="Your home address" separator>
         <x-slot:actions>
             <x-input icon="o-magnifying-glass" wire:model.live='search' placeholder="Search Members" />
