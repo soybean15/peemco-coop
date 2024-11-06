@@ -167,18 +167,19 @@ new class extends Component {
             @endif
         </x-slot:actions>
     </x-header>
-    <div class="grid grid-cols-1 my-5 md:grid-cols-3 ">
+    <div class="grid grid-cols-1  my-5  md:grid-cols-3 max-w-[1300px]">
 
 
-        <x-form wire:submit.prevent="compute">
+        <x-form wire:submit.prevent="compute" class="p-5 bg-gray-100 rounded-md shadow-md">
 
-            <x-select  label="Loan Type" :options="$this->loanTypes"  wire:model.live="loanType" placeholder="Select Loan Type" />
+            <x-select label="Loan Type" :options="$this->loanTypes" wire:model.live="loanType"
+                placeholder="Select Loan Type" />
 
 
 
             @can('process loan')
 
-            <x-choices label="Member" wire:model="user_id" :options="$this->users" single  searchable/>
+            <x-choices label="Member" wire:model="user_id" :options="$this->users" single searchable />
 
             @endcan
 
@@ -250,38 +251,51 @@ new class extends Component {
             </x-slot:actions>
         </x-form>
 
-        <div class="flex flex-col px-5 space-y-2">
+        <div class="flex flex-col mx-5 my-5 space-y-2">
 
-            <div class="grid grid-cols-2">
+            <div class="flex flex-col">
 
-                <span>Principal :</span>
-                <span>{{ $principal }}</span>
+                <span class="text-lg font-bold text-green-600">Principal </span>
+                <span class="text-sm text-gray-600">1000</span>
+                {{-- <span>{{ $principal }}</span> --}}
             </div>
-            <div class="grid grid-cols-2">
 
-                <span>Terms Of Loans in Years :</span>
-                <span>{{ $terms }}</span>
-            </div>
-            <div class="grid grid-cols-2">
+            <div class="flex flex-col">
 
-                <span>Number Of Installment :</span>
-                <span>{{ $number_of_installment }}</span>
+                <span class="text-lg font-bold text-green-600">Terms Of Loans in Years </span>
+                <span class="text-sm text-gray-600">{{ $terms??0 }}</span>
+                {{-- <span>{{ $principal }}</span> --}}
             </div>
-            <div class="grid grid-cols-2">
 
-                <span>Annual Rate :</span>
-                <span>{{ $annual_rate }}</span>
-            </div>
-            <div class="grid grid-cols-2">
 
-                <span>Monthly Rate :</span>
-                <span>{{ $monthly_rate }}</span>
-            </div>
-            <div class="grid grid-cols-2">
+            <div class="flex flex-col">
 
-                <span>Monthly Payment :</span>
-                <span>{{ $monthly_payment }}</span>
+                <span class="text-lg font-bold text-green-600">Number Of Installment </span>
+                <span class="text-sm text-gray-600">{{ $number_of_installment ??0 }}</span>
+                {{-- <span>{{ $principal }}</span> --}}
             </div>
+
+            <div class="flex flex-col">
+
+                <span class="text-lg font-bold text-green-600">Annual Rate </span>
+                <span class="text-sm text-gray-600">{{ $annual_rate ??0 }}</span>
+                {{-- <span>{{ $principal }}</span> --}}
+            </div>
+
+            <div class="flex flex-col">
+
+                <span class="text-lg font-bold text-green-600">Monthly Rate </span>
+                <span class="text-sm text-gray-600">{{ $monthly_rate ??0 }}</span>
+                {{-- <span>{{ $principal }}</span> --}}
+            </div>
+
+            <div class="flex flex-col">
+
+                <span class="text-lg font-bold text-green-600">Monthly Payment </span>
+                <span class="text-sm text-gray-600">{{ $monthly_payment ??0 }}</span>
+                {{-- <span>{{ $principal }}</span> --}}
+            </div>
+
 
 
 
