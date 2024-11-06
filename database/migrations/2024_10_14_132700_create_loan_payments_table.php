@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Loan;
 use App\Models\LoanItem;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -14,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('loan_payments', function (Blueprint $table) {
             $table->id();
-            $table->string('loan_id')->nullable();
-            $table->foreign('loan_id')->references('loan_application_no')->on('loans');
+            $table->foreignIdFor(Loan::class)->nullable();
+
             $table->foreignIdFor(LoanItem::class)->nullable();
             $table->unsignedBigInteger('added_by');
             $table->foreign('added_by')->references('id')->on('users');

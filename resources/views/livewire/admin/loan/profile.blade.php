@@ -140,15 +140,17 @@ new class extends Component {
     </div>
 
 
-    <x-table :headers="$headers" :rows="$loanItems" >
+    <x-table :headers="$headers" :rows="$loanItems" x-on:refresh-page.window="$wire.$refresh()" >
         @scope('cell_status', $loan)
             @if($loan->status=='to pay')
             <x-badge :value="$loan->status" class="badge-info" />
 
-            <x-button/>
+            <x-button x-on:click="$dispatch('add-payment',{loanItemId:{{ $loan->id }}})" icon="o-currency-dollar" class="btn-sm btn-info"/>
 
             @elseif($loan->status=='overdue')
             <x-badge :value="$loan->status" class="badge-error" />
+            @elseif($loan->status=='paid')
+                <x-badge :value="$loan->status" class="badge-success" />
 
             @else
             <x-badge :value="$loan->status" class="badge-warning" />
@@ -157,6 +159,8 @@ new class extends Component {
         @endscope
     </x-table>
 
+
+    <livewire:admin.loan.loan-payment-modal/>
 
 
 </div>
