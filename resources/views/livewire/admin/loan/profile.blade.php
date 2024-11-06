@@ -145,7 +145,7 @@ new class extends Component {
             @if($loan->status=='to pay')
             <x-badge :value="$loan->status" class="badge-info" />
 
-            <x-button/>
+            <x-button x-on:click="$dispatch('add-payment',{loanItemId:{{ $loan->id }}})" icon="o-currency-dollar" class="btn-sm btn-info"/>
 
             @elseif($loan->status=='overdue')
             <x-badge :value="$loan->status" class="badge-error" />
@@ -157,6 +157,8 @@ new class extends Component {
         @endscope
     </x-table>
 
+
+    <livewire:admin.loan.loan-payment-modal/>
 
 
 </div>

@@ -4,6 +4,7 @@ namespace App\Services\LoanPayment;
 
 use Illuminate\Support\Carbon;
 
+
 class   LoanPaymentService{
 
 
@@ -16,6 +17,7 @@ class   LoanPaymentService{
         $this->loan=$loan;
         $this->loanItems =$loan->items;
     }
+
 
 
     public function handle(){
