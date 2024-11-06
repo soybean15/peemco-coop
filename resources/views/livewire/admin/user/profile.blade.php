@@ -2,45 +2,59 @@
 
 use Livewire\Volt\Component;
 use App\Models\User;
+use App\Models\UserProfile;
+use Illuminate\Support\Carbon;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Validate;
 use Mary\Traits\Toast;
 new class extends Component {
     use Toast;
     use WithFileUploads;
+
     public User $user;
+    public UserProfile $userprofile;
 
     public $photo;
     public $selectedTab='profile';
 
-    public string $tinNo = '';
+    public $user_id;
+    public $tinNo;
+    public $dateAccepted;
 
 
+    public function mount()
+    {
+        $this->user_id = $this->user->id;
 
+        $this->userprofile = UserProfile::find($this->user_id);
+        
+    }
 
 
     public function save(){
-        // $this->validate([
-        //     'form.name'=>'required|max:50',
-        //     'photo'=>'image|max:5120',
-        // ]);
+       
+       
 
+        if ($this->userprofile) {
 
-        // $this->user->addMedia($this->photo)->toMediaCollection('profile');
+            $this->userprofile->update([
+                'tin_no' => $this->tinNo,
+                'date_accepted' => $this->dateAccepted
+            ]);
+            session()->flash('success','Profile Updated Successfully');
+            $this->redirect(route('admin.users', absolute: false), navigate: true);
 
-        // $this->user->update($this->form);
+        } else {
 
-        // $this->success('Profile Updated');
-
-        dd($this->tinNo);
+            throw new Exception("User profile not found.");
+        }
     }
 
 }; ?>
 <div>
     <div class="p-3 m-1 border-2 rounded shadow-md ">
         <div class="flex flex-col justify-start md:flex-row">
-
-
+       
 
             <div class="flex justify-center my-5 md:p-20">
 
@@ -60,6 +74,7 @@ new class extends Component {
 
                     <div>
                         <label class="label">
+                           
                             <span class="text-base label-text">Member ID No:   <b>{{html_entity_decode($user->mid)}}</b></span>
                         </label>
 
@@ -76,7 +91,7 @@ new class extends Component {
                     <h6><b>I. Information on the Membership upon acceptance:</b></h6>
                     <br>
                     <div>
-                        <x-input label="Date Accepted: " wire:model="form.contact_number" />
+                        <x-datetime label="Date Accepted:" wire:model="dateAccepted" icon="o-calendar" value="{{$userprofile->date_accepted}}"/>
                         <label class="label">
                             <span class="text-base label-text"></span>
                         </label>
