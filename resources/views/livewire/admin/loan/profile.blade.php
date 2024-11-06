@@ -145,6 +145,8 @@ new class extends Component {
             @if($loan->status=='to pay')
             <x-badge :value="$loan->status" class="badge-info" />
 
+            <x-button/>
+
             @elseif($loan->status=='overdue')
             <x-badge :value="$loan->status" class="badge-error" />
 
