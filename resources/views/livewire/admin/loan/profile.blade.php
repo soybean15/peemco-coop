@@ -7,7 +7,7 @@ use App\Actions\Loan\LoanRejection;
 
 use Mary\Traits\Toast;
 use App\Services\Loans\LoanService;
-
+use App\Services\LoanPayment\LoanPaymentService;
 new class extends Component {
     use Toast;
     public $loan;
@@ -21,11 +21,15 @@ new class extends Component {
         $this->headers = [
 
                     ['key' => 'loan_period', 'label' => 'Period'],
+                    ['key' => 'due_date', 'label' => 'Due Date'],
                     ['key' => 'amount_due', 'label' => 'Amount Due'],
+                    ['key' => 'amount_paid', 'label' => 'Amount Paid'],
                     ['key' => 'past_due', 'label' => 'Past Due'],
                     ['key' => 'running_balance', 'label' => 'Running Balance'],
-
+                    ['key' => 'status', 'label' => 'Status'],
         ];
+
+        (new LoanPaymentService($loan))->handle();
     }
 
 
@@ -77,6 +81,7 @@ new class extends Component {
 }; ?>
 
 <div>
+
     <x-header title="Loan Details"  separator >
 
         <x-slot:actions>
@@ -134,7 +139,21 @@ new class extends Component {
 
     </div>
 
-    <x-table :headers="$headers" :rows="$loanItems" />
+
+    <x-table :headers="$headers" :rows="$loanItems" >
+        @scope('cell_status', $loan)
+            @if($loan->status=='to pay')
+            <x-badge :value="$loan->status" class="badge-info" />
+
+            @elseif($loan->status=='overdue')
+            <x-badge :value="$loan->status" class="badge-error" />
+
+            @else
+            <x-badge :value="$loan->status" class="badge-warning" />
+
+            @endif
+        @endscope
+    </x-table>
 
 
 

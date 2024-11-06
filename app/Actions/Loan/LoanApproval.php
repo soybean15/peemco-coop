@@ -27,6 +27,18 @@ class LoanApproval implements HasLoan
         ]);
 
 
+        $dueDate = Carbon::now();
+
+
+        $loan->items->each(function($item)use ($dueDate){
+
+            $item->update(['due_date'=>$dueDate]);
+            $dueDate->addMonth();
+
+
+        });
+
+
         //create Loan Items
         return $loan;
     }

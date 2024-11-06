@@ -107,7 +107,9 @@ class LoanApplication implements HasLoan
             ->setPrincipal($principal)
             ->setTerms($terms_of_loan)
             ->calculateLoan()
-            ->getLoanItems(function ($loanItem)use ($loan) {
+            ->getLoanItems(function ($loanItem,$dueDate)use ($loan) {
+
+                
                 LoanItem::create(
                     [
                         'loan_id'=>$loan->id,

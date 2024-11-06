@@ -57,12 +57,12 @@ new class extends Component {
                 <x-tabs wire:model="selectedTab">
                 <x-tab name="profile" label="Profile" icon="o-users">
                     <x-header title="{{html_entity_decode($user->name)}} {{html_entity_decode($user->middlename)}} {{html_entity_decode($user->lastname)}}" subtitle="{{$user->email}}" separator />
-                      
+
                     <div>
                         <label class="label">
                             <span class="text-base label-text">Member ID No:   <b>{{html_entity_decode($user->mid)}}</b></span>
                         </label>
-            
+
                     </div>
                     <div>
                         <x-input label="TIN (Tax Identification Number): " wire:model="tinNo" />
@@ -80,7 +80,7 @@ new class extends Component {
                         <label class="label">
                             <span class="text-base label-text"></span>
                         </label>
-            
+
                         <x-input label="Board of Directors (BOD) Resolution Number: " wire:model="form.contact_number" />
                         <label class="label">
                             <span class="text-base label-text">sample</span>
@@ -112,7 +112,7 @@ new class extends Component {
                     </div>
 
                     <h6><b>II. Membership Profile:</b></h6>
-                    
+
                     <x-input label="Address: " wire:model="form.contact_number" />
                     <label class="label">
                         <span class="text-base label-text">sample</span>
@@ -178,28 +178,28 @@ new class extends Component {
                         <span class="text-base label-text">sample</span>
                     </label>
 
-            
+
                     <div class="flex justify-end px-5">
                         <x-button label='Save' class="btn-primary btn-sm" wire:click='save'/>
                     </div>
-                        
+
                 </x-tab>
-                
-                <x-tab name="account_settings" label="Account Settings" icon="o-cog-6-tooth">
-                    <livewire:components.account-settings :user_id='$user->id'/>
-                </x-tab>   
 
                 <x-tab name="capital_build_up" label="Capital Build up" icon="o-arrow-trending-up">
                    <livewire:components.capital-build-up-list :user_id='$user->id'/>
-                </x-tab>    
+                </x-tab>
 
                 <x-tab name="member_loan_list" label="Loans" icon="o-credit-card">
                    <livewire:components.member-loan-list :user_id='$user->id'/>
-                </x-tab>  
+                </x-tab>
 
 
-                
-        
+                <x-tab name="account_settings" label="Account Settings" icon="o-cog-6-tooth">
+                    <livewire:components.account-settings :user_id='$user->id'/>
+                </x-tab>
+
+
+
 
             </x-tabs>
                 {{-- {{html_entity_decode($user->)}} --}}
@@ -209,7 +209,7 @@ new class extends Component {
         </div>
 
 
-   
+
 
     </div>
 </div>

@@ -19,6 +19,8 @@ return new class extends Migration
             $table->decimal('interest')->nullable();
             $table->date('due_date')->nullable();
             $table->decimal('amount_due',10,2)->default(0);
+            $table->decimal('amount_paid',10,2)->default(0);
+
             $table->decimal('past_due',10,2)->default(0);
             $table->decimal('running_balance',10,2)->default(0);
             $table->string('status')->nullable();

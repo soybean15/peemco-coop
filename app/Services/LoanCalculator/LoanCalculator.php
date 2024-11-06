@@ -4,6 +4,7 @@ namespace App\Services\LoanCalculator;
 
 use App\Models\LoanType;
 use App\Models\User;
+use Carbon\Carbon;
 
 class LoanCalculator
 {
@@ -126,6 +127,9 @@ class LoanCalculator
         $i=1;
         $balance = $this->principal;
 
+
+        $dueDate = Carbon::now();
+
         while($i<=$this->number_of_installment){
 
             // $this->loanItems[]=[
@@ -147,7 +151,9 @@ class LoanCalculator
             ];
 
             if($callback){
-                $callback($loanItem);
+                $callback($loanItem,$dueDate);
+
+                $dueDate->addMonth();
             }
             $balance =$loanItem->getBalance();
             $i++;
