@@ -20,7 +20,7 @@ class UserProfile extends Model
         'gender',
         'civil_status',
         'highest_educational_attainment',
-        'occupational_income_source',
+        'occupation_income_source',
         'number_of_dependents',
         'religion_social_affiliation',
         'annual_income',
