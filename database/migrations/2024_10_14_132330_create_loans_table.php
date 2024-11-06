@@ -30,14 +30,14 @@ return new class extends Migration
 
             $table->date('date_applied')->nullable();
             $table->date('date_confirmed')->nullable();
-            $table->double('principal_amount', 11, 2)->nullable();
+            $table->decimal('principal_amount', 11, 2)->nullable();
 
             $table->bigInteger('terms_of_loan')->nullable();
             $table->bigInteger('no_of_installment')->nullable();
-            $table->double('other_charges', 11, 2)->nullable();
-            $table->double('annual_interest_rate', 11, 2)->nullable();
-            $table->double('monthly_interest_rate', 11, 2)->nullable();
-            $table->double('monthly_payment', 11, 2)->nullable();
+            $table->decimal('other_charges', 11, 2)->nullable();
+            $table->decimal('annual_interest_rate', 11, 2)->nullable();
+            $table->decimal('monthly_interest_rate', 11, 2)->nullable();
+            $table->decimal('monthly_payment', 11, 2)->nullable();
 
             $table->string('status')->nullable(); //Approved or Pending
             $table->string('remarks')->nullable(); //Closed or Active(Renew) or Paid

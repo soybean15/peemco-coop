@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreign('added_by')->references('id')->on('users');
             $table->date('date')->nullable();
             $table->string('or_cdv')->nullable();
-            $table->double('amount_received', )->nullable();
+            $table->decimal('amount_paid',8,2)->nullable();
             $table->timestamps();
         });
     }
