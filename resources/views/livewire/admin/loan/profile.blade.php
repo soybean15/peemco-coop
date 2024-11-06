@@ -140,7 +140,7 @@ new class extends Component {
     </div>
 
 
-    <x-table :headers="$headers" :rows="$loanItems" >
+    <x-table :headers="$headers" :rows="$loanItems" x-on:refresh-page.window="$wire.$refresh()" >
         @scope('cell_status', $loan)
             @if($loan->status=='to pay')
             <x-badge :value="$loan->status" class="badge-info" />
@@ -149,6 +149,8 @@ new class extends Component {
 
             @elseif($loan->status=='overdue')
             <x-badge :value="$loan->status" class="badge-error" />
+            @elseif($loan->status=='paid')
+                <x-badge :value="$loan->status" class="badge-success" />
 
             @else
             <x-badge :value="$loan->status" class="badge-warning" />

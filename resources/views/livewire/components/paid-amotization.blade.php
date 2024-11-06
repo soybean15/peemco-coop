@@ -1,7 +1,8 @@
 <?php
 
 use Livewire\Volt\Component;
-use App\Models\LoanPayments;
+use App\Models\LoanPayment;
+use App\Models\Loan;
 
 
 new class extends Component {
@@ -15,10 +16,13 @@ new class extends Component {
    public function openModal($loanApplicationNo, $user_id)
    {
       $this->loanApplication_No = $loanApplicationNo;
+
+
       $this->user_id = $user_id;
-      $this->loanpaymentlist = LoanPayments::where('loan_id', $this->loanApplication_No)->get();
+      $loan =Loan::where('loan_application_no',$loanApplicationNo)->first();
+      $this->loanpaymentlist = LoanPayment::where('loan_id', $loan->id)->get();
       $this->isOpen = true;
-      
+
    }
 
    public function closeModal()
@@ -32,7 +36,7 @@ new class extends Component {
 
 
    <dialog id="my_modal_4" class="modal" {{ $isOpen ? 'open' : '' }}>
-      <div class="modal-box w-11/12 max-w-5xl">
+      <div class="w-11/12 max-w-5xl modal-box">
          <h3 class="text-lg font-bold">Loan Application Details</h3>
          <p class="py-4">Loan Application No: {{$loanApplication_No}}</p>
          <p class="py-4">User ID: {{$user_id}}</p>
@@ -42,20 +46,20 @@ new class extends Component {
             <table class="table">
                   <thead>
                      <tr>
-                        <th class="border px-4 py-2">Loan ID</th>
-                        <th class="border px-4 py-2">Date</th>
-                        <th class="border px-4 py-2">Amount</th>
-                        <th colspan="2" class="border px-4 py-2">Action</th>
+                        <th class="px-4 py-2 border">OR CDV</th>
+                        <th class="px-4 py-2 border">Date</th>
+                        <th class="px-4 py-2 border">Amount</th>
+                        {{-- <th colspan="2" class="px-4 py-2 border">Action</th> --}}
                      </tr>
                   </thead>
                   <tbody>
                      @foreach($loanpaymentlist as $paymentdata)
                         <tr class="bg-base-200">
-                           <td>{{$paymentdata->loan_id}}</td>
+                           <td>{{$paymentdata->or_cdv}}</td>
                            <td>{{$paymentdata->date}}</td>
-                           <td>₱{{ number_format($paymentdata->amount_received,2) }}</td>
-                           <td><a wire:navigate href="{{ route('admin.edit-amortization', $paymentdata->id)}} " class="link link-primary">Edit</a></td>
-                           <td><a class="link link-primary">{{$paymentdata->id}}Delete</a></td>
+                           <td>₱{{ number_format($paymentdata->amount_paid,2) }}</td>
+                           {{-- <td><a wire:navigate href="{{ route('admin.edit-amortization', $paymentdata->id)}} " class="link link-primary">Edit</a></td>
+                           <td><a class="link link-primary">{{$paymentdata->id}}Delete</a></td> --}}
                         </tr>
                      @endforeach
                   </tbody>

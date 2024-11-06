@@ -34,8 +34,11 @@ class   LoanPaymentService{
 
             if($dueDate->lte($currentDate) ){
 
+                if($item->running_balance==0){
+                    $item->update(['status'=>'paid']);
+                }else
+                    $item->update(['status'=>'to pay']);
 
-                $item->update(['status'=>'to pay']);
                 if($tempItem ){
 
                     //if no payment
