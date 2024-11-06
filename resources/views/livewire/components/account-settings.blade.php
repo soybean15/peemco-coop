@@ -15,4 +15,5 @@ new class extends Component {
 
 <div>
     {{$user->id}}
+    Test
 </div>
