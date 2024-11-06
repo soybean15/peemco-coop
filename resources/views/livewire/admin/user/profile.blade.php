@@ -26,11 +26,7 @@ new class extends Component {
 
     public function mount()
     {
-
-
         $this->form = $this->user->profile->toArray();
-
-
     }
 
 
