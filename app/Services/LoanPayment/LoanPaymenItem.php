@@ -32,6 +32,7 @@ class LoanPaymenItem{
         $this->loanItem->past_due = $this->setPastDue();
         $this->loanItem->total_due = $this->setTotalDue();
         $this->loanItem->running_balance = $this->setRunningBalance();
+        $this->loanItem->save();
 
     }
 
@@ -58,14 +59,13 @@ class LoanPaymenItem{
 
     public function setPastDue(){
         $loanPeriod  = $this->loanItem->loan_period;
-        if($this->loanItem->status=='overdue' &&  $loanPeriod>1){
+        $previousTerm = LoanItem::where('loan_period',$loanPeriod-1)->where('loan_id',$this->loan->id)->first();
 
 
-            $previousTerm = LoanItem::where('loan_period',$loanPeriod-1)->where('loan_id',$this->loan->id)->first();
+        if($previousTerm && $previousTerm->status=='overdue' &&  $loanPeriod>1){
 
 
-
-            return( $previousTerm->running_balance + $previousTerm->amount_due )- $previousTerm->amount_paid;
+            return( $previousTerm->running_balance  )- $previousTerm->amount_paid;
 
 
         }
@@ -78,6 +78,6 @@ class LoanPaymenItem{
     }
 
     public function setRunningBalance(){
-        return $this->loanItem->total_due - $this->loanItem->amount_paid;
+        return(  $this->loanItem->total_due) - $this->loanItem->amount_paid;
     }
 }
