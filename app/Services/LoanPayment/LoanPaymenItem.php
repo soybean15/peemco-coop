@@ -3,6 +3,7 @@
 namespace App\Services\LoanPayment;
 
 use App\Enums\LoanItemStatusEnum;
+use App\Models\LoanItem;
 use Illuminate\Support\Carbon;
 
 class LoanPaymenItem{
@@ -22,11 +23,16 @@ class LoanPaymenItem{
         $this->loan =$loanItem->loan;
 
         $this->dueDate =Carbon::parse($loanItem->due_date);
+
     }
 
 
     public function handle(){
         $this->loanItem->status = $this->setStatus();
+        $this->loanItem->past_due = $this->setPastDue();
+        $this->loanItem->total_due = $this->setTotalDue();
+        $this->loanItem->running_balance = $this->setRunningBalance();
+
     }
 
 
@@ -50,5 +56,28 @@ class LoanPaymenItem{
 
     }
 
-    // public function compute
+    public function setPastDue(){
+        $loanPeriod  = $this->loanItem->loan_period;
+        if($this->loanItem->status=='overdue' &&  $loanPeriod>1){
+
+
+            $previousTerm = LoanItem::where('loan_period',$loanPeriod-1)->where('loan_id',$this->loan->id)->first();
+
+
+
+            return( $previousTerm->running_balance + $previousTerm->amount_due )- $previousTerm->amount_paid;
+
+
+        }
+        return 0;
+
+    }
+
+    public function setTotalDue(){
+        return $this->loanItem->amount_due +$this->loanItem->past_due;
+    }
+
+    public function setRunningBalance(){
+        return $this->loanItem->total_due - $this->loanItem->amount_paid;
+    }
 }

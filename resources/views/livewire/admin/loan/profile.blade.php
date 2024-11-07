@@ -23,9 +23,11 @@ new class extends Component {
                     ['key' => 'loan_period', 'label' => 'Period'],
                     ['key' => 'due_date', 'label' => 'Due Date'],
                     ['key' => 'amount_due', 'label' => 'Amount Due'],
-                    ['key' => 'amount_paid', 'label' => 'Amount Paid'],
                     ['key' => 'past_due', 'label' => 'Past Due'],
                     ['key' => 'total_due', 'label' => 'Total Due'],
+                    ['key' => 'amount_paid', 'label' => 'Amount Paid'],
+
+
                     ['key' => 'running_balance', 'label' => 'Running Balance'],
                     ['key' => 'status', 'label' => 'Status'],
         ];
