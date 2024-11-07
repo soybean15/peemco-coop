@@ -58,7 +58,7 @@ new class extends Component {
 
             <div class="flex flex-col w-full px-5 md:p-5">
                 <x-tabs wire:model="selectedTab">
-                <x-tab name="profile" label="Profile" icon="o-users">
+                    <x-tab name="profile" label="Profile" icon="o-users">
                     <x-header title="{{html_entity_decode($user->name)}} {{html_entity_decode($user->middlename)}} {{html_entity_decode($user->lastname)}}" subtitle="{{$user->email}}" separator />
 
                     <div>

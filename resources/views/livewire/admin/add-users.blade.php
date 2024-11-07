@@ -65,7 +65,7 @@ new class extends Component {
         <!-- Username -->
         <div>
             <x-input-label for="username" :value="__('Username')" />
-            <x-text-input wire:model="username" id="username" class="block mt-1 w-full" type="text" name="usernane" required autofocus autocomplete="username" />
+            <x-text-input wire:model="username" id="username" class="block mt-1 w-full" type="text" name="username" required autofocus autocomplete="username" />
             <x-input-error :messages="$errors->get('username')" class="mt-2" />
         </div>
 
