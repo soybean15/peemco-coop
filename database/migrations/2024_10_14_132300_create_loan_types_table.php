@@ -18,12 +18,12 @@ return new class extends Migration
 
             $table->string('loan_type')->nullable();
             $table->string('type')->comment('regular, cash advance')->nullable();
-            $table->integer('annual_rate',)->comment('for regular')->nullable();
+            $table->decimal('annual_rate',8,2)->comment('for regular')->nullable();
             $table->decimal('maximum_amount',20,3)->nullable();
             $table->decimal('minimum_amount',20,3)->nullable();
 
 
-            $table->integer('charges')->comment('%')->nullable();
+            $table->decimal('charges',8,2)->comment('%')->nullable();
 
 
             $table->softDeletes();
