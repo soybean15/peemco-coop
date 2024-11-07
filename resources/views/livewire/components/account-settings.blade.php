@@ -39,7 +39,7 @@ new class extends Component {
 
         <div class="flex items-center justify-end mt-4">
             <x-primary-button class="ms-4">
-                    {{ __('Update') }}
+                {{ __('Update') }}
             </x-primary-button>
         </div>
         
