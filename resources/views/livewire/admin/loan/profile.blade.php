@@ -25,6 +25,7 @@ new class extends Component {
                     ['key' => 'amount_due', 'label' => 'Amount Due'],
                     ['key' => 'amount_paid', 'label' => 'Amount Paid'],
                     ['key' => 'past_due', 'label' => 'Past Due'],
+                    ['key' => 'total_due', 'label' => 'Total Due'],
                     ['key' => 'running_balance', 'label' => 'Running Balance'],
                     ['key' => 'status', 'label' => 'Status'],
         ];

@@ -29,36 +29,41 @@ class   LoanPaymentService
 
 
         $tempItem = null;
-        $currentDate = Carbon::now();
-        $this->loanItems->each(function ($item) use (&$tempItem, $currentDate) {
 
-            $dueDate = Carbon::parse($item->due_date);
-
-            if ($item->running_balance == 0) {
-                $item->update(['status' => 'paid']);
-                $tempItem = $item;
-                return;
-            }
-
-            if ($dueDate->lte($currentDate)) {
+        $this->loanItems->each(function ($item)  {
 
 
-                $item->update(['status' => 'to pay']);
 
-                if ($tempItem) {
-                    //if no payment
-                    $tempItem->update(['status' => 'overdue']);
-                }
-            }
+            (new LoanPaymenItem($item))->handle();
+            // $dueDate = Carbon::parse($item->due_date);
 
-            if ($tempItem && $tempItem->status == 'paid') {
+            // if ($item->running_balance == 0) {
+            //     $item->update(['status' => 'paid']);
+            //     $tempItem = $item;
+            //     return;
+            // }
 
-                $item->update(['status' => 'to pay']);
-            }
-            $tempItem = $item;
-            //
+            // if ($dueDate->lte($currentDate)) {
 
 
+            //     $item->update(['status' => 'to pay']);
+
+            //     if ($tempItem) {
+
+            //         $tempItem->update(['status' => 'overdue']);
+
+
+
+            //     }
+            // }
+
+            // if ($tempItem && $tempItem->status == 'paid') {
+
+            //     $item->update(['status' => 'to pay']);
+            // }
+
+            // $tempItem = $item;
+            // //
 
 
 

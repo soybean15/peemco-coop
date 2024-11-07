@@ -40,14 +40,12 @@ new class extends Component {
         if($loan){
             $this->principal = $loan->principal_amount;
             $this->terms = $loan->terms_of_loan;
-
             $this->loan=$loan;
             $this->compute();
         }else{
             $this->loanTypes = $loanService->getLoanTypes();
             // dd($this->loanTypes);
         }
-
         $this->search();
 
     }
@@ -59,7 +57,6 @@ new class extends Component {
     {
         // Besides the search results, you must include on demand selected option
         $selectedOption = User::where('id', $this->user_id)->get();
-
         $this->users = User::query()
             ->search($value)
             ->take(5)
@@ -97,9 +94,6 @@ new class extends Component {
                 'loanType'=>'required'
             ]
         );
-
-
-
 
         $this->loanItems =$loanService
         ->setLoanType($this->loanType)
