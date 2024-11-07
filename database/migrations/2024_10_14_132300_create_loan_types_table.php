@@ -24,6 +24,12 @@ return new class extends Migration
 
 
             $table->decimal('charges',8,2)->comment('%')->nullable();
+            $table->decimal('penalty',8,2)->comment('%')->nullable();
+
+            $table->decimal( 'grace_period',8,2)->comment('%')->nullable();
+
+
+
 
 
             $table->softDeletes();
