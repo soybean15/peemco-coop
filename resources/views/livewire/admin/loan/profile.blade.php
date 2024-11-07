@@ -144,6 +144,17 @@ new class extends Component {
 
 
     <x-table :headers="$headers" :rows="$loanItems" x-on:refresh-page.window="$wire.$refresh()" >
+
+        @scope('cell_total_due', $loan)
+        <div>
+
+            <span>{{ $loan->total_due }} </span>
+            @if($loan->penalty >0)
+                <span class="text-red-500">({{ ($loan->penalty) }} )</span>
+            @endif
+        </div>
+
+        @endscope
         @scope('cell_status', $loan)
             @if($loan->status=='to pay')
             <x-badge :value="$loan->status" class="badge-info" />

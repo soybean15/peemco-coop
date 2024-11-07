@@ -23,6 +23,8 @@ return new class extends Migration
 
             $table->decimal('past_due',10,2)->default(0);
             $table->decimal('total_due',10,2)->default(0);
+            $table->decimal('penalty',10,2)->default(0);
+
 
             $table->decimal('running_balance',10,2)->default(0);
             $table->string('status')->nullable();

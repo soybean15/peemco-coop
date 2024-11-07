@@ -18,6 +18,10 @@ class LoanItem extends Model
         return $this->hasMany(LoanPayment::class);
     }
 
+    public function penalties(){
+        return $this->hasMany(LoanItemPenalty::class);
+    }
+
     public function loan(){
         return $this->belongsTo(Loan::class);
     }

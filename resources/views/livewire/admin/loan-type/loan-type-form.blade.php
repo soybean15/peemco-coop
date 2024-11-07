@@ -33,11 +33,13 @@ new class extends Component {
         $this->loanType = LoanType::find($loanTypeId);
 
         if ($this->loanType) {
-            $this->form['loan_type'] = $this->loanType->loan_type;
-            $this->form['charges'] = $this->loanType->charges;
-            $this->form['annual_rate'] = $this->loanType->annual_rate;
-            $this->form['minimum_amount'] = $this->loanType->minimum_amount;
-            $this->form['maximum_amount'] = $this->loanType->maximum_amount;
+            // $this->form['loan_type'] = $this->loanType->loan_type;
+            // $this->form['charges'] = $this->loanType->charges;
+            // $this->form['annual_rate'] = $this->loanType->annual_rate;
+            // $this->form['minimum_amount'] = $this->loanType->minimum_amount;
+            // $this->form['maximum_amount'] = $this->loanType->maximum_amount;
+
+            $this->form = $this->loanType->toArray();
             $this->type = $this->loanType->type;
 
 
@@ -138,8 +140,8 @@ new class extends Component {
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
             <x-input label="Minimum Amount" wire:model="form.minimum_amount" prefix="PHP" step="0.01" />
             <x-input label="Maximum Amount" wire:model="form.maximum_amount" prefix="PHP" step="0.01" />
-
-
+            <x-input label="Penalty" wire:model="form.penalty" prefix="%" step="0.01" />
+            <x-input label="Grace period" wire:model="form.grace_period" prefix="%" step="0.01" />
         </div>
 
         @if($type=='cash_advance')

@@ -4,6 +4,7 @@ namespace App\Services\LoanPayment;
 
 use App\Enums\LoanItemStatusEnum;
 use App\Models\LoanItem;
+use Exception;
 use Illuminate\Support\Carbon;
 
 class LoanPaymenItem{
@@ -28,11 +29,21 @@ class LoanPaymenItem{
 
 
     public function handle(){
-        $this->loanItem->status = $this->setStatus();
-        $this->loanItem->past_due = $this->setPastDue();
-        $this->loanItem->total_due = $this->setTotalDue();
-        $this->loanItem->running_balance = $this->setRunningBalance();
-        $this->loanItem->save();
+
+        try{
+            $this->loanItem->status = $this->setStatus();
+            $this->loanItem->past_due = $this->setPastDue();
+            $this->loanItem->total_due = $this->setTotalDue();
+            $this->loanItem->running_balance = $this->setRunningBalance();
+            $this->loanItem->penalty =   (new ComputePenalty($this->loanItem))->compute();
+
+            $this->loanItem->save();
+        }catch(Exception $e){
+
+
+        }
+
+
 
     }
 
@@ -78,6 +89,6 @@ class LoanPaymenItem{
     }
 
     public function setRunningBalance(){
-        return(  $this->loanItem->total_due) - $this->loanItem->amount_paid;
+        return(  $this->loanItem->total_due +$this->loanItem->penalty)  - $this->loanItem->amount_paid;
     }
 }
