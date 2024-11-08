@@ -40,6 +40,16 @@ new class extends Component {
 
             <div>Users</div>
         </x-tab>
+
+        <x-tab name="users">
+            <x-slot:label>
+                User Management
+                {{--
+                <x-badge value="3" class="badge-primary" /> --}}
+            </x-slot:label>
+
+         <livewire:admin.settings.user-management/>
+        </x-tab>
         <x-tab name="roles" label="Roles And Permission">
             <div>Roles</div>
 

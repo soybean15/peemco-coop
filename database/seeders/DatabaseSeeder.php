@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
         $user =  User::factory()->create([
             'mid' => 'MID-0000000',
             'name' => 'Test User',
-            'username'=>'test_example',
+            'username'=>env('SUPER_ADMIN'),
             'email' => 'test@example.com',
         ]);
 

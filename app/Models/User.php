@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Enums\RolesEnum;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,6 +16,7 @@ use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\Permission\Models\Role;
 
 class User extends Authenticatable implements HasMedia
 {
@@ -113,6 +115,14 @@ class User extends Authenticatable implements HasMedia
     public function profile()
     {
             return $this->hasOne(UserProfile::class);
+    }
+
+    public function scopeAdminRoles(Builder $builder ){
+
+        
+        $builder->whereHas('roles', function ($query) {
+            $query->whereIn('name', [RolesEnum::BOOK_KEEPER->value, RolesEnum::SUPER_ADMIN->value]);
+        });
     }
 
 }
