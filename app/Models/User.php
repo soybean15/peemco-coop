@@ -119,10 +119,18 @@ class User extends Authenticatable implements HasMedia
 
     public function scopeAdminRoles(Builder $builder ){
 
-        
+
         $builder->whereHas('roles', function ($query) {
             $query->whereIn('name', [RolesEnum::BOOK_KEEPER->value, RolesEnum::SUPER_ADMIN->value]);
         });
     }
+
+    public function scopeNoAdminRoles(Builder $builder)
+{
+    $builder->whereDoesntHave('roles', function ($query) {
+        $query->whereIn('name', [RolesEnum::BOOK_KEEPER->value, RolesEnum::SUPER_ADMIN->value]);
+    });
+}
+
 
 }
