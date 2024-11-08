@@ -44,6 +44,9 @@ new class extends Component {
     <div class="p-3 m-1 border-2 rounded shadow-md ">
         <div class="flex flex-col justify-start md:flex-row">
 
+            @if(session()->has('success'))
+                <x-icon name="o-check" class="text-2xl text-green-500 w-9 h-9" label=" {{session('success')}}"/>
+            @endif
 
             <div class="flex justify-center my-5 md:p-20">
 
