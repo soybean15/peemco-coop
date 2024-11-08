@@ -31,6 +31,12 @@ class Loan extends Model
 
     }
 
+    public function loanType(){
+        return $this->belongsTo(LoanType::class);
+    }
+
+
+
     //fromMember if role member
     public function scopeRetrieve(Builder $builder, $renderFrom){
 

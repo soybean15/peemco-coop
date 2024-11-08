@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\User;
 use App\Services\Permissions\PermissionGates;
+use App\Services\Users\UserManagementService;
 use App\View\Components\Charts\AreaChart;
 use App\View\Components\Charts\BarChart;
 use App\View\Components\Charts\ColumnChart;
@@ -13,6 +14,8 @@ use App\View\Components\UserProfileView;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Contracts\Foundation\Application;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -20,7 +23,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(UserManagementService::class, function (Application $app) {
+
+            $superAdmin= env('SUPER_ADMIN','test@example.com');
+
+            $user = User::where('email',$superAdmin)->first();
+            return new UserManagementService($user);
+        });
     }
 
     /**
