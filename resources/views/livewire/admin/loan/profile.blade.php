@@ -90,10 +90,13 @@ new class extends Component {
         <x-slot:actions>
 
         @if($loan->status=='pending')
+        @can('approve loan')
         <x-button class="btn-success" label='Approve' wire:confirm='Are you sure you want to approve this loan?'
-            wire:click='approveLoan' />
-        <x-button class="btn-error" label='Reject' wire:confirm='Are you sure you want to reject this loan?'
-            wire:click='rejectLoan' />
+        wire:click='approveLoan' />
+    <x-button class="btn-error" label='Reject' wire:confirm='Are you sure you want to reject this loan?'
+        wire:click='rejectLoan' />
+        @endcan
+
 
         @else
 

@@ -132,7 +132,7 @@ new class extends Component {
 
           $this->success('Loan Application Successful');
 
-          return redirect()->to(route('user.loans'));
+          return redirect()->to(route('admin.pending'));
 
         }catch(\Exception $e){
 
@@ -155,9 +155,12 @@ new class extends Component {
             @if(!$loan)
 
 
-
+            @can('process loan')
             <x-button class="btn-success" label='Apply Loan' wire:confirm='Are you sure you want to apply this loan?'
-                wire:click='applyLoan' />
+            wire:click='applyLoan' />
+            @endcan
+
+
             @endif
         </x-slot:actions>
     </x-header>
@@ -250,7 +253,7 @@ new class extends Component {
             <div class="flex flex-col">
 
                 <span class="text-lg font-bold text-green-600">Principal </span>
-                <span class="text-sm text-gray-600">1000</span>
+                <span class="text-sm text-gray-600">{{ $this->principal }}</span>
                 {{-- <span>{{ $principal }}</span> --}}
             </div>
 

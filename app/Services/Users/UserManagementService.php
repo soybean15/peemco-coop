@@ -30,7 +30,10 @@ class UserManagementService{
             if($user->id == $this->superAdmin->id){
                 throw new \Exception('Cannot remove super admin');
             }
-            $user->roles()->detach([RolesEnum::SUPER_ADMIN->value, RolesEnum::BOOK_KEEPER->value]);
+            $bookKeeper =Role::where('name',RolesEnum::BOOK_KEEPER->value)->first();
+
+            $user->roles()->detach($bookKeeper->id);
+            // dd($user->roles);
         }
     }
 
