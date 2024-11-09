@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Mail\TestEmailNotification;
+use App\Services\Mails\GeneralMailTemplateService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
 
@@ -27,7 +28,13 @@ class SendEmails extends Command
     public function handle()
     {
         $email = $this->argument('email');
-        Mail::to($email)->send(mailable: new TestEmailNotification());
+
+    (new GeneralMailTemplateService())->sendTo($email)
+    ->setSubject('Loan Approved')
+    ->setMessage('Your Loan Has been approved')
+    ->setSenderName('Marlon Padilla')
+    ->setUrl(route('admin.active'),'Go to App')
+    ->send();
         $this->info("Email successfully sent to {$email}");
     }
 }
