@@ -2,27 +2,27 @@
 
 use Livewire\Volt\Component;
 
+use Mary\Traits\Toast;
 new class extends Component {
-    //
+    use Toast;
 
     public $user;
     public $form=[];
     public function mount($user){
 
         $this->user = $user;
-        $this->form = $user->toArray();
+        $this->form = $user->profile->toArray();
     }
     public function save(){
 
 try{
     $this->user->profile->update($this->form);
-    session()->flash('success','Profile Updated Successfully');
-    $this->redirect(route('admin.users', absolute: false), navigate: true);
+    $this->success('Profile Updated Successfully');
 
-}catch(\Exception $e){
-    dd($e);
+    }catch(\Exception $e){
+        dd($e);
 
-}
+    }
 }
 }; ?>
 
