@@ -132,7 +132,7 @@ new class extends Component {
 
           $this->success('Loan Application Successful');
 
-          return redirect()->to(route('user.loans'));
+          return redirect()->to(route('admin.pending'));
 
         }catch(\Exception $e){
 

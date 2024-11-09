@@ -141,7 +141,7 @@ new class extends Component {
             <x-input label="Minimum Amount" wire:model="form.minimum_amount" prefix="PHP" step="0.01" />
             <x-input label="Maximum Amount" wire:model="form.maximum_amount" prefix="PHP" step="0.01" />
             <x-input label="Penalty" wire:model="form.penalty" prefix="%" step="0.01" />
-            <x-input label="Grace period" wire:model="form.grace_period" prefix="%" step="0.01" />
+            <x-input label="Grace period" wire:model="form.grace_period" prefix="Days" step="0.01" />
         </div>
 
         @if($type=='cash_advance')

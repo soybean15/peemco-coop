@@ -41,6 +41,7 @@ new class extends Component {
             <div>Users</div>
         </x-tab>
 
+        @can('process user management')
         <x-tab name="users">
             <x-slot:label>
                 User Management
@@ -50,6 +51,9 @@ new class extends Component {
 
          <livewire:admin.settings.user-management/>
         </x-tab>
+
+        @endcan
+        @can('process permissions')
         <x-tab name="roles" label="Roles And Permission">
             <div>Roles</div>
 
@@ -90,6 +94,8 @@ new class extends Component {
                     <x-button label="Save" class="btn-success btn-sm" wire:click='submit' />
                 </div>
         </x-tab>
+
+        @endcan
 
     </x-tabs>
 </div>

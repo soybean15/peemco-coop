@@ -11,6 +11,10 @@ enum BookKeeperPermissionsEnum :string
 
     case CAN_APPROVE_LOAN ='approve loan';
     case CAN_PROCESS_LOAN ='process loan';
+    case CAN_PROCESS_USER_MANAGEMENT ='process user management';
+    case CAN_PROCESS_PERMISSIONS ='process permissions';
+
+
 
 
 }

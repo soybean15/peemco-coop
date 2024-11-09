@@ -3,6 +3,8 @@
 namespace App\Services\Loans;
 
 use App\Contracts\HasLoan;
+use App\Mail\TestEmailNotification;
+use Illuminate\Support\Facades\Mail;
 
 class LoanService{
 
@@ -16,6 +18,7 @@ class LoanService{
     public function handle($data){
 
         $this->loanHandler->handle($data);
+
 
     }
 }
