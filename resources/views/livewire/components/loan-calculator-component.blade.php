@@ -250,7 +250,7 @@ new class extends Component {
             <div class="flex flex-col">
 
                 <span class="text-lg font-bold text-green-600">Principal </span>
-                <span class="text-sm text-gray-600">1000</span>
+                <span class="text-sm text-gray-600">{{ $this->principal }}</span>
                 {{-- <span>{{ $principal }}</span> --}}
             </div>
 
