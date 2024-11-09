@@ -155,9 +155,12 @@ new class extends Component {
             @if(!$loan)
 
 
-
+            @can('process loan')
             <x-button class="btn-success" label='Apply Loan' wire:confirm='Are you sure you want to apply this loan?'
-                wire:click='applyLoan' />
+            wire:click='applyLoan' />
+            @endcan
+
+
             @endif
         </x-slot:actions>
     </x-header>
