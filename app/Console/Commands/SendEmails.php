@@ -32,6 +32,7 @@ class SendEmails extends Command
     (new GeneralMailTemplateService())->sendTo($email)
     ->setSubject('Loan Approved')
     ->setMessage('Your Loan Has been approved')
+    ->setRecipentName('Mario')
     ->setSenderName('Marlon Padilla')
     ->setUrl(route('admin.active'),'Go to App')
     ->send();
