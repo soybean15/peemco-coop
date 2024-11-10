@@ -7,6 +7,7 @@ use App\Models\LoanType;
 new class extends Component {
 
     public $loanType;
+    public $step;
 
     public function mount(LoanType $loanType){
 
@@ -18,6 +19,8 @@ new class extends Component {
 
 <div>
     <div class="grid grid-cols-1 md:grid-cols-2">
+
+
     <livewire:admin.loan-type.loan-type-form :loanTypeId='$loanType->id'/>
 
     </div>

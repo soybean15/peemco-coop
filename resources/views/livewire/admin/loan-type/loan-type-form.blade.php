@@ -5,6 +5,7 @@ use App\Models\LoanType;
 use Mary\Traits\Toast;
 use App\Models\LoanReleaseDate;
 use  App\Services\LoanType\LoanTypeService;
+use Livewire\Attributes\On;
 new class extends Component {
 
     use Toast;
@@ -45,9 +46,10 @@ new class extends Component {
 
             $this->releaseDates = $this->loanType->getReleaseDates();
         }
-        }
+    }
 
     public function save(){
+
 
 
         $this->form['type']=$this->type;
@@ -88,23 +90,30 @@ new class extends Component {
         }
     }
 
-    public function store(){
+
+    #[On('store-loan-type')]
+    public function store(LoanTypeService  $service){
 
 
 
-        LoanTypeService::store(
+
+
+        $service->store(
             [
                 'form'=>$this->form,
                 'releaseDates'=>$this->releaseDates,
                 'type'=>$this->type
             ]
-            );
-            return redirect()->to(route('admin.loan-type'));
-            $this->success('Added new Loan Type');
-    }
-    public function update(){
+        );
 
-        $this->loanType->update($this->form);
+        $this->dispatch('move-next-step');
+        // $this->success('Added new Loan Type');
+
+        // return redirect()->to(route('admin.loan-type'));
+    }
+    public function update(LoanTypeService $service){
+        $service->update($this->form);
+
     }
 
     public function addReleases(){
@@ -186,7 +195,7 @@ new class extends Component {
 
         <x-slot:actions>
 
-            <x-button label="Save" class="btn-primary" type="submit" spinner="save" />
+            {{-- <x-button label="Save" class="btn-primary" type="submit" spinner="save" /> --}}
         </x-slot:actions>
     </x-form>
 </div>
