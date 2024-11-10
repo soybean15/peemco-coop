@@ -118,6 +118,10 @@ class User extends Authenticatable implements HasMedia
             return $this->hasOne(UserProfile::class);
     }
 
+    public function loanTypes(){
+        return $this->hasMany(LoanTypeUser::class);
+    }
+
     public function scopeAdminRoles(Builder $builder ){
 
 
@@ -128,11 +132,11 @@ class User extends Authenticatable implements HasMedia
 
 
     public function scopeNoAdminRoles(Builder $builder)
-{
-    $builder->whereDoesntHave('roles', function ($query) {
-        $query->whereIn('name', [RolesEnum::BOOK_KEEPER->value, RolesEnum::SUPER_ADMIN->value]);
-    });
-}
+    {
+        $builder->whereDoesntHave('roles', function ($query) {
+            $query->whereIn('name', [RolesEnum::BOOK_KEEPER->value, RolesEnum::SUPER_ADMIN->value]);
+        });
+    }
 
 
 }

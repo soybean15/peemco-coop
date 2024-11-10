@@ -4,6 +4,8 @@ namespace App\Services\LoanType;
 
 use App\Models\LoanReleaseDate;
 use App\Models\LoanType;
+use App\Models\LoanTypeUser;
+use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 
 class LoanTypeService{
@@ -14,10 +16,35 @@ class LoanTypeService{
         $this->loanType = $loanType;
     }
 
+    public function getUsersExcept(){
+
+       // Ensure $this->loanType is set before running the query
+            if (!$this->loanType) {
+
+                return User::query(); // Return an empty collection if no loanType is set
+            }
+
+        // Retrieve users who don't have this specific loanType
+        return User::whereDoesntHave('loanTypes', function ($query) {
+            $query->where('loan_type_id', $this->loanType->id);
+        });
+    }
+
+
+    public function addUsers($user_ids){
+        foreach($user_ids as $user_id){
+
+            LoanTypeUser::create(['user_id'=>$user_id, 'loan_type_id'=>$this->loanType->id]);
+
+        }
+    }
+
 
     public  function store($data){
 
         $type=$data['type'];
+        $form['type']=$type;
+
 
         $rules = [
             'form.loan_type' => 'required|max:50',
@@ -29,6 +56,8 @@ class LoanTypeService{
         // Add conditional rules based on type
         if ($type == 'regular') {
             $rules['form.annual_rate'] = 'required|numeric';
+            $rules['form.penalty'] = 'required|numeric';
+            $rules['form.grace_period'] = 'required|numeric';
         } else {
             $rules['releaseDates.*.start'] = 'required';
             $rules['releaseDates.*.end'] = 'required';
@@ -60,11 +89,17 @@ class LoanTypeService{
 
             }
         }
+
+        session()->put('loan_type_id',$loanType->id);
+
     }
 
 
 
     public  function update($form){
+        // dd($form);
+
+
         $this->loanType->update($form);
     }
 }

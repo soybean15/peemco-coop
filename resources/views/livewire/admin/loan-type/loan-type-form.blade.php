@@ -29,72 +29,51 @@ new class extends Component {
 
     ];
 
-    public function mount( $loanTypeId=null){
-// dd('here');
+    public function mount($loanTypeId = null)
+    {
+    $loanTypeId = $loanTypeId ?? session('loan_type_id');
+
+        if ($loanTypeId) {
+            $this->setLoanTypeData($loanTypeId);
+        }
+    }
+
+    private function setLoanTypeData($loanTypeId)
+    {
         $this->loanType = LoanType::find($loanTypeId);
 
         if ($this->loanType) {
-            // $this->form['loan_type'] = $this->loanType->loan_type;
-            // $this->form['charges'] = $this->loanType->charges;
-            // $this->form['annual_rate'] = $this->loanType->annual_rate;
-            // $this->form['minimum_amount'] = $this->loanType->minimum_amount;
-            // $this->form['maximum_amount'] = $this->loanType->maximum_amount;
-
             $this->form = $this->loanType->toArray();
-            $this->type = $this->loanType->type;
-
-
+            $this->type = $this->loanType->type??'regular';
             $this->releaseDates = $this->loanType->getReleaseDates();
         }
     }
 
+
+    #[On('submit-loan-type')]
     public function save(){
 
+        // $loanTypeId = $loanTypeId ?? session('loan_type_id');
 
+        // $this->setLoanTypeData($loanTypeId);
 
-        $this->form['type']=$this->type;
-
-
-        if($this->type =='regular'){
-            $this->validate([
-                'form.loan_type'=>'required|max:50',
-                'form.maximum_amount'=>'required|numeric|gte:form.minimum_amount',
-                'form.minimum_amount'=>'required|numeric',
-                'form.annual_rate'=>'required|numeric',
-                'form.charges'=>'required|numeric',
-
-
-            ]);
-
-        }else{
-
-            $this->validate([
-                'form.loan_type'=>'required|max:50',
-                'form.maximum_amount'=>'required|numeric|gte:form.minimum_amount',
-                'form.minimum_amount'=>'required|numeric',
-                'form.charges'=>'required|numeric',
-                'releaseDates.*.start'=>'required',
-                'releaseDates.*.end'=>'required',
-            ]);
-
-        }
+        $service = new LoanTypeService($this->loanType);
 
         // dd($this->form);
         if($this->loanType){
 
 
-            $this->update();
+            $this->update($service);
         }else{
-            $this->store();
+            $this->store($service);
 
         }
+        $this->dispatch('move-next-step');
     }
 
 
-    #[On('store-loan-type')]
-    public function store(LoanTypeService  $service){
 
-
+    public function store(  $service){
 
 
 
@@ -106,12 +85,14 @@ new class extends Component {
             ]
         );
 
-        $this->dispatch('move-next-step');
+
         // $this->success('Added new Loan Type');
 
         // return redirect()->to(route('admin.loan-type'));
     }
-    public function update(LoanTypeService $service){
+    public function update( $service){
+        $this->form['type']=$this->type;
+        // dd($this->form);
         $service->update($this->form);
 
     }
@@ -132,7 +113,7 @@ new class extends Component {
     <x-header title="{{ !$loanType ?'Add ':'' }}Loan Type" separator />
 
     <x-form wire:submit="save">
-        <x-input label="Loan Type" wire:model="form.loan_type" hint='ex: Salary loan, Calamity loan' />
+        <x-input label="Loan Type" wire:model.live="form.loan_type" hint='ex: Salary loan, Calamity loan' />
 
         <x-select label="Type" icon="o-user" :options="$types" wire:model.live="type" />
 
@@ -162,9 +143,9 @@ new class extends Component {
         </div>
         <div class="grid grid-cols-1">
             @php
-                $config = [
-                    'dateFormat'=> "m-d",
-                    'altFormat' => 'F J',
+            $config = [
+            'dateFormat'=> "m-d",
+            'altFormat' => 'F J',
 
             ];
             @endphp
@@ -172,10 +153,13 @@ new class extends Component {
             @foreach ( $releaseDates as $dates )
 
             <div class="grid grid-cols-1 gap-4 my-2 md:grid-cols-2">
-                <x-datepicker label="Start" wire:model="releaseDates.{{ $loop->index }}.start" icon="o-calendar" :config="$config" />
-                <x-datepicker label="End" wire:model="releaseDates.{{ $loop->index }}.end" icon="o-calendar" :config="$config" />
+                <x-datepicker label="Start" wire:model="releaseDates.{{ $loop->index }}.start" icon="o-calendar"
+                    :config="$config" />
+                <x-datepicker label="End" wire:model="releaseDates.{{ $loop->index }}.end" icon="o-calendar"
+                    :config="$config" />
 
-                {{-- <x-datetime label="Start" wire:model="releaseDates.{{ $loop->index }}.start" icon="o-calendar" />
+                {{--
+                <x-datetime label="Start" wire:model="releaseDates.{{ $loop->index }}.start" icon="o-calendar" />
                 <x-datetime label="End" wire:model="releaseDates.{{ $loop->index }}.end" icon="o-calendar" /> --}}
 
 
@@ -195,7 +179,8 @@ new class extends Component {
 
         <x-slot:actions>
 
-            {{-- <x-button label="Save" class="btn-primary" type="submit" spinner="save" /> --}}
+            {{--
+            <x-button label="Save" class="btn-primary" type="submit" spinner="save" /> --}}
         </x-slot:actions>
     </x-form>
 </div>
