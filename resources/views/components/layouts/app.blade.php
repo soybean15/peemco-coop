@@ -10,14 +10,14 @@
 
         <script src="https://unpkg.com/flatpickr/dist/plugins/monthSelect/index.js"></script>
         <link href="https://unpkg.com/flatpickr/dist/plugins/monthSelect/style.css" rel="stylesheet">
- 
+
 
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
             @vite(['resources/css/app.css', 'resources/js/app.js'])
         <title>{{ $title ?? 'Page Title' }}</title>
     </head>
-    <body>
+    <body x-data>
 
         <x-nav sticky full-width>
 
@@ -33,8 +33,9 @@
 
             {{-- Right side actions --}}
             <x-slot:actions>
-                <x-button label="Messages" icon="o-envelope" link="###" class="btn-ghost btn-sm" responsive />
-                <x-button label="Notifications" icon="o-bell" link="###" class="btn-ghost btn-sm" responsive />
+                <x-button label="Search" @click.stop="$dispatch('mary-search-open')" />
+                {{-- <x-button label="Messages" icon="o-envelope" link="###" class="btn-ghost btn-sm" responsive />
+                <x-button label="Notifications" icon="o-bell" link="###" class="btn-ghost btn-sm" responsive /> --}}
             </x-slot:actions>
         </x-nav>
 
@@ -48,6 +49,6 @@
 
         {{--  TOAST area --}}
         <x-toast />
-
+        <x-spotlight />
     </body>
 </html>
