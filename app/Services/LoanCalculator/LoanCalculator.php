@@ -4,6 +4,7 @@ namespace App\Services\LoanCalculator;
 
 use App\Models\LoanType;
 use App\Models\User;
+use App\Services\LoanType\LoanTypeService;
 use Carbon\Carbon;
 
 class LoanCalculator
@@ -182,5 +183,13 @@ class LoanCalculator
     }
     public function getNumberOfInstallment(){
         return $this->number_of_installment;
+    }
+
+
+    public function getUsers($search){
+
+        return (new LoanTypeService($this->loanType))->getUsers($search);
+
+        //
     }
 }

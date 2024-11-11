@@ -4,13 +4,15 @@ namespace App\Support;
 
 use App\Enums\AppActionsEnum;
 use App\Models\User;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 class Spotlight
 {
     public function search(Request $request)
     {
-        if(! auth()->user()) {
+        if(! Auth::user()) {
             return [];
         }
 
@@ -39,7 +41,7 @@ class Spotlight
     {
 
         $actions = array_map(fn($case) => $case->getActions(), AppActionsEnum::cases());
-       
+
 
         return collect($actions
         )->filter(fn(array $item) => str($item['name'] . $item['description'])->contains($search, true));

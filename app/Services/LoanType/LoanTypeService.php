@@ -30,6 +30,20 @@ class LoanTypeService{
         });
     }
 
+    public function getUsers($search=null){
+        if(!$this->loanType){
+
+            return User::query()->whereRaw('0 = 1');
+        }
+        if($this->loanType->apply_to == 'all'){
+            return User::query();
+        }
+        return User::whereHas('loanTypes',function($query){
+
+            $query->where('loan_type_id',$this->loanType->id);
+
+        });
+    }
 
     public function addUsers($user_ids){
         foreach($user_ids as $user_id){
@@ -42,22 +56,27 @@ class LoanTypeService{
 
     public  function store($data){
 
-        $type=$data['type'];
-        $form['type']=$type;
 
 
+
+        $form = $data['form'];
+        // dd($form['type']);
+
+        $releaseDates = $data['releaseDates'];
         $rules = [
             'form.loan_type' => 'required|max:50',
             'form.maximum_amount' => 'required|numeric|gte:form.minimum_amount',
             'form.minimum_amount' => 'required|numeric',
             'form.charges' => 'required|numeric',
+            'form.type' => 'required',
+
         ];
 
         // Add conditional rules based on type
-        if ($type == 'regular') {
+        if ($form['type'] == 'regular') {
             $rules['form.annual_rate'] = 'required|numeric';
             $rules['form.penalty'] = 'required|numeric';
-            $rules['form.grace_period'] = 'required|numeric';
+            $rules['grace_period'] = 'required|numeric';
         } else {
             $rules['releaseDates.*.start'] = 'required';
             $rules['releaseDates.*.end'] = 'required';
@@ -67,10 +86,7 @@ class LoanTypeService{
 
         // Run validation and handle failures
 
-        $form = $data['form'];
-        $releaseDates = $data['releaseDates'];
 
-        $type = $data['type'];
 
         $loanType =LoanType::create($form);
         if($type =='cash_advance'){

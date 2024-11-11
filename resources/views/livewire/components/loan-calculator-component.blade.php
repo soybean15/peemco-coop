@@ -57,12 +57,19 @@ new class extends Component {
     {
         // Besides the search results, you must include on demand selected option
         $selectedOption = User::where('id', $this->user_id)->get();
-        $this->users = User::query()
-            ->search($value)
-            ->take(5)
-            ->orderBy('name')
-            ->get()
-            ->merge($selectedOption);     // <-- Adds selected option
+
+        $this->users =   app(LoanCalculator::class)
+        ->setLoanType($this->loanType)
+        ->getUsers($value)
+        ->orderBy('name')
+        ->get()
+        ->merge($selectedOption);
+        // $this->users = User::query()
+        //     ->search($value)
+        //     ->take(5)
+        //     ->orderBy('name')
+        //     ->get()
+        //     ->merge($selectedOption);
     }
     public function updatedLoanType(){
 

@@ -10,7 +10,7 @@ new class extends Component {
 
     use Toast;
     public $loanType;
-    public $type='regular';
+    public $type;
 
     public $releaseDates=[];
 
@@ -76,6 +76,10 @@ new class extends Component {
     public function store(  $service){
 
 
+        $this->form['type']=$this->type;
+        $this->validate(
+            ['type'=>'required']
+    );
 
         $service->store(
             [
@@ -91,7 +95,9 @@ new class extends Component {
         // return redirect()->to(route('admin.loan-type'));
     }
     public function update( $service){
-        $this->form['type']=$this->type;
+
+
+
         // dd($this->form);
         $service->update($this->form);
 
@@ -115,7 +121,7 @@ new class extends Component {
     <x-form wire:submit="save">
         <x-input label="Loan Type" wire:model.live="form.loan_type" hint='ex: Salary loan, Calamity loan' />
 
-        <x-select label="Type" icon="o-user" :options="$types" wire:model.live="type" />
+        <x-select label="Type" icon="o-user" :options="$types" wire:model.live="type" placeholder="Select loan type"/>
 
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
             @if($type=='regular')
