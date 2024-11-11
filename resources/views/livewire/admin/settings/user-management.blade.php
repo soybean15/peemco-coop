@@ -29,7 +29,7 @@ new class extends Component {
             ['key' => 'id', 'label' => '#'],
             ['key' => 'name', 'label' => 'Name'],
             ['key' => 'email', 'label' => 'Email'],
-            ['key' => 'roles', 'label' => 'Roles'],
+            ['key' => 'roles', 'label' => 'Role'],
         ];
 
         $this->search();
@@ -108,7 +108,7 @@ new class extends Component {
         wire:model="users_multi_searchable_ids"
         :options="$users"
         searchable
-        class="w-96"/>
+        class="w-[300px]"/>
         <x-button class="mx-3 mb-1 btn btn-primary " label='Add Book keeper' wire:click='addSelected'/>
     </div>
     </div>
@@ -121,8 +121,8 @@ new class extends Component {
         <x-badge value="{{ $role->name }}" class="badge-secondary " />
         @elseif($role->name =='book keeper')
         <x-badge value="{{ $role->name }}" class="badge-info " />
-        @else
-        <x-badge value="{{ $role->name }}" class="bg-purple-500/10 " />
+
+        {{-- <x-badge value="{{ $role->name }}" class="bg-purple-500/10 " /> --}}
 
         @endif
 

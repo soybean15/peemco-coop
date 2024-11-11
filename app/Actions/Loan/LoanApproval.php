@@ -28,7 +28,7 @@ class LoanApproval implements HasLoan
 
 
         $dueDate = Carbon::now()
-        // ->subMonths(6)
+        ->subMonths(6)
         ;
 
 

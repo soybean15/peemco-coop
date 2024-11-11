@@ -126,7 +126,7 @@ class User extends Authenticatable implements HasMedia
 
 
         $builder->whereHas('roles', function ($query) {
-            $query->whereIn('name', [RolesEnum::BOOK_KEEPER->value]);
+            $query->whereIn('name', [RolesEnum::BOOK_KEEPER->value,RolesEnum::SUPER_ADMIN->value]);
         }) ;
     }
 
