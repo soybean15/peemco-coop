@@ -11,6 +11,7 @@ use App\View\Components\Charts\BarChart;
 use App\View\Components\Charts\ColumnChart;
 use App\View\Components\Charts\PieChart;
 use App\View\Components\Layout\SideBar;
+use App\View\Components\RichTextEditor;
 use App\View\Components\SystemLogo;
 use App\View\Components\UserProfileView;
 use Illuminate\Support\Facades\Blade;
@@ -64,6 +65,8 @@ class AppServiceProvider extends ServiceProvider
 
         Blade::component('column-chart',ColumnChart::class);
         Blade::component('brand',SystemLogo::class);
+        Blade::component('rich-text-editor',RichTextEditor::class);
+
 
 
     }

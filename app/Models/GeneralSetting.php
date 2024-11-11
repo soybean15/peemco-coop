@@ -16,7 +16,9 @@ class GeneralSetting extends Model implements HasMedia
 
     protected $fillable =[
         'address',
-        'company_name'
+        'company_name',
+        'mission',
+        'vision'
     ];
 
 
