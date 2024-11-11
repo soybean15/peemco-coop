@@ -47,7 +47,7 @@ Route::prefix('/')->group(function(){
 
 
     Route::prefix('settings')->group(function(){
-        Volt::route('/settings','admin.settings')->name('admin.settings');
+        Volt::route('/','admin.settings')->name('admin.settings');
 
     });
 
