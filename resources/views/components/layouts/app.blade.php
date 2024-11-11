@@ -28,7 +28,10 @@
                 </label>
 
                 {{-- Brand --}}
-                <div><b>PEEMCO-COOP</b></div>
+                <div>
+
+                    <x-brand hasName="true" size="20" class="flex items-center space-x-4 text-3xl font-bold"/>
+                </div>
             </x-slot:brand>
 
             {{-- Right side actions --}}
