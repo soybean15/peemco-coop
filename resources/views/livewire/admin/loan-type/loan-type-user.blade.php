@@ -77,11 +77,6 @@ new class extends Component {
         $this->dispatch('refresh-page');
     }
 
-    public function remove(LoanTypeUser $user){
-
-        $user->delete();
-        $this->dispatch('refresh-page');
-    }
 }; ?>
 
 <div>
@@ -101,6 +96,7 @@ new class extends Component {
     </x-card>
 
 
+    @if($this->loanType && $this->loanType->apply_to =='selected')
     <div class="grid grid-cols-1 md:grid-cols-2 ">
         <div class="flex flex-col">
             <x-choices
@@ -119,6 +115,7 @@ new class extends Component {
         </div>
 
     </div>
+    @endif
 
 
     <div x-data x-on:refresh-page.window='$wire.$refresh()'>

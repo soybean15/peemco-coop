@@ -57,7 +57,7 @@ new class extends Component {
 
     @if($loanType)
 
-    <div class="grid grid-cols-1 md:grid-cols-2">
+    <div class="grid grid-cols-1 space-y-2 md:grid-cols-2">
         <div>
             <strong>Loan Type</strong>
 
@@ -96,7 +96,7 @@ new class extends Component {
         <div>
             <strong>Grace Period</strong>
 
-            <div class="">{{ $loanType->grace_period }}%</div>
+            <div class="">{{ $loanType->grace_period }}</div>
         </div>
     </div>
     <hr class="my-5"/>

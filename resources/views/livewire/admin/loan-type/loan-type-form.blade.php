@@ -119,9 +119,10 @@ new class extends Component {
     <x-header title="{{ !$loanType ?'Add ':'' }}Loan Type" separator />
 
     <x-form wire:submit="save">
+        <x-select label="Type" icon="o-user" :options="$types" wire:model.live="type" placeholder="Select loan type"/>
+
         <x-input label="Loan Type" wire:model.live="form.loan_type" hint='ex: Salary loan, Calamity loan' />
 
-        <x-select label="Type" icon="o-user" :options="$types" wire:model.live="type" placeholder="Select loan type"/>
 
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
             @if($type=='regular')
