@@ -248,7 +248,7 @@ new class extends Component {
             <x-slot:actions>
                 @if(!$loan)
 
-                <x-button label="Cancel" class="btn-sm" />
+                {{-- <x-button label="Cancel" class="btn-sm" /> --}}
                 <x-button label="Compute" class="btn-primary btn-sm" type="compute" spinner="compute" />
 
                 @endif
