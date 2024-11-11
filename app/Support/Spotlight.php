@@ -2,9 +2,10 @@
 
 namespace App\Support;
 
+use App\Enums\AppActionsEnum;
 use App\Models\User;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Blade;
 class Spotlight
 {
     public function search(Request $request)
@@ -15,7 +16,7 @@ class Spotlight
 
 
         return collect()
-        // ->merge($this->actions($request->search))
+        ->merge($this->actions($request->search))
         ->merge($this->users($request->search));
 
     }
@@ -33,6 +34,15 @@ class Spotlight
                         'link' => "/admin/users/{$user->id}"
                     ];
                 });
+    }
+    public function actions(string $search = '')
+    {
+
+        $actions = array_map(fn($case) => $case->getActions(), AppActionsEnum::cases());
+       
+
+        return collect($actions
+        )->filter(fn(array $item) => str($item['name'] . $item['description'])->contains($search, true));
     }
 
 }

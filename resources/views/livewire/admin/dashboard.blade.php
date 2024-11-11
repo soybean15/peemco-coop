@@ -1,12 +1,20 @@
 <?php
 
 use Livewire\Volt\Component;
-
+use  App\Enums\AppActionsEnum;
 new class extends Component {
-    //
-    // public function mount(){
-    //     dd('here');
-    // }
+
+    public function mount(){
+
+//         try{
+//             $actions = array_map(fn($case) => $case->getActions(), AppActionsEnum::cases());
+
+// dd($actions);
+//         }catch(\Exception $e){
+//             dd($e);
+//         }
+
+    }
 }; ?>
 
 <div>
