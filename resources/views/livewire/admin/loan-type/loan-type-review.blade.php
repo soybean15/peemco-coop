@@ -15,10 +15,8 @@ new class extends Component {
         $this->loanType = LoanType::find($loan_type_id);
 
 
-
         if($this->loanType){
             $this->applyTo = $this->loanType->apply_to;
-
             $this->loanTypeUsers = $this->loanType->loanTypeUsers;
 
         }

@@ -33,7 +33,28 @@
 
             {{-- Right side actions --}}
             <x-slot:actions>
-                <x-button label="Search" @click.stop="$dispatch('mary-search-open')" />
+
+
+            <div
+            role="button"
+            x-data
+            @click.stop="$dispatch('mary-search-open')"
+            @keydown.window.ctrl.k.prevent="$dispatch('mary-search-open')"
+            class="flex items-center p-2 rounded-full shadow-inner bg-slate-100 hover:text-blue-600"
+            >
+            <span class="px-3 text-sm">Search</span>
+            <div>
+                <x-kbd class="kbd-sm hover:text-blue-600">ctrl</x-kbd>
+                <x-kbd class="kbd-sm hover:text-blue-600">K</x-kbd>
+            </div>
+            </div>
+
+
+
+
+                {{-- <x-button label="Search" @click.stop="$dispatch('mary-search-open')" >
+
+                </x-button> --}}
                 {{-- <x-button label="Messages" icon="o-envelope" link="###" class="btn-ghost btn-sm" responsive />
                 <x-button label="Notifications" icon="o-bell" link="###" class="btn-ghost btn-sm" responsive /> --}}
             </x-slot:actions>

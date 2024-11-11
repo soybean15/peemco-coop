@@ -12,7 +12,6 @@ class Spotlight
 
         return User::search($request->search)
         ->take(5)->get();
-        // Do your search logic here
-        // IMPORTANT: apply any security concern here
+
     }
 }
