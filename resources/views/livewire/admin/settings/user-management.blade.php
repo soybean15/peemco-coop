@@ -74,6 +74,9 @@ new class extends Component {
 
 <div x-on:refresh-page.window="$wire.$refresh()">
 
+    <x-header title="User Management" subtitle="" size="text-xl" separator />
+
+
     @php
 
     try{

@@ -4,12 +4,15 @@ namespace App\Providers;
 
 use App\Models\User;
 use App\Services\Permissions\PermissionGates;
+use App\Services\Settings\GeneralSettingsService;
 use App\Services\Users\UserManagementService;
 use App\View\Components\Charts\AreaChart;
 use App\View\Components\Charts\BarChart;
 use App\View\Components\Charts\ColumnChart;
 use App\View\Components\Charts\PieChart;
 use App\View\Components\Layout\SideBar;
+use App\View\Components\RichTextEditor;
+use App\View\Components\SystemLogo;
 use App\View\Components\UserProfileView;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
@@ -29,6 +32,12 @@ class AppServiceProvider extends ServiceProvider
 
             $user = User::where('email',$superAdmin)->first();
             return new UserManagementService($user);
+        });
+
+
+        $this->app->singleton(GeneralSettingsService::class, function (Application $app) {
+
+            return new GeneralSettingsService();
         });
     }
 
@@ -55,6 +64,9 @@ class AppServiceProvider extends ServiceProvider
         Blade::component('pie-chart',PieChart::class);
 
         Blade::component('column-chart',ColumnChart::class);
+        Blade::component('brand',SystemLogo::class);
+        Blade::component('rich-text-editor',RichTextEditor::class);
+
 
 
     }

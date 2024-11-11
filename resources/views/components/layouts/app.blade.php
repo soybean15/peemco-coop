@@ -5,6 +5,19 @@
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
 
+
+
+        {{-- Rich Text Editor --}}
+        <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+
+        {{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
+
+        {{-- TinyMCE --}}
+        {{-- <script src="https://cdn.tiny.cloud/1/9ev6kqpg87qel9tdtodze09h1uc1wx4287qxz7h1la4hso0n/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script> --}}
+
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
@@ -18,7 +31,7 @@
         <title>{{ $title ?? 'Page Title' }}</title>
     </head>
     <body x-data>
-
+        {{-- {{ env('TINY_MCE') }} --}}
         <x-nav sticky full-width>
 
             <x-slot:brand>
@@ -28,7 +41,10 @@
                 </label>
 
                 {{-- Brand --}}
-                <div><b>PEEMCO-COOP</b></div>
+                <div>
+
+                    <x-brand hasName="true" size="20" class="flex items-center space-x-4 text-3xl font-bold"/>
+                </div>
             </x-slot:brand>
 
             {{-- Right side actions --}}

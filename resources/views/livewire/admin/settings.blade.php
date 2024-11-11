@@ -9,7 +9,7 @@ use Mary\Traits\Toast;
 new class extends Component {
     //
     use Toast;
-    public $selectedTab = 'General';
+    public $selectedTab = 'general';
 
     public $roles=[];
 
@@ -38,7 +38,8 @@ new class extends Component {
                 <x-badge value="3" class="badge-primary" /> --}}
             </x-slot:label>
 
-            <div>Users</div>
+            <livewire:admin.settings.general-settings/>
+
         </x-tab>
 
         @can('process user management')
