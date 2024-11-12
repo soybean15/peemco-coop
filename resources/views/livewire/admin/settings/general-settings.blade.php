@@ -25,7 +25,7 @@ new class extends Component {
             $this->form =$this->settings->toArray();
             $this->mission = $this->settings->mission;
             $this->vision = $this->settings->vision;
-            // dd($this->settings);
+            //dd($this->settings);
 
 
         }catch(\Exception $e){
@@ -73,9 +73,12 @@ new class extends Component {
 
     public function updatedLogo(){
 
-
+        dd($this->settings);
+        
         $this->settings->addMedia($this->logo)
         ->toMediaCollection('logo');
+
+    
     }
 }; ?>
 
