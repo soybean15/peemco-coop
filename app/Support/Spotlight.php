@@ -30,7 +30,7 @@ class Spotlight
                 ->get()
                 ->map(function (User $user) {
                     return [
-                        // 'avatar' => $user->profile_picture,
+                        'avatar' => $user->avatar ?? asset('default/default-user.png'), // Set default avatar URL
                         'name' => $user->name,
                         'description' => $user->email,
                         'link' => "/admin/users/{$user->id}"

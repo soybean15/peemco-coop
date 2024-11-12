@@ -10,24 +10,21 @@ class IdGenerator{
 
     public static function generateId($prefix, $length)
     {
-
         $prefix = trim($prefix);
 
-
         if (!empty($prefix)) {
-            $prefix = $prefix . '-';
-        } else {
-            $prefix = '';
+            $prefix .= '-';
         }
-        //$timestamp = now()->format('YmdHis');
-        $randNumber =  random_int(1, 100000000000);
 
-        // Extract the last $length characters of the timestamp
-        //$paddedPart = substr($timestamp, -$length);
+        $timestamp = now()->format('YmdHis');
 
-        $paddedPart = substr($randNumber, -$length);
+        // Generate a random number padded to the required length
+        $randomNumber = str_pad(random_int(0, pow(10, $length) - 1), $length, '0', STR_PAD_LEFT);
 
-        return $prefix . $paddedPart;
+        // Take only the last $length characters of the random number
+        $uniquePart = substr($randomNumber, -$length);
+
+        return $prefix . $timestamp . '-' . $uniquePart;
     }
 
 

@@ -73,12 +73,12 @@ new class extends Component {
 
     public function updatedLogo(){
 
-        dd($this->settings);
-        
+
+
         $this->settings->addMedia($this->logo)
         ->toMediaCollection('logo');
 
-    
+
     }
 }; ?>
 
@@ -91,7 +91,7 @@ new class extends Component {
 
 
        <x-form wire:submit="save" class="">
-        {{ $vision }}
+        {{-- {{ $vision }} --}}
 
             <x-file wire:model.live="logo" accept="image/png, image/jpeg" class="my-3">
                 <img src="{{ $settings->logo ?? '/default/default-logo.png' }}" class="h-40 rounded-lg" />
