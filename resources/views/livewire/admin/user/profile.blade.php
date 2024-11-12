@@ -23,8 +23,16 @@ new class extends Component {
     public function mount()
     {
 
- 
+
         $this->form = $this->user->profile->toArray();
+    }
+
+    public function updatedPhoto(){
+        $this->user
+        ->addMedia($this->photo)
+        ->toMediaCollection('profile_photo');
+
+
     }
 
 

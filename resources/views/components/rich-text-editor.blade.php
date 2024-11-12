@@ -14,7 +14,7 @@
               ['bold', 'italic', 'underline'],
               [{ 'header': 1 }, { 'header': 2 }],
               [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-            //   ['image', 'link'],
+             //   ['image', 'link'],
               ['align', { 'align': 'center' }],
               ['clean']
           ]
@@ -28,10 +28,10 @@
         // let event = new Event('updated-editor', {detail: 'test'});
         // window.dispatchEvent(event);
 
-        Livewire.dispatch('updated-editor', {model:'{{ $model }}',value:value});
+        // Livewire.dispatch('updated-editor', {model:'{{ $model }}',value:value});
 
 
-        // @this.set('{{ $model }}', value);
+        @this.set('{{ $model }}', value);
     })
 
 

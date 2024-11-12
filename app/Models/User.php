@@ -82,7 +82,7 @@ class User extends Authenticatable implements HasMedia
         return Attribute::make(
             get: function (){
 
-                $media = $this->getMedia('profile');
+                $media = $this->getMedia('profile_photo');
 
 
                 if($media->last()){
