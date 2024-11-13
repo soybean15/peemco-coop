@@ -3,7 +3,9 @@
 namespace App\Console\Commands;
 
 use App\Imports\UsersImport;
+use App\Jobs\NotifyUserOfCompletedImport;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Auth;
 
 class ImportExcelFile extends Command
 {
@@ -28,12 +30,22 @@ class ImportExcelFile extends Command
     {
         //
         $this->output->title('Starting import');
+
         try {
-        (new UsersImport)->withOutput($this->output)->import('testemail.xlsx');
+        $import =new UsersImport;
+        ($import)->queue('testemail.xlsx')->chain([
+
+            new NotifyUserOfCompletedImport($import,Auth::user()),
+        ]);
+
+        // $import = new UsersImport();
+        // $import->import('testemail.xlsx');
+
+        // dd($import->errors());        // (new UsersImport)->withOutput($this->output)->import('testemail.xlsx');
     } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
         $failures = $e->failures();
 
-        dd($failures);
+
         foreach ($failures as $failure) {
             $failure->row(); // row that went wrong
             // $this->output->success( $failure->row());
