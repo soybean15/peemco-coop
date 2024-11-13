@@ -42,6 +42,9 @@ class UsersImport implements ToModel, WithHeadingRow, WithProgressBar, WithChunk
             'name'     => $row['name'],
             'email'    => $row['email'],
             'username'=>$row['username'],
+            'lastname'=>$row['lastname'],
+            'middlename'=>$row['middlename'],
+            'extension'=>$row['extension'],
             'password' => Hash::make('password'),
         ]);
     }

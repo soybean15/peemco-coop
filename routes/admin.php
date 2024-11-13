@@ -46,6 +46,18 @@ Route::prefix('/')->group(function(){
     Volt::route('/edit-amortization/{payment_id}','admin.edit-amortization')->name('admin.edit-amortization');
 
 
+
+    Route::prefix('imports')->group(function(){
+
+        Volt::route('/user','admin.imports.user-import')->name('admin.user-import');
+
+
+        Volt::route('/active','admin.loan.active')->name('admin.active');
+        // Volt::route('/completed','admin.loan.completed')->name('admin.completed');
+
+
+    });
+
     Route::prefix('settings')->group(function(){
         Volt::route('/','admin.settings')->name('admin.settings');
 
