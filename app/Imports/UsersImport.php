@@ -4,6 +4,7 @@ namespace App\Imports;
 
 use App\Helpers\IdGenerator;
 use App\Models\User;
+use App\Models\UserProfile;
 use App\Notifications\ImportHasFailedNotification;
 use App\Providers\LoanServiceProvider;
 use App\Services\Imports\Validations\UserImportValidation;
@@ -36,14 +37,23 @@ class UsersImport implements ToModel, WithHeadingRow, WithProgressBar, WithChunk
             return ;
          }
 
-        // if()
-        return new User([
+         $user = new User([
             'mid'      => IdGenerator::generateId(LoanServiceProvider::LOAN_PREFIX, LoanServiceProvider::LOAN_LEN),
             'name'     => $row['name'],
             'email'    => $row['email'],
             'username'=>$row['username'],
+            'lastname'=>$row['lastname'],
+            'middlename'=>$row['middlename'],
+            'extension'=>$row['extension'],
             'password' => Hash::make('password'),
         ]);
+
+        UserProfile::firstOrCreate([
+            'user_id'=>$user->id
+        ]);
+
+        // if()
+        return $user;
     }
 
     public function headingRow(): int

@@ -136,8 +136,7 @@
            Mission
             </h3>
             <p class="mb-8 text-gray-600">
-              {{-- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at ipsum eu nunc commodo posuere et sit amet ligula. --}}
-              {{ $settings->mission ??' Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at ipsum eu nunc commodo posuere et sit amet ligula' }}
+              {{ $settings->mission }}
               <br />
               <br />
 
@@ -427,10 +426,10 @@
           <div class="w-full p-6 mt-6 sm:w-1/2">
             <div class="align-middle">
               <h3 class="mb-3 text-3xl font-bold leading-none text-gray-800">
-                Lorem ipsum dolor sit amet
+               Vision
               </h3>
               <p class="mb-8 text-gray-600">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at ipsum eu nunc commodo posuere et sit amet ligula.
+                {{ $settings->vision }}
                 <br />
                 <br />
                 Images from:
