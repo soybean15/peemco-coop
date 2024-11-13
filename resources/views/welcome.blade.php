@@ -121,12 +121,23 @@
           <div class="w-64 h-1 py-0 mx-auto my-0 rounded-t opacity-25 gradient"></div>
         </div>
         <div class="flex flex-wrap">
+
+            @php
+
+
+                $settings = app( App\Services\Settings\GeneralSettingsService::class)->getSettings();
+
+            @endphp
+
+
           <div class="w-5/6 p-6 sm:w-1/2">
             <h3 class="mb-3 text-3xl font-bold leading-none text-gray-800">
-              Lorem ipsum dolor sit amet
+
+           Mission
             </h3>
             <p class="mb-8 text-gray-600">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at ipsum eu nunc commodo posuere et sit amet ligula.
+              {{-- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at ipsum eu nunc commodo posuere et sit amet ligula. --}}
+              {{ $settings->mission ??' Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at ipsum eu nunc commodo posuere et sit amet ligula' }}
               <br />
               <br />
 
