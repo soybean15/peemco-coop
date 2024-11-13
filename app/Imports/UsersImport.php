@@ -50,7 +50,7 @@ class UsersImport implements ToModel, WithHeadingRow, WithProgressBar, WithChunk
 
         UserProfile::firstOrCreate([
             'user_id'=>$user->id
-        ])
+        ]);
 
         // if()
         return $user;
