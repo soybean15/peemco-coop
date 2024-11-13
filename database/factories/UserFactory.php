@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Helpers\IdGenerator;
 use App\Models\User;
 use App\Models\UserProfile;
+use App\Providers\LoanServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -34,9 +35,10 @@ class UserFactory extends Factory
 
         $this->index++;
 
-        $formattedNumber = sprintf('%07d', $this->index-1);
+        // $formattedNumber = sprintf('%07d', $this->index-1);
 
-        $mid = IdGenerator::generateId('MID',10);
+        $mid = IdGenerator::generateId('MID',LoanServiceProvider::LOAN_LEN);
+        // echo $mid;
 
         return [
             'mid' => $mid,

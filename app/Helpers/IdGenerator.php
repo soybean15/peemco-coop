@@ -24,7 +24,7 @@ class IdGenerator{
         // Take only the last $length characters of the random number
         $uniquePart = substr($randomNumber, -$length);
 
-        return $prefix . $timestamp . '-' . $uniquePart;
+        return $prefix . $uniquePart;
     }
 
 
