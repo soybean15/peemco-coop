@@ -21,7 +21,7 @@ class UserImportValidation
     {
 
         $validator =  Validator::make($this->row, [
-            'email' => 'required|email|unique:users,email',
+            'email' => 'required|unique:users,email',
             'username' => 'required|unique:users,username',
             'name' => 'required'
         ]);
