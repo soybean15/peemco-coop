@@ -77,7 +77,7 @@
         </x-nav>
 
         <x-side-bar>
-            {{ $slot }}
+        {{ $slot }}
 
         </x-side-bar>
 

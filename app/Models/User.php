@@ -138,5 +138,14 @@ class User extends Authenticatable implements HasMedia
         });
     }
 
+    public function jobProcess(){
+        return $this->hasMany(JobProcess::class);
+    }
+
+
+    public function onGoingImports(){
+
+        return $this->jobProcess()->whereNull('completed_at')->get();
+    }
 
 }
