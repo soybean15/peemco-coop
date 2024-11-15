@@ -29,31 +29,33 @@ class ImportExcelFile extends Command
     public function handle()
     {
         //
-        $this->output->title('Starting import');
+//         $this->output->title('Starting import');
 
-        try {
-        $import =new UsersImport;
-        ($import)->queue('testemail.xlsx')->chain([
+//         try {
+//         // // $import =new UsersImport();
+//         // ($import)->queue('testemail.xlsx')->chain([
 
-            new NotifyUserOfCompletedImport($import,Auth::user()),
-        ]);
+//         //     new NotifyUserOfCompletedImport($import,Auth::user()),
+//         ]);
 
-        // $import = new UsersImport();
-        // $import->import('testemail.xlsx');
+//         // $import = new UsersImport();
+//         // $import->import('testemail.xlsx');
 
-        // dd($import->errors());        // (new UsersImport)->withOutput($this->output)->import('testemail.xlsx');
-    } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
-        $failures = $e->failures();
+//         // dd($import->errors());        // (new UsersImport)->withOutput($this->output)->import('testemail.xlsx');
+//     } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+//         $failures = $e->failures();
 
 
-        foreach ($failures as $failure) {
-            $failure->row(); // row that went wrong
-            // $this->output->success( $failure->row());
-            $failure->attribute(); // either heading key (if using heading row concern) or column index
-            $failure->errors(); // Actual error messages from Laravel validator
-            $failure->values(); // The values of the row that has failed.
-        }
-   }
-        $this->output->success('Import successful');
+//         foreach ($failures as $failure) {
+//             $failure->row(); // row that went wrong
+//             // $this->output->success( $failure->row());
+//             $failure->attribute(); // either heading key (if using heading row concern) or column index
+//             $failure->errors(); // Actual error messages from Laravel validator
+//             $failure->values(); // The values of the row that has failed.
+//         }
+//    }
+//         $this->output->success('Import successful');
+//     }
+// }
     }
 }

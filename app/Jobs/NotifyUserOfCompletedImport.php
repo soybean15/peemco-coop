@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Enums\ImportCacheNameEnum;
+use App\Events\ImportCompleted;
 use App\Models\User;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -17,12 +18,12 @@ class NotifyUserOfCompletedImport implements ShouldQueue
      * Create a new job instance.
      */
     protected $user;
-    protected $import;
-    public function __construct($import, $user)
+    protected $jobProcess;
+    public function __construct($jobProcess, $user)
     {
         //
         $this->user = $user;
-        $this->import= $import;
+        $this->jobProcess= $jobProcess;
     }
 
     /**
@@ -32,7 +33,9 @@ class NotifyUserOfCompletedImport implements ShouldQueue
     {
         //
         $failedRows = Cache::get(ImportCacheNameEnum::USER->value, []);
-        dd($failedRows);
+
+        $this->jobProcess->touch('completed_at');
+
         // dd('import complete');
     }
 }
