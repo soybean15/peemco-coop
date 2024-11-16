@@ -29,8 +29,7 @@ new class extends Component {
         $this->name = $this->user->name;
         $this->middlename = $this->user->middlename;
         $this->lastname = $this->user->lastname;
-        $this->username = $this->user->username;
-        $this->email = $this->user->email;
+
         $this->password = $this->user->password;
     }
 
@@ -47,27 +46,6 @@ new class extends Component {
         $this->success('Basic Information Updated Successfully');
     }
 
-    public function updateUsername()
-    {
-        $validated = $this->validate([
-            'username' => ['required', 'string', 'lowercase', 'max:255', 'unique:'.User::class],
-            ]
-        );
-       
-        $this->user->update($validated);
-        $this->success('Username Updated Successfully');
-    }
-
-    public function updateEmail()
-    {
-        $validated = $this->validate([
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            ]
-        );
-       
-        $this->user->update($validated);
-        $this->success('Email Updated Successfully');
-    }
 
     public function resetPassword()
     {
@@ -118,33 +96,6 @@ new class extends Component {
            
     </form>
     <br>
-
-
-    <h6><b>Username</b></h6>
-    <form wire:submit="updateUsername">
-        <div>
-            <x-text-input wire:model="username" id="username" class="block mt-1 w-full" type="text" name="username" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('lastname')" class="mt-2" />
-        </div>
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button class="ms-4">
-                {{ __('Update Username') }}
-            </x-primary-button>
-        </div>
-    </form>
-
-    <h6><b>Email</b></h6>
-    <form wire:submit="updateEmail">
-        <div>
-            <x-text-input wire:model="email" id="email" class="block mt-1 w-full" type="text" name="email"  autofocus autocomplete="email" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button class="ms-4">
-                {{ __('Update email') }}
-            </x-primary-button>
-        </div>
-    </form>
 
     <h6><b>Reset Password</b></h6>
     <form wire:submit="resetPassword">

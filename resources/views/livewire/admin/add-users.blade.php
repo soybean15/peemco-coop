@@ -7,9 +7,14 @@ use App\Models\User;
 use App\Models\UserProfile;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Mary\Traits\Toast;
 
 new class extends Component {
+
+    use Toast;
+
     public string $name = '';
+    public string $middlename = '';
     public string $lastname = '';
     public string $username = '';
     public string $email = '';
@@ -23,6 +28,7 @@ new class extends Component {
     {
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255'],
+            'middlename' => ['nullable'],
             'lastname' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'username' => ['required', 'string', 'lowercase', 'max:255', 'unique:'.User::class],
@@ -33,20 +39,22 @@ new class extends Component {
         //dd($validated);
         $validated['password'] = Hash::make($validated['password']);
         $validated['mid'] = IdGenerator::generateId('MID',10);
-
         $user = User::create($validated);
         UserProfile::firstOrCreate(['user_id' => $user->id]);
-        session()->flash('success','Member Created Successfully');
-        $this->redirect(route('add-users', absolute: false), navigate: true);
-     
+        $this->success('New Member Successfully added');
+        // session()->flash('success','Member Created Successfully');
+        // $this->redirect(route('add-users', absolute: false), navigate: true);
+
+  
+            UserProfile::firstOrCreate(['user_id' => $user->id]);
+            $user->assignRole('Member');
+      
     }
+
 }; ?>
 
 <div>
-    @if(session()->has('success'))
-        <x-icon name="o-check" class="text-2xl text-green-500 w-9 h-9" label=" {{session('success')}}"/>
-    @endif
-                    
+     
     <form wire:submit="register">
         <!-- Name -->
         <div>
@@ -55,10 +63,18 @@ new class extends Component {
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
 
+        <!-- Middlename -->
+        <div>
+            <x-input-label for="middlename" :value="__('Middlename')" />
+            <x-text-input wire:model="middlename" id="middlename" class="block mt-1 w-full" type="text" name="middlename" required autofocus autocomplete="middlename" />
+            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+        </div>
+        
+
         <!-- Lastname -->
         <div>
             <x-input-label for="lastname" :value="__('Lastname')" />
-            <x-text-input wire:model="lastname" id="lastname" class="block mt-1 w-full" type="text" name="lastname" required autofocus autocomplete="name" />
+            <x-text-input wire:model="lastname" id="lastname" class="block mt-1 w-full" type="text" name="lastname" required autofocus autocomplete="lastname" />
             <x-input-error :messages="$errors->get('lastname')" class="mt-2" />
         </div>
 
