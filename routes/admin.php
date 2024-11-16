@@ -50,10 +50,9 @@ Route::prefix('/')->group(function(){
     Route::prefix('imports')->group(function(){
 
         Volt::route('/user','admin.imports.user-import')->name('admin.user-import');
+        Volt::route('/cbu','admin.imports.cbu-import')->name('admin.cbu-import');
 
 
-        Volt::route('/active','admin.loan.active')->name('admin.active');
-        // Volt::route('/completed','admin.loan.completed')->name('admin.completed');
 
 
     });

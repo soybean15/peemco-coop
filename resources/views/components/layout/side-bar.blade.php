@@ -42,7 +42,7 @@
                 <x-menu-sub title="Imports" icon="o-arrow-down-on-square">
 
                     <x-menu-item title="User"    link="{{route('admin.user-import')}}" />
-                    {{-- <x-menu-item title="CBU"    link="{{route('admin.cbu-import')}}" /> --}}
+                    <x-menu-item title="CBU"    link="{{route('admin.cbu-import')}}" />
                     {{-- <x-menu-item title="Active" icon="o-credit-card" link="{{route('admin.active')}}" /> --}}
                     {{--  <x-menu-item title="Completed" icon="s-check-circle" link="{{route('admin.completed')}}" />--}}
                     {{-- <x-menu-item title="Apply Loan" icon="o-calculator" link="{{route('admin.loan-calculator')}}"/> --}}

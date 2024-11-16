@@ -5,7 +5,7 @@
     <div class="{{ $class }}">
         <img src="{{ $settings->logo ?? '/default/default-logo.png' }}" class="rounded-lg w-{{ $size }}" />
 
-        {{$settings->logo }}
+        {{-- {{$settings->logo }} --}}
         @if($hasName)
             <div>
                 {{ $settings->company_name }}

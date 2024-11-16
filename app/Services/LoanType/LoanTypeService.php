@@ -14,6 +14,8 @@ class LoanTypeService{
     public function __construct($loanType=null){
 
         $this->loanType = $loanType;
+        // dd($this->loanType);
+
     }
 
     public function getUsersExcept(){
@@ -31,6 +33,7 @@ class LoanTypeService{
     }
 
     public function getUsers($search=null){
+
         if(!$this->loanType){
 
             return User::query()->whereRaw('0 = 1');
