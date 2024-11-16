@@ -1,9 +1,48 @@
 <?php
 
 use Livewire\Volt\Component;
+use App\Models\JobProcess;
+use App\Models\CapitalBuildUp;
+use App\Imports\CbuImport;
+use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Auth;
+use App\Jobs\NotifyUserOfCompletedImport;
 
 new class extends Component {
+    use  WithFileUploads;
     public $file;
+    public function import(){
+
+// dd($this->file);
+
+
+            $jobProcess = JobProcess::create(
+                [
+                    'user_id'=>Auth::id(),
+                    'process_for'=> 'cbu_import',
+                    'job_processable_type' =>CapitalBuildUp::class,
+                    'job_processable_id'=>Auth::id(),
+                    'processed_rows'=>0,
+                    'failed_rows'=>0
+
+
+
+                ]
+            );
+
+            $import =new CbuImport($jobProcess);
+            // dd($import->getRowCount());
+            ($import)->queue($this->file)->chain([
+
+                new NotifyUserOfCompletedImport($jobProcess,Auth::user()),
+            ]);
+
+            // $import = new UsersImport();
+            // $import->import('testemail.xlsx');
+
+            // dd($import->errors());        // (new UsersImport)->withOutput($this->output)->import('testemail.xlsx');
+    }
+
 }; ?>
 
 <div>

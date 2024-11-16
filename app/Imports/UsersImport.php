@@ -39,6 +39,7 @@ class UsersImport implements ToModel, WithHeadingRow, WithProgressBar, WithChunk
     public $jobProcess ;
     public function __construct($jobProcess){
 
+      
         $this->jobProcess=$jobProcess;
     }
     public function model(array $row)

@@ -20,6 +20,7 @@ class CbuStoreJob implements ShouldQueue
     public function __construct($data, $jobProcess)
     {
         //
+        // dd('here');
         $this->data = $data;
         $this->jobProcess = $jobProcess;
     }
@@ -30,14 +31,27 @@ class CbuStoreJob implements ShouldQueue
     public function handle(): void
     {
         //
-        $user = User::where('mid', $this->data['mid'])->first();
+
 
         $this->jobProcess->increment('processed_rows', 1);
+
         if (!(new CbuImportValidation($this->data))->validate()) {
             $this->jobProcess->increment('failed_rows');
             return;
         }
 
+
+        $user = User::where('mid', $this->data['mid'])->first();
+
+        if (!$user) {
+            $this->jobProcess->increment('failed_rows');
+            return;
+        }
+
+        if (is_int($this->data['date'])) {
+            $date = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($this->data['date']);
+            $this->data['date'] = $date->format('Y-m-d'); // Convert to 'Y-m-d' format
+        }
 
 
         CapitalBuildUp::updateOrCreate(
@@ -47,7 +61,8 @@ class CbuStoreJob implements ShouldQueue
             ],
             [
                 'date' => $this->data['date'],
-                'amount_received' => $this->data['amount_received']
+                'amount_received' => $this->data['amount_received'],
+                'added_by'=>$this->jobProcess->user_id
             ]
 
         );
