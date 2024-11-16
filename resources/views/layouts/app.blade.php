@@ -6,12 +6,12 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>{{ config('app.name', 'Laravel') }}</title>
-
+        <script src="https://cdn.filesizejs.com/filesize.min.js"></script>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
         <!-- Fonts -->
 
-       
+
         <script src="{{ asset('js/apex-chart.min.js') }}"></script>
 
 

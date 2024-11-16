@@ -7,8 +7,9 @@ use App\Enums\ImportCacheNameEnum;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 
-class UserImportValidation implements WithImportValidation
+class CbuImportValidation implements WithImportValidation
 {
+
 
 
     public $row;
@@ -22,19 +23,21 @@ class UserImportValidation implements WithImportValidation
     {
 
         $validator =  Validator::make($this->row, [
-            'email' => 'required|unique:users,email',
-            'username' => 'required|unique:users,username',
-            'name' => 'required'
+            'mid' => 'required',
+            'or_cdv' => 'required',
+            'amount_received' => 'required',
+            'date'=>'required|date'
         ]);
         if ($validator->fails()) {
             $errors = $validator->errors()->toArray();
             $this->row['errors'] = $errors;
-            $failedRows = Cache::get(ImportCacheNameEnum::USER->value, []);
+            $failedRows = Cache::get(ImportCacheNameEnum::CBU->value, []);
             $failedRows[] = $this->row; // Add current row to the array
-            Cache::put(ImportCacheNameEnum::USER->value, $failedRows, 3600); // Save for 1 hour
+            Cache::put(ImportCacheNameEnum::CBU->value, $failedRows, 3600); // Save for 1 hour
             return false;
         }
 
         return true;
     }
+
 }
