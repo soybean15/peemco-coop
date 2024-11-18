@@ -81,10 +81,10 @@
                 @endif
 
                 <x-menu-item title="Dashboard" icon="o-computer-desktop" link="{{route('user.dashboard')}}" />
-                <x-menu-item title="Profile" icon="o-arrow-trending-up" link="{{route('user.profile')}}" />
+                <x-menu-item title="Profile" icon="o-user" link="{{route('user.profile')}}" />
 
                 <x-menu-sub title="Loans" icon="o-credit-card">
-                    <x-menu-item title="List" icon="s-numbered-list" link="{{route('user.loans')}}" />
+                    <x-menu-item title="List" icon="s-numbered-list" link="{{route('user.loans')}}" exact/>
                     <x-menu-item title="Loan Calculator" icon="o-calculator" link="{{route('user.loan-calculator')}}"/>
                 </x-menu-sub>
                 <x-menu-item title="Capital Build Up" icon="o-arrow-trending-up" link="{{route('user.capital-build-up')}}" />
