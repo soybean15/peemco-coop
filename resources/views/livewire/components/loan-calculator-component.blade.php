@@ -142,6 +142,10 @@ new class extends Component {
 
           $this->success('Loan Application Successful');
 
+          if($this->renderOn=='user'){
+            return redirect()->to(route('user.loans'));
+
+          }
           return redirect()->to(route('admin.pending'));
 
         }catch(\Exception $e){

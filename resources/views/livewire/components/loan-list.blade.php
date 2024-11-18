@@ -9,9 +9,10 @@ new class extends Component {
     public $search;
     public $renderFrom;
     public function mount($renderFrom){
+        // dd($this->renderFrom);
         $this->renderFrom = $renderFrom;
     }
-public function with(){
+    public function with(){
         return [
 
             'headers'=>[
@@ -45,7 +46,20 @@ public function with(){
     <x-table :headers="$headers" :rows="$loans" with-pagination>
         {{-- Overrides `name` header --}}
         @scope('cell_loan_application_no', $loan)
-        <a href="{{ route('admin.loan-profile',['loan'=>$loan]) }}"><strong>{{ $loan->loan_application_no }}</strong></a>
+
+        @php
+
+            $route = 'admin.loan-profile';
+            if($this->renderFrom =='user'){
+
+                $route = 'user.loan-profile';
+            }
+        @endphp
+
+        <a href="{{ route($route,['loan'=>$loan]) }}"><strong>{{ $loan->loan_application_no }}</strong></a>
+
+
+
         @endscope
         @scope('cell_user_id', $loan)
         <i>{{ $loan->user->name }}</i>

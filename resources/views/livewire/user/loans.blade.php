@@ -16,7 +16,7 @@ new class extends Component {
         'loans'=>auth()->user()->loans()
         ->search($this->search)
         ->paginate(5),
-        'renderFrom'=> null
+        'renderFrom'=> 'user'
 
     ];
     }
