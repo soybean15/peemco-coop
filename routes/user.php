@@ -11,7 +11,8 @@ use Livewire\Volt\Volt;
 Route::prefix('/')->group(function(){
 
 
-    Volt::route('/home','user.dashboard')->name('user.dashboard');
+    Volt::route('/home','user.dashboard')->name('user.dashboard')
+    ->middleware('is_admin');
 
     Route::prefix('loan')->group(function(){
         Volt::route('/','user.loans')->name('user.loans');

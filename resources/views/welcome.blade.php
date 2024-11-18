@@ -32,7 +32,7 @@
             <a href="{{ route('login') }}" class="px-4 py-2 text-white transition duration-300 bg-green-400 rounded-md hover:bg-green-500">Login</a>
 
             @else
-            <a href="{{ route('user.dashboard') }}" class="px-4 py-2 text-white transition duration-300 bg-green-400 rounded-md hover:bg-green-500">Login</a>
+            <a href="{{ route('user.dashboard') }}" class="px-4 py-2 text-white transition duration-300 bg-green-400 rounded-md hover:bg-green-500">Dashboard</a>
 
             @endif
         </nav>

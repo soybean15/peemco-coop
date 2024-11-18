@@ -26,7 +26,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
-            // 'role' => \App\Http\Middleware\RoleMiddleware::class,
+            'is_admin' => \App\Http\Middleware\RedirectIfAdmin::class,
 
 
 
