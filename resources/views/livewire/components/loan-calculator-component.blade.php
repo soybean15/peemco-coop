@@ -164,17 +164,19 @@ new class extends Component {
 
             @can('process loan')
             <x-button class="btn-success" label='Apply Loan' wire:confirm='Are you sure you want to apply this loan?'
-            wire:click='applyLoan' />
+                wire:click='applyLoan' />
             @endcan
 
 
             @endif
         </x-slot:actions>
     </x-header>
-    <div class="grid grid-cols-1  my-5  md:grid-cols-3 max-w-[1300px]">
+    <div class="grid grid-cols-1  my-5  md:grid-cols-2 max-w-[1300px] gap-3">
 
 
-        <x-form wire:submit.prevent="compute" class="p-5 bg-gray-100 rounded-md shadow-md">
+        <x-form wire:submit.prevent="compute" class="p-5 border ">
+
+            <x-header title="Loan Details" subtitle="Enter your loan information" size="text-xl " separator class="mb-0 rounded-md" />
 
             <x-select label="Loan Type" :options="$this->loanTypes" wire:model.live="loanType"
                 placeholder="Select Loan Type" />
@@ -248,59 +250,62 @@ new class extends Component {
             <x-slot:actions>
                 @if(!$loan)
 
-                {{-- <x-button label="Cancel" class="btn-sm" /> --}}
-                <x-button label="Compute" class="btn-primary btn-sm" type="compute" spinner="compute" />
+                {{--
+                <x-button label="Cancel" class="btn-sm" /> --}}
+                <x-button label="Compute" class="w-full btn-primary btn-sm" type="compute" spinner="compute" />
 
                 @endif
             </x-slot:actions>
         </x-form>
 
-        <div class="flex flex-col mx-5 my-5 space-y-2">
+        <div class="flex flex-col p-5 space-y-2 border">
+            <x-header title="Loan Summary" subtitle="Loan Details" size="text-xl " separator class="mb-0 rounded-md" />
 
-            <div class="flex flex-col">
+            <div class="grid grid-cols-1 gap-3 md:grid-cols-2">
+                <div class="flex flex-col p-4 mt-2 bg-gray-100 rounded">
 
-                <span class="text-lg font-bold text-green-600">Principal </span>
-                <span class="text-sm text-gray-600">{{ $this->principal }}</span>
-                {{-- <span>{{ $principal }}</span> --}}
-            </div>
+                    <span class="text-sm text-gray-500">Principal</span>
+                    <span class="font-bold text-md">{{ $this->principal ?? 0 }}</span>
 
-            <div class="flex flex-col">
+                </div>
 
-                <span class="text-lg font-bold text-green-600">Terms Of Loans in Years </span>
-                <span class="text-sm text-gray-600">{{ $terms??0 }}</span>
-                {{-- <span>{{ $principal }}</span> --}}
-            </div>
+                <div class="flex flex-col p-4 mt-2 bg-gray-100 rounded">
+
+                    <span class="text-sm text-gray-500">Terms Of Loans in Years</span>
+                    <span class="font-bold text-md">{{ $terms ?? 0 }}</span>
+                    {{-- <span>{{ $terms }}</span> --}}
+                </div>
+
+                <div class="flex flex-col p-4 mt-2 bg-gray-100 rounded">
+
+                    <span class="text-sm text-gray-500">Number Of Installment</span>
+                    <span class="font-bold text-md">{{ $number_of_installment ?? 0 }}</span>
+                    {{-- <span>{{ $number_of_installment }}</span> --}}
+                </div>
+
+                <div class="flex flex-col p-4 mt-2 bg-gray-100 rounded">
+
+                    <span class="text-sm text-gray-500">Annual Rate</span>
+                    <span class="font-bold text-md">{{ $annual_rate ?? 0 }}</span>
+                    {{-- <span>{{ $annual_rate }}</span> --}}
+                </div>
+
+                <div class="flex flex-col p-4 mt-2 bg-gray-100 rounded">
+
+                    <span class="text-sm text-gray-500">Monthly Rate</span>
+                    <span class="font-bold text-md">{{ $monthly_rate ?? 0 }}</span>
+                    {{-- <span>{{ $monthly_rate }}</span> --}}
+                </div>
+
+                <div class="flex flex-col p-4 mt-2 bg-gray-100 rounded">
+
+                    <span class="text-sm text-gray-500">Monthly Payment</span>
+                    <span class="font-bold text-md">{{ $monthly_payment ?? 0 }}</span>
+                    {{-- <span>{{ $monthly_payment }}</span> --}}
+                </div>
 
 
-            <div class="flex flex-col">
-
-                <span class="text-lg font-bold text-green-600">Number Of Installment </span>
-                <span class="text-sm text-gray-600">{{ $number_of_installment ??0 }}</span>
-                {{-- <span>{{ $principal }}</span> --}}
-            </div>
-
-            <div class="flex flex-col">
-
-                <span class="text-lg font-bold text-green-600">Annual Rate </span>
-                <span class="text-sm text-gray-600">{{ $annual_rate ??0 }}</span>
-                {{-- <span>{{ $principal }}</span> --}}
-            </div>
-
-            <div class="flex flex-col">
-
-                <span class="text-lg font-bold text-green-600">Monthly Rate </span>
-                <span class="text-sm text-gray-600">{{ $monthly_rate ??0 }}</span>
-                {{-- <span>{{ $principal }}</span> --}}
-            </div>
-
-            <div class="flex flex-col">
-
-                <span class="text-lg font-bold text-green-600">Monthly Payment </span>
-                <span class="text-sm text-gray-600">{{ $monthly_payment ??0 }}</span>
-                {{-- <span>{{ $principal }}</span> --}}
-            </div>
-
-
+        </div>
 
 
         </div>
