@@ -303,6 +303,18 @@ new class extends Component {
                     <span class="font-bold text-md">{{ $monthly_payment ?? 0 }}</span>
                     {{-- <span>{{ $monthly_payment }}</span> --}}
                 </div>
+                <div class="flex flex-col p-4 mt-2 bg-gray-100 rounded">
+
+                    <span class="text-sm text-gray-500">Charges</span>
+                    <span class="font-bold text-md">{{ $monthly_payment ?? 0 }}</span>
+                    {{-- <span>{{ $monthly_payment }}</span> --}}
+                </div>
+                <div class="flex flex-col p-4 mt-2 bg-gray-100 rounded">
+
+                    <span class="text-sm text-gray-500">Monthly Payment</span>
+                    <span class="font-bold text-md">{{ $monthly_payment ?? 0 }}</span>
+                    {{-- <span>{{ $monthly_payment }}</span> --}}
+                </div>
 
 
         </div>
