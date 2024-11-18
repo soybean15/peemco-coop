@@ -13,7 +13,7 @@ class Spotlight
 {
     public function search(Request $request)
     {
-        if(! Auth::user()) {
+        if(! Auth::user() ) {
             return [];
         }
 
@@ -25,6 +25,10 @@ class Spotlight
     }
     public function users(string $search = '')
     {
+
+        if (!Auth::user()->hasAnyRole([RolesEnum::BOOK_KEEPER->value, RolesEnum::SUPER_ADMIN->value])){
+            return [];
+        }
         return User::query()
                 ->where('name', 'like', "%$search%")
                 ->take(5)
@@ -50,7 +54,8 @@ class Spotlight
             );
 
         } else {
-            // Default for users with other roles
+
+
             $actions = array_filter(
                 array_map(fn($case) => $case->getActions(), AppActionsEnum::cases()),
                 fn($action) => in_array(RolesEnum::MEMBER->value, $action['roles'] ?? [])
