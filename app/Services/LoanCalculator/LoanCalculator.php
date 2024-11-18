@@ -193,10 +193,14 @@ class LoanCalculator
         //
     }
     public function getCharges(){
+        if(!$this->loanType)return 0;
         return $this->loanType->charges;
     }
 
-    public function getChargesAmount(){
-        return $this->loanType->charges * $this->principal;
+    public function getChargesAmount()
+    {
+        if(!$this->loanType)return 0;
+        return ($this->loanType->charges / 100) * $this->principal;
     }
+
 }

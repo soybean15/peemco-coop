@@ -52,6 +52,7 @@ class RolePermissionService{
 
     public function savePermissions($roles){
 
+        // dd($roles);
 
         foreach($roles as $key =>$value){
             $_role = Role::where('name',$key)->first();

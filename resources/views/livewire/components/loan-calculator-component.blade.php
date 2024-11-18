@@ -16,6 +16,8 @@ use Livewire\Attributes\Computed;
 new class extends Component {
     use Toast,WithPagination;
 
+
+    public $renderFrom;
     public $loanItems=[];
     public $terms;
     public $principal;
@@ -25,6 +27,9 @@ new class extends Component {
     public $monthly_payment;
     public $number_of_installment;
 
+    public $charges;
+    public $charges_amount;
+
     public $loanType;
     public $loanTypes=[];
 
@@ -32,20 +37,15 @@ new class extends Component {
     public $loan;
     public $user_id;
     public $users;
-    public function mount($loan =null){
+    public function mount($renderFrom=null){
+
+
 
 
         $loanService = app(LoanCalculator::class);
 
-        if($loan){
-            $this->principal = $loan->principal_amount;
-            $this->terms = $loan->terms_of_loan;
-            $this->loan=$loan;
-            $this->compute();
-        }else{
-            $this->loanTypes = $loanService->getLoanTypes();
-            // dd($this->loanTypes);
-        }
+        $this->loanTypes = $loanService->getLoanTypes();
+
         $this->search();
 
     }
@@ -89,6 +89,8 @@ new class extends Component {
         ->setTerms($this->terms);
         $this->annual_rate = $loanService->getAnnualRate();
         $this->monthly_rate =$loanService->getMonthlyRate();
+        $this->charges = $loanService->getCharges();
+        $this->charges_amount = $loanService->getChargesAmount();
     }
     public function compute(){
 
@@ -122,6 +124,7 @@ new class extends Component {
 
             $this->user_id = auth()->user()->id;
         }
+        // dd($this->user_id);
         try{
           (new LoanService(new LoanApplication()))->handle(
             [
@@ -159,16 +162,12 @@ new class extends Component {
         <x-slot:actions>
 
 
-            @if(!$loan)
 
+        @if(auth()->user()->can('process loan') || auth()->user()->can('apply loan'))
+        <x-button class="btn-success" label='Apply Loan' wire:confirm='Are you sure you want to apply this loan?'
+            wire:click='applyLoan' />
+        @endif
 
-            @can('process loan')
-            <x-button class="btn-success" label='Apply Loan' wire:confirm='Are you sure you want to apply this loan?'
-                wire:click='applyLoan' />
-            @endcan
-
-
-            @endif
         </x-slot:actions>
     </x-header>
     <div class="grid grid-cols-1  my-5  md:grid-cols-2 max-w-[1300px] gap-3">
@@ -190,34 +189,7 @@ new class extends Component {
             @endcan
 
 
-            @if($loan)
-            <x-input label="Principal Amount" wire:model.live.debounce.250="principal" prefix="PHP" money
-                hint="It submits an unmasked value" readonly />
-            <x-select disabled label="Terms" :options=" [
-            [
-                'id' => 1,
-                'name' => '1 Year'
-            ],
-            [
-                'id' => 2,
-                'name' => '2 Years',
-            ],
-            [
-                'id' => 3,
-                'name' => '3 Years',
-            ],
-            [
-                'id' => 4,
-                'name' => '4 Years',
-            ],
-            [
-                'id' => 5,
-                'name' => '5 Years',
-            ]
-        ]" wire:model.live="terms" placeholder="Select Terms" />
 
-
-            @else
 
             <x-input label="Principal Amount" wire:model.live.debounce.250="principal" prefix="PHP" money
                 hint="It submits an unmasked value" />
@@ -244,7 +216,7 @@ new class extends Component {
     ]
 ]" wire:model.live="terms" placeholder="Select Terms" />
 
-            @endif
+
 
 
             <x-slot:actions>
@@ -265,7 +237,7 @@ new class extends Component {
                 <div class="flex flex-col p-4 mt-2 bg-gray-100 rounded">
 
                     <span class="text-sm text-gray-500">Principal</span>
-                    <span class="font-bold text-md">{{ $this->principal ?? 0 }}</span>
+                    <span class="font-bold text-md">₱{{ $this->principal ?? 0 }}</span>
 
                 </div>
 
@@ -286,33 +258,33 @@ new class extends Component {
                 <div class="flex flex-col p-4 mt-2 bg-gray-100 rounded">
 
                     <span class="text-sm text-gray-500">Annual Rate</span>
-                    <span class="font-bold text-md">{{ $annual_rate ?? 0 }}</span>
+                    <span class="font-bold text-md">{{ $annual_rate ?? 0 }}%</span>
                     {{-- <span>{{ $annual_rate }}</span> --}}
                 </div>
 
                 <div class="flex flex-col p-4 mt-2 bg-gray-100 rounded">
 
                     <span class="text-sm text-gray-500">Monthly Rate</span>
-                    <span class="font-bold text-md">{{ $monthly_rate ?? 0 }}</span>
+                    <span class="font-bold text-md">{{ $monthly_rate ?? 0 }}%</span>
                     {{-- <span>{{ $monthly_rate }}</span> --}}
                 </div>
 
                 <div class="flex flex-col p-4 mt-2 bg-gray-100 rounded">
 
                     <span class="text-sm text-gray-500">Monthly Payment</span>
-                    <span class="font-bold text-md">{{ $monthly_payment ?? 0 }}</span>
+                    <span class="font-bold text-md">₱{{ $monthly_payment ?? 0 }}</span>
                     {{-- <span>{{ $monthly_payment }}</span> --}}
                 </div>
                 <div class="flex flex-col p-4 mt-2 bg-gray-100 rounded">
 
                     <span class="text-sm text-gray-500">Charges</span>
-                    <span class="font-bold text-md">{{ $monthly_payment ?? 0 }}</span>
+                    <span class="font-bold text-md">{{ $charges ?? 0 }}%</span>
                     {{-- <span>{{ $monthly_payment }}</span> --}}
                 </div>
                 <div class="flex flex-col p-4 mt-2 bg-gray-100 rounded">
 
-                    <span class="text-sm text-gray-500">Monthly Payment</span>
-                    <span class="font-bold text-md">{{ $monthly_payment ?? 0 }}</span>
+                    <span class="text-sm text-gray-500">Charges Amount</span>
+                    <span class="font-bold text-md">₱{{ $charges_amount ?? 0 }}</span>
                     {{-- <span>{{ $monthly_payment }}</span> --}}
                 </div>
 
