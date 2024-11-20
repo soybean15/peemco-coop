@@ -12,6 +12,7 @@ new class extends Component {
     public $loanType;
     public $type;
 
+    public $chargeAmount;
     public $releaseDates=[];
 
     public $form=[
@@ -36,6 +37,20 @@ new class extends Component {
         if ($loanTypeId) {
             $this->setLoanTypeData($loanTypeId);
         }
+    }
+
+
+        public function updatedFormCharges($value)
+    {
+        // Assuming $this->charges is the percentage (e.g., 3 for 3%)
+        $chargesPercentage = $value; // 3
+        $minimumAmount = $this->form['minimum_amount']; // 1000
+
+        // Calculate the charge amount based on the percentage
+        $chargeAmount = ($chargesPercentage / 100) * $minimumAmount;
+
+        // Update the charge_amount field
+        $this->chargeAmount = $chargeAmount; // This will be 30
     }
 
     private function setLoanTypeData($loanTypeId)
@@ -123,13 +138,13 @@ new class extends Component {
 
         <x-input label="Loan Type" wire:model.live="form.loan_type" hint='ex: Salary loan, Calamity loan' />
 
-
+        @if($type=='regular')
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-            @if($type=='regular')
-            <x-input label="Annual Rate" type='number' wire:model="form.annual_rate" prefix="%" step="0.01" />
 
-            @endif
+            <x-input label="Annual Rate" type='number' wire:model="form.annual_rate" prefix="%" step="0.01" />
             <x-input label="Charges" type='number' wire:model="form.charges" prefix="%" step="0.01" />
+
+
 
 
         </div>
@@ -140,8 +155,16 @@ new class extends Component {
             <x-input label="Penalty" wire:model="form.penalty" prefix="%" step="0.01" />
             <x-input label="Grace period" wire:model="form.grace_period" prefix="Days" step="0.01" />
         </div>
-
+        @endif
         @if($type=='cash_advance')
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <x-input label="Amount" wire:model="form.minimum_amount" prefix="PHP" step="0.01" />
+            <x-input label="Charges" type='number' wire:model.live="form.charges" prefix="%" step="0.01" />
+
+        </div>
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <x-input label="Read only" value="{{ $this->chargeAmount }}" readonly />
+        </div>
         <div class="flex items-center">
             <span>Date Releases</span>
             <x-button icon="o-minus" class="mx-3 btn-circle btn-sm btn-success" wire:click='reduceReleases' />

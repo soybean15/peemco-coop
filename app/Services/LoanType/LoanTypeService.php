@@ -68,7 +68,7 @@ class LoanTypeService{
         $releaseDates = $data['releaseDates'];
         $rules = [
             'form.loan_type' => 'required|max:50',
-            'form.maximum_amount' => 'required|numeric|gte:form.minimum_amount',
+            'form.maximum_amount' => 'required_if:form.loan_type,regular|numeric|gte:form.minimum_amount',
             'form.minimum_amount' => 'required|numeric',
             'form.charges' => 'required|numeric',
             'form.type' => 'required',
@@ -103,6 +103,9 @@ class LoanTypeService{
         } else {
             $rules['releaseDates.*.start'] = 'required';
             $rules['releaseDates.*.end'] = 'required';
+            $rules['form.charge_amount'] = 'required';
+
+            
         }
 
         Validator::make($data, $rules,$messages)->validate();
