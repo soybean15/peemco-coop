@@ -12,6 +12,7 @@ new class extends Component {
     public $loanType;
     public $type;
 
+    public $chargeAmount;
     public $releaseDates=[];
 
     public $form=[
@@ -36,8 +37,29 @@ new class extends Component {
         if ($loanTypeId) {
             $this->setLoanTypeData($loanTypeId);
         }
+        // dd($this->releaseDates);
     }
 
+
+        public function updatedFormCharges($value)
+    {
+
+        if($value && $value>0){
+            $this->computeChargeAmount($value);
+        }
+    }
+
+    public function computeChargeAmount($value){
+         // Assuming $this->charges is the percentage (e.g., 3 for 3%)
+         $chargesPercentage = $value; // 3
+        $minimumAmount = $this->form['minimum_amount']; // 1000
+
+        // Calculate the charge amount based on the percentage
+        $chargeAmount = ($chargesPercentage / 100) * $minimumAmount;
+
+        // Update the charge_amount field
+        $this->chargeAmount = $chargeAmount; // This will be 30
+    }
     private function setLoanTypeData($loanTypeId)
     {
         $this->loanType = LoanType::find($loanTypeId);
@@ -45,7 +67,10 @@ new class extends Component {
         if ($this->loanType) {
             $this->form = $this->loanType->toArray();
             $this->type = $this->loanType->type??'regular';
-            $this->releaseDates = $this->loanType->getReleaseDates();
+
+            $this->releaseDates = $this->loanType->getReleaseDates()->toArray();
+            $this->computeChargeAmount($this->form['charges']);
+
         }
     }
 
@@ -97,20 +122,29 @@ new class extends Component {
     public function update( $service){
 
 
-
+        $this->form['type']=$this->type;
         // dd($this->form);
-        $service->update($this->form);
+        $service->update([
+            'form'=>$this->form,
+            'type'=>$this->type,
+            'releases'=>$this->releaseDates
+        ]);
 
     }
 
     public function addReleases(){
 
+        // dd('here');
+
+
 
         $this->releaseDates[] =[ 'start'=>null, 'end'=>null];
+        // dd($this->releaseDates);
 
     }
 
     public function reduceReleases(){
+
         array_pop($this->releaseDates);
     }
 }; ?>
@@ -119,18 +153,15 @@ new class extends Component {
     <x-header title="{{ !$loanType ?'Add ':'' }}Loan Type" separator />
 
     <x-form wire:submit="save">
-        <x-select label="Type" icon="o-user" :options="$types" wire:model.live="type" placeholder="Select loan type"/>
+        <x-select label="Type" icon="o-user" :options="$types" wire:model.live="type" placeholder="Select loan type" />
 
         <x-input label="Loan Type" wire:model.live="form.loan_type" hint='ex: Salary loan, Calamity loan' />
 
-
+        @if($type=='regular')
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-            @if($type=='regular')
+
             <x-input label="Annual Rate" type='number' wire:model="form.annual_rate" prefix="%" step="0.01" />
-
-            @endif
             <x-input label="Charges" type='number' wire:model="form.charges" prefix="%" step="0.01" />
-
 
         </div>
 
@@ -140,8 +171,16 @@ new class extends Component {
             <x-input label="Penalty" wire:model="form.penalty" prefix="%" step="0.01" />
             <x-input label="Grace period" wire:model="form.grace_period" prefix="Days" step="0.01" />
         </div>
-
+        @endif
         @if($type=='cash_advance')
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <x-input label="Amount" wire:model="form.minimum_amount" prefix="PHP" step="0.01" />
+            <x-input label="Charges" type='number' wire:model.live="form.charges" prefix="%" step="0.01" />
+
+        </div>
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <x-input label="Read only" value="{{ $this->chargeAmount }}" readonly />
+        </div>
         <div class="flex items-center">
             <span>Date Releases</span>
             <x-button icon="o-minus" class="mx-3 btn-circle btn-sm btn-success" wire:click='reduceReleases' />
@@ -165,9 +204,6 @@ new class extends Component {
                 <x-datepicker label="End" wire:model="releaseDates.{{ $loop->index }}.end" icon="o-calendar"
                     :config="$config" />
 
-                {{--
-                <x-datetime label="Start" wire:model="releaseDates.{{ $loop->index }}.start" icon="o-calendar" />
-                <x-datetime label="End" wire:model="releaseDates.{{ $loop->index }}.end" icon="o-calendar" /> --}}
 
 
             </div>
@@ -183,6 +219,7 @@ new class extends Component {
 
 
         @endif
+
 
         <x-slot:actions>
 

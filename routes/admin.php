@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\PdfController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
@@ -37,6 +38,8 @@ Route::prefix('/')->group(function(){
         Volt::route('pending/{loan}','admin.loan.profile')->name('admin.loan-profile');
 
         Volt::route('/active','admin.loan.active')->name('admin.active');
+       Route::get('/loan-application-pdf',[PdfController::class,'generateLoanApplication'])->name(name: 'admin.generate-loan-application-pdf');
+
         // Volt::route('/completed','admin.loan.completed')->name('admin.completed');
 
 

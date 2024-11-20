@@ -5,16 +5,17 @@ use App\Models\Loan;
 use App\Actions\Loan\LoanApproval;
 use App\Actions\Loan\LoanRejection;
 
+use App\Helpers\PdfGenerator;
 use Mary\Traits\Toast;
 use App\Services\Loans\LoanService;
 use App\Services\LoanPayment\LoanPaymentService;
+use Spatie\LaravelPdf\Facades\Pdf;
 new class extends Component {
     use Toast;
     public $loan;
 
     public $loanItems;
     public $headers;
-
     public function mount(Loan $loan){
         $this->loan=$loan;
         $this->loanItems = $loan->items;
@@ -79,6 +80,13 @@ new class extends Component {
         }
 
     }
+
+    public function print(){
+
+        return (new PdfGenerator('invoices.salary-loan-application'))->stream();
+        // Pdf::view('invoices.salary-loan-application')->save('invoice.pdf');
+
+    }
 }; ?>
 
 <div>
@@ -105,7 +113,12 @@ new class extends Component {
 
                 @else
 
-                <x-icon name="o-check" class="text-2xl text-green-500 w-9 h-9" label="{{  $this->loan->status }}" />
+                <div class="flex items-center space-x-5">
+                    {{-- <x-icon name="o-check" class="text-2xl text-green-500 w-9 h-9" label="{{  $this->loan->status }}" /> --}}
+
+                    <a href="{{ route('admin.generate-loan-application-pdf') }}" target="_blank"><x-icon name="o-printer" class="text-info" label="Print Loan Application" /></a>
+                    {{-- <x-button label="Print Loan Application" icon='o-printer' class="mx-3 btn btn-sm btn-info" link="{{ route('admin.generate-loan-application-pdf') }}"> --}}
+                </div>
 
                 @endif
 

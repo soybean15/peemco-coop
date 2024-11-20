@@ -37,6 +37,9 @@ new class extends Component {
     public $loan;
     public $user_id;
     public $users;
+
+
+    public $selectedTermOption;
     public function mount($renderFrom=null){
 
 
@@ -167,10 +170,10 @@ new class extends Component {
 
 
 
-        @if(auth()->user()->can('process loan') || auth()->user()->can('apply loan'))
-        <x-button class="btn-success" label='Apply Loan' wire:confirm='Are you sure you want to apply this loan?'
-            wire:click='applyLoan' />
-        @endif
+            @if(auth()->user()->can('process loan') || auth()->user()->can('apply loan'))
+            <x-button class="btn-success" label='Apply Loan' wire:confirm='Are you sure you want to apply this loan?'
+                wire:click='applyLoan' />
+            @endif
 
         </x-slot:actions>
     </x-header>
@@ -179,7 +182,8 @@ new class extends Component {
 
         <x-form wire:submit.prevent="compute" class="p-5 border ">
 
-            <x-header title="Loan Details" subtitle="Enter your loan information" size="text-xl " separator class="mb-0 rounded-md" />
+            <x-header title="Loan Details" subtitle="Enter your loan information" size="text-xl " separator
+                class="mb-0 rounded-md" />
 
             <x-select label="Loan Type" :options="$this->loanTypes" wire:model.live="loanType"
                 placeholder="Select Loan Type" />
@@ -197,29 +201,62 @@ new class extends Component {
 
             <x-input label="Principal Amount" wire:model.live.debounce.250="principal" prefix="PHP" money
                 hint="It submits an unmasked value" />
-            <x-select label="Terms" :options=" [
-    [
-        'id' => 1,
-        'name' => '1 Year'
-    ],
-    [
-        'id' => 2,
-        'name' => '2 Years',
-    ],
-    [
-        'id' => 3,
-        'name' => '3 Years',
-    ],
-    [
-        'id' => 4,
-        'name' => '4 Years',
-    ],
-    [
-        'id' => 5,
-        'name' => '5 Years',
-    ]
-]" wire:model.live="terms" placeholder="Select Terms" />
 
+
+            <div class="max-w-sm">
+                <label class="block mb-2 text-sm font-medium text-gray-900">Terms</label>
+                <div class="space-y-2">
+                    <div class="flex items-center">
+                        <input type="radio" id="term" name="terms" value="term" wire:model.live='selectedTermOption'
+                            class="w-4 h-4 text-purple-600 border-gray-300 focus:ring-purple-500">
+                        <label for="term" class="block ml-2 text-sm text-gray-900">
+                            Select by year
+                        </label>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="radio" id="months" name="terms" value="months" wire:model.live='selectedTermOption'
+                            class="w-4 h-4 text-purple-600 border-gray-300 focus:ring-purple-500">
+                        <label for="months" class="block ml-2 text-sm text-gray-900">
+                            Select by month
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            @if($selectedTermOption =='term')
+
+            <x-select :options=" [
+                [
+                    'id' => 1,
+                    'name' => '1 Year'
+                ],
+                [
+                    'id' => 2,
+                    'name' => '2 Years',
+                ],
+                [
+                    'id' => 3,
+                    'name' => '3 Years',
+                ],
+                [
+                    'id' => 4,
+                    'name' => '4 Years',
+                ],
+                [
+                    'id' => 5,
+                    'name' => '5 Years',
+                ]
+            ]" wire:model.live="terms" placeholder="Select Terms" />
+
+            @else
+
+
+            <x-input placeholder="Enter number of month"  wire:model.live.debounce.250="principal"  type="number"
+                hint="It submits an unmasked value" required/>
+
+
+
+            @endif
 
 
 
@@ -293,7 +330,7 @@ new class extends Component {
                 </div>
 
 
-        </div>
+            </div>
 
 
         </div>

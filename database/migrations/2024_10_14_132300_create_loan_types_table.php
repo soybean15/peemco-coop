@@ -22,6 +22,7 @@ return new class extends Migration
             // $table->foreignIdFor('added_by')->
             $table->decimal('maximum_amount',20,3)->nullable();
             $table->decimal('minimum_amount',20,3)->nullable();
+            // $table->decimal('charge_amount', 20,3)->comment('for cash advance')->nullable();
 
 
             $table->decimal('charges',8,2)->comment('%')->nullable();

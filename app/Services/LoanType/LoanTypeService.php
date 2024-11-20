@@ -68,7 +68,7 @@ class LoanTypeService{
         $releaseDates = $data['releaseDates'];
         $rules = [
             'form.loan_type' => 'required|max:50',
-            'form.maximum_amount' => 'required|numeric|gte:form.minimum_amount',
+            // 'form.maximum_amount' => 'required|numeric|gte:form.minimum_amount',
             'form.minimum_amount' => 'required|numeric',
             'form.charges' => 'required|numeric',
             'form.type' => 'required',
@@ -98,11 +98,15 @@ class LoanTypeService{
         // Add conditional rules based on type
         if ($form['type'] == 'regular') {
             $rules['form.annual_rate'] = 'required|numeric';
+            $rules['form.maximum_amount'] = 'required|numeric|gte:form.minimum_amount';
             $rules['form.penalty'] = 'required|numeric';
             $rules['form.grace_period'] = 'required|numeric';
         } else {
             $rules['releaseDates.*.start'] = 'required';
             $rules['releaseDates.*.end'] = 'required';
+            $rules['form.charge_amount'] = 'required';
+
+
         }
 
         Validator::make($data, $rules,$messages)->validate();
@@ -112,6 +116,7 @@ class LoanTypeService{
 
 
         $loanType =LoanType::create($form);
+
         if($data['type'] =='cash_advance'){
             if(count($releaseDates)>0){
 
@@ -135,10 +140,32 @@ class LoanTypeService{
 
 
 
-    public  function update($form){
+    public  function update($data){
         // dd($form);
 
+        $form = $data['form'];
+        $releaseDates = $data['releases'];
 
         $this->loanType->update($form);
+
+        $this->loanType->releaseDates()->delete();
+        
+        if($data['type'] =='cash_advance'){
+            if(count($releaseDates)>0){
+
+                foreach ($releaseDates as $date) {
+                    LoanReleaseDate::create(
+                        [
+                            'loan_type_id'=>$this->loanType->id,
+                            'from'=>$date['start'],
+                            'to'=>$date['end']
+                            ]
+                );
+                    # code...
+                }
+
+            }
+        }
+
     }
 }
