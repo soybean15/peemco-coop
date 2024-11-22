@@ -31,6 +31,16 @@ class LoanType extends Model
     public function scopeRegular(Builder $builder){
         $builder->where('type','regular');
     }
+    public function scopeFlexible(Builder $builder){
+        $builder->where('type','flexible');
+    }
+    public function scopeRegularOrFlexible(Builder $builder)
+    {
+        $builder->where(function ($query) {
+            $query->where('type', 'regular')
+                  ->orWhere('type', 'flexible');
+        });
+    }
 
     public function loanTypeUsers(){
         return $this->hasMany(LoanTypeUser::class,);

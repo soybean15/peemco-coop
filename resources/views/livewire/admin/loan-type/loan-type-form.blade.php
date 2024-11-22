@@ -27,7 +27,9 @@ new class extends Component {
 
         ];
     public $types = [
+
        [ 'id'=>'regular','name'=>'Regular'],
+       [ 'id'=>'flexible','name'=>'Flexible'],
        [ 'id'=>'cash_advance','name'=>'Cash Advance']
 
     ];
@@ -169,7 +171,7 @@ new class extends Component {
 
             <x-input label="Loan Type" wire:model.live="form.loan_type" hint='ex: Salary loan, Calamity loan' />
 
-            @if($type=='regular')
+            @if($type=='regular' || $type=='flexible')
 
 
             <x-input label="Annual Rate" type='number' wire:model="form.annual_rate" prefix="%" step="0.01" />

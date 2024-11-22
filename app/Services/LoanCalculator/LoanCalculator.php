@@ -37,7 +37,7 @@ class LoanCalculator
     }
 
     public function getLoanTypes(){
-        return LoanType::regular()->get()->map(function($item){
+        return LoanType::regularOrFlexible()->get()->map(function($item){
             return [
                 'id'=>$item->id,
                 'name'=>$item->loan_type
@@ -83,10 +83,17 @@ class LoanCalculator
     public function setLoanDetails(){
 
 
+
         if(!$this->loanType) return 0;
 
+        $annual_rate =$this->loanType->annual_rate;
+
+        // if($annual_rate==0){
+        //      return $this->monthly_rate=1;
+        // }
         $rate =$this->loanType->annual_rate/100;
 
+        // dd($rate);
         if ((int)$this->terms_in_year === 1) {
             $this->annual_rate = $rate;
         } elseif ((int)$this->terms_in_year === 2) {
@@ -105,24 +112,44 @@ class LoanCalculator
     {
 
 
-        // dd($this->number_of_installment,$this->loanType->maximum_period);
+        if($this->loanType->type=='flexible') return $this;
+
+
         if($this->number_of_installment > $this->loanType->maximum_period){
 
             $max =$this->loanType->maximum_period;
 
-            throw new Exception(message: "Maximum period is  $max months");
+            throw new Exception( "Maximum period is  $max months");
         }
-        // dd($this->number_of_installment);
+        if($this->number_of_installment ==0){
 
-        // Step 1: Calculate the numerator
-        $numerator = $this->monthly_rate * pow(1 + $this->monthly_rate, $this->number_of_installment);
+            throw new Exception("Period cannot be zero, please select terms!");
+        }
 
-        // Step 2: Calculate the denominator
-        $denominator = pow(1 + $this->monthly_rate, $this->number_of_installment) - 1;
 
-        // Step 3: Calculate the monthly payment using the amortization formula
-        $this->monthly_payment = round($this->principal * ($numerator / $denominator), 2);
+        // // Step 1: Calculate the numerator
+        // $numerator = $this->monthly_rate * pow(1 + $this->monthly_rate, $this->number_of_installment);
 
+        // // Step 2: Calculate the denominator
+        // $denominator = pow(1 + $this->monthly_rate, $this->number_of_installment) - 1;
+        // // dd($this->number_of_installment,$numerator,$denominator,$this->monthly_rate);
+
+        // // Step 3: Calculate the monthly payment using the amortization formula
+        // $this->monthly_payment = round($this->principal * ($numerator / $denominator), 2);
+
+        if ($this->monthly_rate == 0) {
+            // If the monthly rate is 0, the monthly payment is simply the principal divided by the number of installments
+            $this->monthly_payment = round($this->principal / $this->number_of_installment, 2);
+        } else {
+            // Step 1: Calculate the numerator
+            $numerator = $this->monthly_rate * pow(1 + $this->monthly_rate, $this->number_of_installment);
+
+            // Step 2: Calculate the denominator
+            $denominator = pow(1 + $this->monthly_rate, $this->number_of_installment) - 1;
+
+            // Step 3: Calculate the monthly payment using the amortization formula
+            $this->monthly_payment = round($this->principal * ($numerator / $denominator), 2);
+        }
 
 
         //separate function
@@ -139,6 +166,7 @@ class LoanCalculator
 
     public function getLoanItems($callback=null)
     {
+
 
         $i=1;
         $balance = $this->principal;
@@ -174,6 +202,7 @@ class LoanCalculator
             $balance =$loanItem->getBalance();
             $i++;
         }
+
         // dd($this->loanItems);
         return $this->loanItems;
     }
@@ -200,6 +229,10 @@ class LoanCalculator
         return $this->number_of_installment;
     }
 
+
+    public function getLoanType(){
+        return $this->loanType;
+    }
 
     public function getUsers($search){
 

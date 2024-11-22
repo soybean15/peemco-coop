@@ -96,7 +96,7 @@ class LoanTypeService{
         ];
 
         // Add conditional rules based on type
-        if ($form['type'] == 'regular') {
+        if ($form['type'] == 'regular' ||$form['type'] == 'flexible') {
             $rules['form.annual_rate'] = 'required|numeric';
             $rules['form.maximum_amount'] = 'required|numeric|gte:form.minimum_amount';
             $rules['form.penalty'] = 'required|numeric';
@@ -111,11 +111,7 @@ class LoanTypeService{
         }
 
         Validator::make($data, $rules,$messages)->validate();
-
         // Run validation and handle failures
-
-
-
         $loanType =LoanType::create($form);
 
         if($data['type'] =='cash_advance'){

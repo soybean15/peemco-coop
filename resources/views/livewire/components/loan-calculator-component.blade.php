@@ -19,8 +19,8 @@ new class extends Component {
 
     public $renderFrom;
     public $loanItems=[];
-    public $terms_in_year;
-    public $terms_in_month;
+    public $terms_in_year=0;
+    public $terms_in_month=0;
 
 
     public $principal;
@@ -33,7 +33,7 @@ new class extends Component {
     public $charges;
     public $charges_amount;
 
-    public $loanType;
+    public $loanTypeId;
     public $loanTypes=[];
 
 
@@ -41,6 +41,8 @@ new class extends Component {
     public $user_id;
     public $users;
 
+
+    public $loanType;
 
     public $selectedTermOption;
     public function mount($renderFrom=null){
@@ -65,7 +67,7 @@ new class extends Component {
         $selectedOption = User::where('id', $this->user_id)->get();
 
         $this->users =   app(LoanCalculator::class)
-        ->setLoanType($this->loanType)
+        ->setLoanType($this->loanTypeId)
         ->getUsers($value)
         ->orderBy('name')
         ->get()
@@ -79,6 +81,7 @@ new class extends Component {
     }
     public function updatedLoanType(){
 
+
         $this->fetchData();
 
     }
@@ -89,16 +92,21 @@ new class extends Component {
 
     }
     public function fetchData(){
-        if($this->terms_in_year > 0)
+        // dd($this->terms_in_year,$this->terms_in_month);
+       if( is_numeric($this->terms_in_year) && is_numeric($this->terms_in_month))
         {
+
             $loanService = app(LoanCalculator::class)
-        ->setLoanType($this->loanType)
-        ->setPrincipal($this->principal)
-        ->setTerms($this->terms_in_year,$this->terms_in_month);
-        $this->annual_rate = $loanService->getAnnualRate();
-        $this->monthly_rate =$loanService->getMonthlyRate();
-        $this->charges = $loanService->getCharges();
-        $this->charges_amount = $loanService->getChargesAmount();
+                ->setLoanType($this->loanTypeId)
+                ->setPrincipal($this->principal)
+                ->setTerms($this->terms_in_year,$this->terms_in_month);
+
+
+                    $this->annual_rate = $loanService->getAnnualRate();
+                    $this->monthly_rate =$loanService->getMonthlyRate();
+                    $this->charges = $loanService->getCharges();
+                    $this->charges_amount = $loanService->getChargesAmount();
+                    $this->loanType = $loanService->getLoanType();
         }
 
     }
@@ -110,13 +118,13 @@ new class extends Component {
             [
                 // 'terms_in_year'=>'required',
                 'principal'=>'required',
-                'loanType'=>'required'
+                'loanTypeId'=>'required'
             ]
         );
 
         try{
             $this->loanItems =$loanService
-        ->setLoanType($this->loanType)
+        ->setLoanType($this->loanTypeId)
         ->setPrincipal($this->principal)
         ->setTerms($this->terms_in_year,$this->terms_in_month)
         ->calculateLoan()
@@ -126,6 +134,7 @@ new class extends Component {
         $this->annual_rate = $loanService->getAnnualRate();
         $this->monthly_payment = $loanService->getMonthlyPayment();
         $this->number_of_installment = $loanService->getNumberOfInstallment();
+        $this->loanType = $loanService->getLoanType();
         }catch(\Exception $e){
             $this->error($e->getMessage());
         }
@@ -149,8 +158,10 @@ new class extends Component {
                 'principal'=>$this->principal,
                 'user_id'=>$this->user_id,
                 'no_of_installment'=>$this->number_of_installment,
-                'terms_of_loan'=>$this->terms_in_year,
-                'loan_type'=>$this->loanType,
+                'terms_in_year'=>$this->terms_in_year,
+                'terms_in_month'=>$this->terms_in_month,
+
+                'loan_type_id'=>$this->loanTypeId,
                 'other_charges'=>$this->other_charges,
                 'monthly_payment'=>$this->monthly_payment
             ]
@@ -190,6 +201,8 @@ new class extends Component {
 
         </x-slot:actions>
     </x-header>
+
+
     <div class="grid grid-cols-1  mb-5  md:grid-cols-2 max-w-[1300px] gap-3">
 
 
@@ -198,7 +211,7 @@ new class extends Component {
             <x-header title="Loan Details" subtitle="Enter your loan information" size="text-xl " separator
                 class="pb-0 mb-0 rounded-md" />
 
-            <x-select label="Loan Type" :options="$this->loanTypes" wire:model.live="loanType"
+            <x-select label="Loan Type" :options="$this->loanTypes" wire:model.live="loanTypeId"
                 placeholder="Select Loan Type"/>
 
 
@@ -225,6 +238,10 @@ new class extends Component {
 
 
                         <x-select :options=" [
+                             [
+                                'id' => 0,
+                                'name' => '0'
+                            ],
                             [
                                 'id' => 1,
                                 'name' => '1 Year'
@@ -245,11 +262,11 @@ new class extends Component {
                                 'id' => 5,
                                 'name' => '5 Years',
                             ]
-                        ]" wire:model.live="terms_in_year" placeholder="Year"  class="w-40"/>
+                        ]" wire:model.live="terms_in_year" class="w-40"/>
 
 
                     <div>Month(s)</div>
-                    <x-input placeholder="Months"  wire:model.live.debounce.250="terms_in_month"  type="number" max="11"  class="w-40"
+                    <x-input placeholder="Months"  wire:model="terms_in_month"  type="number" max="11"  class="w-40"
                    required/>
 
 
@@ -374,6 +391,14 @@ new class extends Component {
     @endphp
 
 
+
+
+
+
+@if($loanType && $loanType->type=='regular')
+
+
+
     <div class="overflow-x-auto">
         <table class="table">
             <!-- head -->
@@ -410,6 +435,8 @@ new class extends Component {
             </tbody>
         </table>
     </div>
+
+    @endif
 
 
 </div>
