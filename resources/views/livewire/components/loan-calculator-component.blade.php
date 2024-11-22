@@ -19,7 +19,10 @@ new class extends Component {
 
     public $renderFrom;
     public $loanItems=[];
-    public $terms;
+    public $terms_in_year=0;
+    public $terms_in_month=0;
+
+
     public $principal;
     public $other_charges;
     public $annual_rate;
@@ -30,7 +33,7 @@ new class extends Component {
     public $charges;
     public $charges_amount;
 
-    public $loanType;
+    public $loanTypeId;
     public $loanTypes=[];
 
 
@@ -38,6 +41,8 @@ new class extends Component {
     public $user_id;
     public $users;
 
+
+    public $loanType;
 
     public $selectedTermOption;
     public function mount($renderFrom=null){
@@ -62,7 +67,7 @@ new class extends Component {
         $selectedOption = User::where('id', $this->user_id)->get();
 
         $this->users =   app(LoanCalculator::class)
-        ->setLoanType($this->loanType)
+        ->setLoanType($this->loanTypeId)
         ->getUsers($value)
         ->orderBy('name')
         ->get()
@@ -76,24 +81,34 @@ new class extends Component {
     }
     public function updatedLoanType(){
 
+
         $this->fetchData();
 
     }
 
-    public function updatedTerms(){
+    public function updatedTermsInYear(){
 
         $this->fetchData();
 
     }
     public function fetchData(){
-        $loanService = app(LoanCalculator::class)
-        ->setLoanType($this->loanType)
-        ->setPrincipal($this->principal)
-        ->setTerms($this->terms);
-        $this->annual_rate = $loanService->getAnnualRate();
-        $this->monthly_rate =$loanService->getMonthlyRate();
-        $this->charges = $loanService->getCharges();
-        $this->charges_amount = $loanService->getChargesAmount();
+        // dd($this->terms_in_year,$this->terms_in_month);
+       if( is_numeric($this->terms_in_year) && is_numeric($this->terms_in_month))
+        {
+
+            $loanService = app(LoanCalculator::class)
+                ->setLoanType($this->loanTypeId)
+                ->setPrincipal($this->principal)
+                ->setTerms($this->terms_in_year,$this->terms_in_month);
+
+
+                    $this->annual_rate = $loanService->getAnnualRate();
+                    $this->monthly_rate =$loanService->getMonthlyRate();
+                    $this->charges = $loanService->getCharges();
+                    $this->charges_amount = $loanService->getChargesAmount();
+                    $this->loanType = $loanService->getLoanType();
+        }
+
     }
     public function compute(){
 
@@ -101,16 +116,17 @@ new class extends Component {
 
         $this->validate(
             [
-                'terms'=>'required',
+                // 'terms_in_year'=>'required',
                 'principal'=>'required',
-                'loanType'=>'required'
+                'loanTypeId'=>'required'
             ]
         );
 
-        $this->loanItems =$loanService
-        ->setLoanType($this->loanType)
+        try{
+            $this->loanItems =$loanService
+        ->setLoanType($this->loanTypeId)
         ->setPrincipal($this->principal)
-        ->setTerms($this->terms)
+        ->setTerms($this->terms_in_year,$this->terms_in_month)
         ->calculateLoan()
         ->getLoanItems();
 
@@ -118,6 +134,12 @@ new class extends Component {
         $this->annual_rate = $loanService->getAnnualRate();
         $this->monthly_payment = $loanService->getMonthlyPayment();
         $this->number_of_installment = $loanService->getNumberOfInstallment();
+        $this->loanType = $loanService->getLoanType();
+        }catch(\Exception $e){
+            $this->error($e->getMessage());
+        }
+
+
     }
 
 
@@ -136,8 +158,10 @@ new class extends Component {
                 'principal'=>$this->principal,
                 'user_id'=>$this->user_id,
                 'no_of_installment'=>$this->number_of_installment,
-                'terms_of_loan'=>$this->terms,
-                'loan_type'=>$this->loanType,
+                'terms_in_year'=>$this->terms_in_year,
+                'terms_in_month'=>$this->terms_in_month,
+
+                'loan_type_id'=>$this->loanTypeId,
                 'other_charges'=>$this->other_charges,
                 'monthly_payment'=>$this->monthly_payment
             ]
@@ -177,16 +201,18 @@ new class extends Component {
 
         </x-slot:actions>
     </x-header>
-    <div class="grid grid-cols-1  my-5  md:grid-cols-2 max-w-[1300px] gap-3">
+
+
+    <div class="grid grid-cols-1  mb-5  md:grid-cols-2 max-w-[1300px] gap-3">
 
 
         <x-form wire:submit.prevent="compute" class="p-5 border ">
 
             <x-header title="Loan Details" subtitle="Enter your loan information" size="text-xl " separator
-                class="mb-0 rounded-md" />
+                class="pb-0 mb-0 rounded-md" />
 
-            <x-select label="Loan Type" :options="$this->loanTypes" wire:model.live="loanType"
-                placeholder="Select Loan Type" />
+            <x-select label="Loan Type" :options="$this->loanTypes" wire:model.live="loanTypeId"
+                placeholder="Select Loan Type"/>
 
 
 
@@ -200,63 +226,73 @@ new class extends Component {
 
 
             <x-input label="Principal Amount" wire:model.live.debounce.250="principal" prefix="PHP" money
-                hint="It submits an unmasked value" />
-
+                 />
 
             <div class="max-w-sm">
+                <label class="block mb-2 text-sm font-medium text-gray-900">Loan Terms</label>
+
+                <div class="flex items-center space-x-4">
+
+
+                    <div>Year</div>
+
+
+                        <x-select :options=" [
+                             [
+                                'id' => 0,
+                                'name' => '0'
+                            ],
+                            [
+                                'id' => 1,
+                                'name' => '1 Year'
+                            ],
+                            [
+                                'id' => 2,
+                                'name' => '2 Years',
+                            ],
+                            [
+                                'id' => 3,
+                                'name' => '3 Years',
+                            ],
+                            [
+                                'id' => 4,
+                                'name' => '4 Years',
+                            ],
+                            [
+                                'id' => 5,
+                                'name' => '5 Years',
+                            ]
+                        ]" wire:model.live="terms_in_year" class="w-40"/>
+
+
+                    <div>Month(s)</div>
+                    <x-input placeholder="Months"  wire:model="terms_in_month"  type="number" max="11"  class="w-40"
+                   required/>
+
+
+                </div>
+            </div>
+
+            {{-- <div class="max-w-sm">
                 <label class="block mb-2 text-sm font-medium text-gray-900">Terms</label>
                 <div class="space-y-2">
                     <div class="flex items-center">
-                        <input type="radio" id="term" name="terms" value="term" wire:model.live='selectedTermOption'
+                        <input type="radio" id="term" name="terms_in_year" value="term" wire:model.live='selectedTermOption'
                             class="w-4 h-4 text-purple-600 border-gray-300 focus:ring-purple-500">
                         <label for="term" class="block ml-2 text-sm text-gray-900">
                             Select by year
                         </label>
                     </div>
                     <div class="flex items-center">
-                        <input type="radio" id="months" name="terms" value="months" wire:model.live='selectedTermOption'
+                        <input type="radio" id="months" name="terms_in_year" value="months" wire:model.live='selectedTermOption'
                             class="w-4 h-4 text-purple-600 border-gray-300 focus:ring-purple-500">
                         <label for="months" class="block ml-2 text-sm text-gray-900">
                             Select by month
                         </label>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
-            @if($selectedTermOption =='term')
-
-            <x-select :options=" [
-                [
-                    'id' => 1,
-                    'name' => '1 Year'
-                ],
-                [
-                    'id' => 2,
-                    'name' => '2 Years',
-                ],
-                [
-                    'id' => 3,
-                    'name' => '3 Years',
-                ],
-                [
-                    'id' => 4,
-                    'name' => '4 Years',
-                ],
-                [
-                    'id' => 5,
-                    'name' => '5 Years',
-                ]
-            ]" wire:model.live="terms" placeholder="Select Terms" />
-
-            @else
-
-
-            <x-input placeholder="Enter number of month"  wire:model.live.debounce.250="principal"  type="number"
-                hint="It submits an unmasked value" required/>
-
-
-
-            @endif
 
 
 
@@ -285,8 +321,8 @@ new class extends Component {
                 <div class="flex flex-col p-4 mt-2 bg-gray-100 rounded">
 
                     <span class="text-sm text-gray-500">Terms Of Loans in Years</span>
-                    <span class="font-bold text-md">{{ $terms ?? 0 }}</span>
-                    {{-- <span>{{ $terms }}</span> --}}
+                    <span class="font-bold text-md">{{ $terms_in_year ?? 0 }}</span>
+                    {{-- <span>{{ $terms_in_year }}</span> --}}
                 </div>
 
                 <div class="flex flex-col p-4 mt-2 bg-gray-100 rounded">
@@ -355,6 +391,14 @@ new class extends Component {
     @endphp
 
 
+
+
+
+
+@if($loanType && $loanType->type=='regular')
+
+
+
     <div class="overflow-x-auto">
         <table class="table">
             <!-- head -->
@@ -391,6 +435,8 @@ new class extends Component {
             </tbody>
         </table>
     </div>
+
+    @endif
 
 
 </div>

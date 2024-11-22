@@ -21,11 +21,15 @@ new class extends Component {
         'annual_rate'=>null,
         'minimum_amount'=>null,
         'maximum_amount'=>null,
+        'maximum_period'=>0,
+        'is_compound_penalty'=>false
 
 
         ];
     public $types = [
+
        [ 'id'=>'regular','name'=>'Regular'],
+       [ 'id'=>'flexible','name'=>'Flexible'],
        [ 'id'=>'cash_advance','name'=>'Cash Advance']
 
     ];
@@ -46,6 +50,14 @@ new class extends Component {
 
         if($value && $value>0){
             $this->computeChargeAmount($value);
+        }
+    }
+
+    public function updatedFormMinimumAmount(){
+
+        // dd('jer');
+        if($this->form['charges'] && $this->form['charges']>0){
+            $this->computeChargeAmount($this->form['charges']);
         }
     }
 
@@ -152,41 +164,44 @@ new class extends Component {
 <div>
     <x-header title="{{ !$loanType ?'Add ':'' }}Loan Type" separator />
 
-    <x-form wire:submit="save">
-        <x-select label="Type" icon="o-user" :options="$types" wire:model.live="type" placeholder="Select loan type" />
+    <x-form wire:submit="save" >
 
-        <x-input label="Loan Type" wire:model.live="form.loan_type" hint='ex: Salary loan, Calamity loan' />
 
-        @if($type=='regular')
-        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <x-select label="Type" icon="o-user" :options="$types" wire:model.live="type" placeholder="Select loan type" />
+
+            <x-input label="Loan Type" wire:model.live="form.loan_type" hint='ex: Salary loan, Calamity loan' />
+
+            @if($type=='regular' || $type=='flexible')
+
 
             <x-input label="Annual Rate" type='number' wire:model="form.annual_rate" prefix="%" step="0.01" />
             <x-input label="Charges" type='number' wire:model="form.charges" prefix="%" step="0.01" />
-
-        </div>
-
-        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <x-input label="Minimum Amount" wire:model="form.minimum_amount" prefix="PHP" step="0.01" />
+            <x-input label="Minimum Amount" wire:model.live="form.minimum_amount" prefix="PHP" step="0.01" />
             <x-input label="Maximum Amount" wire:model="form.maximum_amount" prefix="PHP" step="0.01" />
+
+            <x-input label="Maximum Period" wire:model="form.maximum_period" hint="Maximum period in months" type="number" />
+            @endif
             <x-input label="Penalty" wire:model="form.penalty" prefix="%" step="0.01" />
             <x-input label="Grace period" wire:model="form.grace_period" prefix="Days" step="0.01" />
-        </div>
-        @endif
-        @if($type=='cash_advance')
-        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <x-input label="Amount" wire:model="form.minimum_amount" prefix="PHP" step="0.01" />
-            <x-input label="Charges" type='number' wire:model.live="form.charges" prefix="%" step="0.01" />
+            <x-checkbox label="Compound penalty" wire:model="is_compound_penalty" hint="When enabled, penalties from the previous term will be added to the next penalty calculation." />
 
-        </div>
-        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <x-input label="Read only" value="{{ $this->chargeAmount }}" readonly />
-        </div>
-        <div class="flex items-center">
-            <span>Date Releases</span>
-            <x-button icon="o-minus" class="mx-3 btn-circle btn-sm btn-success" wire:click='reduceReleases' />
-            <span>{{ count($releaseDates) }}</span>
-            <x-button icon="o-plus" class="mx-3 btn-circle btn-sm btn-success" wire:click='addReleases' />
-        </div>
+            @if($type=='cash_advance')
+
+                <x-input label="Amount" wire:model.live="form.minimum_amount" prefix="PHP" step="0.01" />
+                <x-input label="Charges" type='number' wire:model.live="form.charges" prefix="%" step="0.01" />
+                <x-input label="Charge Amount" value="{{ $this->chargeAmount ??0}}" readonly />
+
+            <div class="flex items-center">
+                <span>Date Releases</span>
+                <x-button icon="o-minus" class="mx-3 btn-circle btn-sm btn-success" wire:click='reduceReleases' />
+                <span>{{ count($releaseDates) }}</span>
+                <x-button icon="o-plus" class="mx-3 btn-circle btn-sm btn-success" wire:click='addReleases' />
+            </div>
+
+
+
+
+
         <div class="grid grid-cols-1">
             @php
             $config = [
@@ -198,19 +213,12 @@ new class extends Component {
 
             @foreach ( $releaseDates as $dates )
 
-            <div class="grid grid-cols-1 gap-4 my-2 md:grid-cols-2">
-                <x-datepicker label="Start" wire:model="releaseDates.{{ $loop->index }}.start" icon="o-calendar"
-                    :config="$config" />
-                <x-datepicker label="End" wire:model="releaseDates.{{ $loop->index }}.end" icon="o-calendar"
-                    :config="$config" />
-
-
-
-            </div>
-
-
-
-
+                <div class="grid grid-cols-1 gap-4 my-2 md:grid-cols-2">
+                    <x-datepicker label="Start" wire:model="releaseDates.{{ $loop->index }}.start" icon="o-calendar"
+                        :config="$config" />
+                    <x-datepicker label="End" wire:model="releaseDates.{{ $loop->index }}.end" icon="o-calendar"
+                        :config="$config" />
+                </div>
 
             @endforeach
 

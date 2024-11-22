@@ -96,25 +96,22 @@ class LoanTypeService{
         ];
 
         // Add conditional rules based on type
-        if ($form['type'] == 'regular') {
+        if ($form['type'] == 'regular' ||$form['type'] == 'flexible') {
             $rules['form.annual_rate'] = 'required|numeric';
             $rules['form.maximum_amount'] = 'required|numeric|gte:form.minimum_amount';
             $rules['form.penalty'] = 'required|numeric';
             $rules['form.grace_period'] = 'required|numeric';
+            $rules['form.maximum_period'] = 'required|numeric';
         } else {
             $rules['releaseDates.*.start'] = 'required';
             $rules['releaseDates.*.end'] = 'required';
-            $rules['form.charge_amount'] = 'required';
+            // $rules['form.charge_amount'] = 'required';
 
 
         }
 
         Validator::make($data, $rules,$messages)->validate();
-
         // Run validation and handle failures
-
-
-
         $loanType =LoanType::create($form);
 
         if($data['type'] =='cash_advance'){
@@ -149,7 +146,7 @@ class LoanTypeService{
         $this->loanType->update($form);
 
         $this->loanType->releaseDates()->delete();
-        
+
         if($data['type'] =='cash_advance'){
             if(count($releaseDates)>0){
 

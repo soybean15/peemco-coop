@@ -26,7 +26,7 @@ class LoanApplication implements HasLoan
             'principal' => 'required|min:0',
             'user_id' => 'required|integer|exists:users,id', // Ensure user exists in the users table
             'no_of_installment' => 'required|integer|min:1',
-            'terms_of_loan' => 'required|min:1',
+            'terms_in_year' => 'required|min:1',
             'other_charges' => 'nullable|min:0', // Optional field
             'monthly_payment' => 'required'
         ]);
@@ -43,10 +43,12 @@ class LoanApplication implements HasLoan
         $principal = $data['principal'];
         $user_id = $data['user_id'];
         $no_of_installment = $data['no_of_installment'];
-        $terms_of_loan = $data['terms_of_loan'];
+        $terms_in_year = $data['terms_in_year'];
+        $terms_in_month= $data['terms_in_month'];
+
         $other_charges = $data['other_charges'] ?? 0;  // Default to 0 if not provided
         $monthly_payment = $data['monthly_payment'];
-        $loanType= LoanType::find($data['loan_type']);
+        $loanType= LoanType::find($data['loan_type_id']);
 
         // dd($loanType);
 
@@ -82,7 +84,7 @@ class LoanApplication implements HasLoan
                 'principal_amount' => $principal,
                 'date_applied' => Carbon::now(),
                 'no_of_installment' => $no_of_installment,
-                'terms_of_loan' => $terms_of_loan,
+                'terms_in_year' => $terms_in_year,
                 'other_charges' => $other_charges,
                 'annual_interest_rate' => $annual_rate,
                 'monthly_interest_rate' => $monthly_rate,
@@ -105,11 +107,11 @@ class LoanApplication implements HasLoan
         $loanService
             ->setLoanType($loanType->id)
             ->setPrincipal($principal)
-            ->setTerms($terms_of_loan)
+            ->setTerms($terms_in_year,$terms_in_month)
             ->calculateLoan()
             ->getLoanItems(function ($loanItem,$dueDate)use ($loan) {
 
-                
+
                 LoanItem::create(
                     [
                         'loan_id'=>$loan->id,
