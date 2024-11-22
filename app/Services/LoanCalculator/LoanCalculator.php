@@ -6,18 +6,19 @@ use App\Models\LoanType;
 use App\Models\User;
 use App\Services\LoanType\LoanTypeService;
 use Carbon\Carbon;
+use Exception;
 
 class LoanCalculator
 {
 
 
     protected $user;
-    public  $terms;
+    public  $terms_in_year;
 
     public $number_of_installment;
     public $principal;
     public $monthly_rate;
-    public $annual_rate; //Monthly x terms
+    public $annual_rate; //Monthly x terms_in_year
 
     public $monthly_payment;
 
@@ -50,10 +51,7 @@ class LoanCalculator
     }
     public function setLoanType($loanTypeId){
 
-
         $this->loanType =LoanType::find($loanTypeId);
-
-
 
         return $this;
     }
@@ -63,11 +61,20 @@ class LoanCalculator
         return $this;
     }
 
-    public function setTerms($terms)
+    public function setTerms($terms_in_years, $terms_in_month)
     {
-        $this->terms = $terms;
 
-        $this->number_of_installment = $terms * 12;
+
+
+        $this->terms_in_year = $terms_in_years;
+
+
+        $this->number_of_installment = ($terms_in_years ? $terms_in_years : 0) * 12;
+
+
+        $this->number_of_installment +=$terms_in_month;
+
+
 
         $this->setLoanDetails();
         return $this;
@@ -80,11 +87,11 @@ class LoanCalculator
 
         $rate =$this->loanType->annual_rate/100;
 
-        if ((int)$this->terms === 1) {
+        if ((int)$this->terms_in_year === 1) {
             $this->annual_rate = $rate;
-        } elseif ((int)$this->terms === 2) {
+        } elseif ((int)$this->terms_in_year === 2) {
             $this->annual_rate = $rate * 1.20;
-        } elseif ((int)$this->terms > 2) {
+        } elseif ((int)$this->terms_in_year > 2) {
             $this->annual_rate = $rate * 1.20 * 1.074;
 
         } else {
@@ -97,6 +104,14 @@ class LoanCalculator
     public function calculateLoan()
     {
 
+
+        // dd($this->number_of_installment,$this->loanType->maximum_period);
+        if($this->number_of_installment > $this->loanType->maximum_period){
+
+            $max =$this->loanType->maximum_period;
+
+            throw new Exception(message: "Maximum period is  $max months");
+        }
         // dd($this->number_of_installment);
 
         // Step 1: Calculate the numerator

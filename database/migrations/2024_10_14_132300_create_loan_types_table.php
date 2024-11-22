@@ -29,8 +29,8 @@ return new class extends Migration
             $table->decimal('penalty',8,2)->comment('%')->nullable();
 
             $table->decimal( 'grace_period',8,2)->comment('%')->nullable();
-
-
+            $table->integer( 'maximum_period')->comment('in months')->nullable();
+            $table->boolean( 'is_compound_penalty')->default(false);
             $table->dateTime('completed_at')->default(null)->nullable();
             $table->string('apply_to')->comment('all, selected')->nullable();
 

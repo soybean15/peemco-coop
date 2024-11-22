@@ -101,10 +101,11 @@ class LoanTypeService{
             $rules['form.maximum_amount'] = 'required|numeric|gte:form.minimum_amount';
             $rules['form.penalty'] = 'required|numeric';
             $rules['form.grace_period'] = 'required|numeric';
+            $rules['form.maximum_period'] = 'required|numeric';
         } else {
             $rules['releaseDates.*.start'] = 'required';
             $rules['releaseDates.*.end'] = 'required';
-            $rules['form.charge_amount'] = 'required';
+            // $rules['form.charge_amount'] = 'required';
 
 
         }
@@ -149,7 +150,7 @@ class LoanTypeService{
         $this->loanType->update($form);
 
         $this->loanType->releaseDates()->delete();
-        
+
         if($data['type'] =='cash_advance'){
             if(count($releaseDates)>0){
 
