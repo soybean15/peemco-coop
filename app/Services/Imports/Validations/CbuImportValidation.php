@@ -13,7 +13,7 @@ class CbuImportValidation implements WithImportValidation
 
 
     public $row;
-    public function __construct($row)
+    public function __construct(&$row)
     {
 
         $this->row = $row;

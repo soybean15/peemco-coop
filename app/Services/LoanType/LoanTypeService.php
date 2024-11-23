@@ -58,10 +58,6 @@ class LoanTypeService{
 
 
     public  function store($data){
-
-
-
-
         $form = $data['form'];
         // dd($form['type']);
 

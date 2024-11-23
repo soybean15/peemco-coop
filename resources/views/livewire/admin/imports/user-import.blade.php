@@ -49,6 +49,11 @@ new class extends Component {
 
    }
     }
+
+    public function completeLoading(JobProcess $job){
+
+$job->touch('completed_at');
+}
 }; ?>
 
 <div>
@@ -59,9 +64,9 @@ new class extends Component {
         <x-slot:middle class="!justify-end">
             <div wire:poll.1s>
 
-                @foreach ( auth()->user()->onGoingImports() as $import)
+                @foreach ( auth()->user()->onGoingImports()->where('process_for','user_import') as $import)
 
-                <x-progress-radial value="{{  $import->percentage() }}" />
+                <x-progress-radial value="{{  $import->percentage() }}" wire:click='completeLoading({{ $import }})' />
                 {{-- {{ $import->processed_rows }}/
                 {{ $import->total_rows }} --}}
                 @endforeach

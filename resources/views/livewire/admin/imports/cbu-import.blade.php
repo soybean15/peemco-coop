@@ -7,7 +7,8 @@ use App\Imports\CbuImport;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Auth;
 use App\Jobs\NotifyUserOfCompletedImport;
-
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\CbuExport;
 new class extends Component {
     use  WithFileUploads;
     public $file;
@@ -43,6 +44,17 @@ new class extends Component {
             // dd($import->errors());        // (new UsersImport)->withOutput($this->output)->import('testemail.xlsx');
     }
 
+    public function completeLoading(JobProcess $job){
+
+
+        $job->touch('completed_at');
+    }
+
+    public function exportTemplate(){
+      
+        return Excel::download(new CbuExport, 'cbu.xlsx');
+    }
+
 }; ?>
 
 <div>
@@ -52,9 +64,9 @@ new class extends Component {
         <x-slot:middle class="!justify-end">
             <div wire:poll.1s>
 
-                @foreach ( auth()->user()->onGoingImports() as $import)
+                @foreach ( auth()->user()->onGoingImports()->where('process_for','cbu_import') as $import)
 
-                <x-progress-radial value="{{  $import->percentage() }}" />
+                <x-progress-radial value="{{  $import->percentage() }}" wire:click='completeLoading({{ $import }})'/>
                 {{-- {{ $import->processed_rows }}/
                 {{ $import->total_rows }} --}}
                 @endforeach
@@ -66,7 +78,7 @@ new class extends Component {
             <x-button label="Import" class="btn-success" wire:click='import' />
 
             @endif
-
+            <x-button label="Download Template" class="btn-ghost " wire:click='exportTemplate' />
         </x-slot:actions>
     </x-header>
 
