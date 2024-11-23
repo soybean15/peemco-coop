@@ -36,7 +36,7 @@ class NotifyUserOfCompletedImport implements ShouldQueue
         $failedRows = Cache::get(ImportCacheNameEnum::CBU->value, default: []);
 
 
-        dd($failedRows);
+        // dd($failedRows);
         $this->jobProcess->touch('completed_at');
 
         // dd('import complete');

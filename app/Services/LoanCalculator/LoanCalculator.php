@@ -176,13 +176,6 @@ class LoanCalculator
 
         while($i<=$this->number_of_installment){
 
-            // $this->loanItems[]=[
-            //     'period'=>$loanItem->getPeriod(),
-            //     'principal'=>$loanItem->getPrincipal(),
-            //     'net_proceed'=>$loanItem->getNetProceed(),
-            //     'balance'=>$loanItem->getOutstandingBalance()
-            // ];
-
             $loanItem = new LoanItem($this, $balance, $i);
             // $this->loanItems[]=$loanItem;
 
@@ -210,8 +203,7 @@ class LoanCalculator
     public function getAnnualRate(){
 
         return $this->annual_rate;
-        // $percentage = number_format($this->annual_rate * 100, 2);
-        // return "$percentage%";
+       
     }
 
     public function getMonthlyRate()
