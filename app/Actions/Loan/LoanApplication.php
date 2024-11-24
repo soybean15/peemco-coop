@@ -84,7 +84,7 @@ class LoanApplication implements HasLoan
                 'principal_amount' => $principal,
                 'date_applied' => Carbon::now(),
                 'no_of_installment' => $no_of_installment,
-                'terms_in_year' => $terms_in_year,
+                // 'terms_in_year' => $terms_in_year,
                 'other_charges' => $other_charges,
                 'annual_interest_rate' => $annual_rate,
                 'monthly_interest_rate' => $monthly_rate,

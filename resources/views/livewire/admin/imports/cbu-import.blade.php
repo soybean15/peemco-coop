@@ -46,12 +46,12 @@ new class extends Component {
 
     public function completeLoading(JobProcess $job){
 
-
+        
         $job->touch('completed_at');
-    }
 
+    }
     public function exportTemplate(){
-      
+
         return Excel::download(new CbuExport, 'cbu.xlsx');
     }
 
