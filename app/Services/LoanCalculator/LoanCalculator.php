@@ -168,6 +168,8 @@ class LoanCalculator
     {
 
 
+        if($this->loanType->type=='flexible') return;
+
         $i=1;
         $balance = $this->principal;
 
@@ -203,7 +205,7 @@ class LoanCalculator
     public function getAnnualRate(){
 
         return $this->annual_rate;
-       
+
     }
 
     public function getMonthlyRate()

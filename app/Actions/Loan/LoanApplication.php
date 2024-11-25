@@ -20,16 +20,25 @@ class LoanApplication implements HasLoan
     public function handle($data): Loan
     {
 
+        $loanType = LoanType::find($data['loan_type_id']);
+
         $validator = Validator::make($data, [
-            'monthly_rate' => 'required|min:0',
-            'annual_rate' => 'required|min:0',
-            'principal' => 'required|min:0',
-            'user_id' => 'required|integer|exists:users,id', // Ensure user exists in the users table
-            'no_of_installment' => 'required|integer|min:1',
-            'terms_in_year' => 'required|min:1',
-            'other_charges' => 'nullable|min:0', // Optional field
-            'monthly_payment' => 'required'
+            'monthly_rate' => 'required|numeric|min:0',
+            'annual_rate' => 'required|numeric|min:0',
+            'principal' => 'required|numeric|min:0',
+            'user_id' => 'required|integer|exists:users,id',
+            // 'terms_in_year' => 'required|integer|min:1',
+            'other_charges' => 'nullable|numeric|min:0',
         ]);
+
+        // Add conditional validation for "no_of_installment" and "monthly_payment"
+        $validator->sometimes('no_of_installment', 'required|integer|min:1', function () use ($loanType) {
+            return $loanType && $loanType->status == 'regular';
+        });
+
+        $validator->sometimes('monthly_payment', 'required|numeric|min:0', function () use ($loanType) {
+            return $loanType && $loanType->status == 'regular';
+        });
 
         if ($validator->fails()) {
             throw new ValidationException($validator);
@@ -88,7 +97,7 @@ class LoanApplication implements HasLoan
                 'other_charges' => $other_charges,
                 'annual_interest_rate' => $annual_rate,
                 'monthly_interest_rate' => $monthly_rate,
-                'monthly_payment' => $monthly_payment,
+                'monthly_payment' => $monthly_payment??0,
                 'status' => 'pending'
             ]
         );

@@ -2,40 +2,29 @@
 
 use Livewire\Volt\Component;
 use App\Models\Loan;
-use App\Actions\Loan\LoanApproval;
-use App\Actions\Loan\LoanRejection;
 
-use App\Helpers\PdfGenerator;
-use Mary\Traits\Toast;
-use App\Services\Loans\LoanService;
-use App\Services\LoanPayment\LoanPaymentService;
-use Spatie\LaravelPdf\Facades\Pdf;
 use App\Traits\Loans\LoanTrait;
 new class extends Component {
-
     use LoanTrait;
 
+    public $payments;
+    public function mount(Loan $loan)
+    {
+        $this->headers = [
 
-    // public function with(){
-    //     // return [
+            ['key' => 'date', 'label' => 'Date'],
+            ['key' => 'or_cdv', 'label' => 'OR CDV'],
+            ['key' => 'amount_paid', 'label' => 'Amount Paid'],
+            ['key' => 'added_by', 'label' => 'Added By'],
+        ];
 
-    //     //     'loanItem'->$this->loan->items,
-    //     //     'headers'=>[
+        $this->payments  = $loan->payments;
 
-    //     //             ['key' => 'loan_period', 'label' => 'Period'],
-    //     //             ['key' => 'amount_due', 'label' => 'Amount Due'],
-    //     //             ['key' => 'past_due', 'label' => 'Past Due'],
-    //     //             ['key' => 'running_balance', 'label' => 'Running Balance'],
-
-    //     //     ]
-    //     // ];
-    // }
-
+    }
 
 }; ?>
 
 <div>
-
     <div class="p-6 border rounded">
         <x-header title="Loan Details"  separator>
 
@@ -82,51 +71,32 @@ new class extends Component {
             <x-stat title="Member" value="{{ $this->loan->user->name  }}" />
 
             <x-stat title="Loan Amount" value="{{ number_format($this->loan->principal_amount ,2)}}" />
-            <x-stat title="Monthly Payment" value="{{ number_format($this->loan->monthly_payment ,2)}}"
-                description='Rate: {{ $this->loan->monthly_interest_rate }}' />
+
+
+            <x-stat title="Total Payment" value="{{ number_format($this->loan->totalPayments ,2)}}"
+                description='Balance : {{ number_format(($this->loan->principal_amount - $this->loan->totalPayments))}}' />
 
 
 
         </div>
-    </div>
 
+        <div class="p-5 mt-3 border">
+            <x-header title="Payment History"  size='text-xl' separator>
+                <x-slot:actions>
 
-    <div class="p-5 mt-3 border">
-        <x-header title="Payment Schedule"  size='text-xl' separator/>
-    <x-table :headers="$headers" :rows="$loanItems" x-on:refresh-page.window="$wire.$refresh()" >
+                    <x-button icon="o-plus" x-on:click="$dispatch('add-flexible-payment',{loanId:{{ $loan->id }}})" class="btn-primary"  label="Add Payment"/>
+                </x-slot:actions>
 
-        @scope('cell_total_due', $loan)
-        <div>
+            </x-header>
+            <x-table :headers="$headers"  :rows="$this->payments" striped  show-empty-text empty-text="No Payment yet!" >
+                @scope('cell_added_by', $payment)
 
-            <span>{{ $loan->total_due }} </span>
-            @if($loan->penalty >0)
-            <span class="text-red-500">({{ ($loan->penalty) }} )</span>
-            @endif
+                   {{ $payment->addedBy->name}}
+                @endscope
+            </x-table>
         </div>
-
-        @endscope
-        @scope('cell_status', $loan)
-        @if($loan->status=='to pay')
-        <x-badge :value="$loan->status" class="badge-info" />
-
-        <x-button x-on:click="$dispatch('add-payment',{loanItemId:{{ $loan->id }}})" icon="o-currency-dollar"
-            class="btn-sm btn-info" />
-
-        @elseif($loan->status=='overdue')
-        <x-badge :value="$loan->status" class="badge-error" />
-        @elseif($loan->status=='paid')
-        <x-badge :value="$loan->status" class="badge-success" />
-
-        @else
-        <x-badge :value="$loan->status" class="badge-warning" />
-
-        @endif
-        @endscope
-    </x-table>
 
     </div>
 
     <livewire:admin.loan.loan-payment-modal />
-
-
 </div>

@@ -33,7 +33,7 @@ return new class extends Migration
             $table->decimal('principal_amount', 11, 2)->nullable();
 
             $table->bigInteger('terms_of_loan')->nullable();
-            
+
             $table->bigInteger('no_of_installment')->nullable();
             $table->decimal('other_charges', 11, 2)->nullable();
             $table->decimal('annual_interest_rate', 11, 2)->nullable();

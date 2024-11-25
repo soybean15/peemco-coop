@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Enums\LoanStatuEnum;
+use Dompdf\Css\Content\Attr;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
@@ -55,6 +57,10 @@ class Loan extends Model
 
     }
 
+    public function payments(){
+        return $this->hasMany(LoanPayment::class);
+    }
+
     public function scopePending(Builder $builder){
         return $builder->where('status','pending');
     }
@@ -64,4 +70,14 @@ class Loan extends Model
     public function scopeCompleted(Builder $builder){
         return $builder->where('status','completed');
     }
+
+
+
+    public function totalPayments():Attribute{
+        return Attribute::make(
+            get:fn()=>$this->payments()->sum('amount_paid')
+        );
+    }
+
+
 }
