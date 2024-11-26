@@ -66,9 +66,7 @@ new class extends Component {
 
         @scope('cell_action', $user)
         <x-button wire:confirm='Are you sure you want archive this user?' wire:click='restoreUser({{ $user->id }})' icon='o-arrow-path' class="btn-info btn-sm"/>
-            <x-button wire:confirm='Are you sure you want to permanently delete this user?'  wire:click='deleteUser({{ $user->id }})' icon='o-trash' class="btn-error btn-sm"/>
-
-
+  
         @endscope
     </x-table>
 </div>
