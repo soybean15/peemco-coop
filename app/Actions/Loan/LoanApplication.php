@@ -44,8 +44,6 @@ class LoanApplication implements HasLoan
             throw new ValidationException($validator);
         }
 
-
-
         // Continue with your logic if validation passes
         $monthly_rate = $data['monthly_rate'];
         $annual_rate = $data['annual_rate'];
@@ -80,10 +78,6 @@ class LoanApplication implements HasLoan
         $loanService = app(LoanCalculator::class);
 
 
-
-
-
-
         $loan = Loan::create(
             [
                 'loan_application_no' => IdGenerator::generateId(LoanServiceProvider::LOAN_PREFIX, LoanServiceProvider::LOAN_LEN),
@@ -109,18 +103,12 @@ class LoanApplication implements HasLoan
         //     'net_proceed'=>$loanItem->getNetProceed(),
         //     'balance'=>$loanItem->getOutstandingBalance()
         // ];
-
-
-
-
         $loanService
             ->setLoanType($loanType->id)
             ->setPrincipal($principal)
             ->setTerms($terms_in_year,$terms_in_month)
             ->calculateLoan()
             ->getLoanItems(function ($loanItem,$dueDate)use ($loan) {
-
-
                 LoanItem::create(
                     [
                         'loan_id'=>$loan->id,
