@@ -5,6 +5,7 @@ use App\Models\User;
 use Livewire\WithPagination;
 use Mary\Traits\Toast;
 new class extends Component {
+
     use Toast;
     use WithPagination;
     public $search;
@@ -26,12 +27,24 @@ new class extends Component {
     }
 
 
-    public function restoreUser(User $user){
+    public function restoreUser($userId){
 
-        $user->restore();
+
+        $user = User::withTrashed()->findOrFail($userId);
+
+        if ($user->trashed()) {
+            $user->restore();
+            $this->success('User has been restored!');
+        }
     }
-    public function deleteUser(User $user){
-        $user->forceDelete();
+    public function deleteUser( $userId){
+        $user = User::withTrashed()->findOrFail($userId);
+
+        if ($user->trashed()) {
+            $user->forceDelete();
+            $this->success('User has been permanently deleted!');
+        }
+
     }
 
 }; ?>
@@ -52,8 +65,9 @@ new class extends Component {
     <x-table :headers="$userHeaders" :rows="$users" with-pagination >
 
         @scope('cell_action', $user)
-            <x-button wire:click='restoreUser({{ $user }})' icon='o-arrow-path' class="btn-info btn-sm"/>
-            <x-button  wire:click='deleteUser({{ $user }})' icon='o-trash'  class="btn-error btn-sm"/>
+        <x-button wire:confirm='Are you sure you want archive this user?' wire:click='restoreUser({{ $user->id }})' icon='o-arrow-path' class="btn-info btn-sm"/>
+            <x-button wire:confirm='Are you sure you want to permanently delete this user?'  wire:click='deleteUser({{ $user->id }})' icon='o-trash' class="btn-error btn-sm"/>
+
 
         @endscope
     </x-table>

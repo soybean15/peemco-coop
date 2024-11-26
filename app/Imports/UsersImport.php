@@ -39,7 +39,7 @@ class UsersImport implements ToModel, WithHeadingRow, WithProgressBar, WithChunk
     public $jobProcess ;
     public function __construct($jobProcess){
 
-      
+
         $this->jobProcess=$jobProcess;
     }
     public function model(array $row)
@@ -59,37 +59,12 @@ class UsersImport implements ToModel, WithHeadingRow, WithProgressBar, WithChunk
 
 
 
-    // public function rules(): array
-    // {
-    //     return [
-    //         'email' => 'required|email|unique:users,email',
-    //         'username' => 'required|unique:users,username',
-    //         'name' => 'required'
-    //     ];
-    // }
 
 
     public function chunkSize(): int
     {
         return 50;
     }
-    // public function registerEvents(): array
-    // {
-    //     return [
-    //         ImportFailed::class => function(ImportFailed $event) {
-
-    //             dd('here');
-    //         },
-    //     ];
-    // }
-
-
-    // public function onFailure(Failure ...$failures)
-    // {
-    //     // Collect failed rows and error messages
-    //     dd($failures);
-
-    // }
 
     public function registerEvents(): array
     {
@@ -97,7 +72,9 @@ class UsersImport implements ToModel, WithHeadingRow, WithProgressBar, WithChunk
             BeforeImport::class => function (BeforeImport $event) {
                 $totalRows = $event->getReader()->getTotalRows();
                 // dd($totalRows['Form responses 1']);
-                $this->jobProcess->update(['total_rows'=>$totalRows['Form responses 1']]);
+                $value = reset($totalRows);
+
+                $this->jobProcess->update(['total_rows'=>$value]);
                 // dd($this->jobProcess);
 
             },
