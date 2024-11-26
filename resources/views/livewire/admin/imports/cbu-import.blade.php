@@ -46,7 +46,7 @@ new class extends Component {
 
     public function completeLoading(JobProcess $job){
 
-        
+
         $job->touch('completed_at');
 
     }
@@ -62,16 +62,8 @@ new class extends Component {
     <x-header title="CBU import" subtitle="Drag or select you file" separator>
 
         <x-slot:middle class="!justify-end">
-            <div wire:poll.1s>
 
-                @foreach ( auth()->user()->onGoingImports()->where('process_for','cbu_import') as $import)
-
-                <x-progress-radial value="{{  $import->percentage() }}" wire:click='completeLoading({{ $import }})'/>
-                {{-- {{ $import->processed_rows }}/
-                {{ $import->total_rows }} --}}
-                @endforeach
-
-            </div>
+        <livewire:components.job-progress :processFor="'cbu_import'"/>
         </x-slot:middle>
         <x-slot:actions>
             @if($file)
