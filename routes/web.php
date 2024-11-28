@@ -9,6 +9,7 @@ Route::get('/', function(){
 });
 
 
+
 // Route::get('/','user.dashboard')->name('dashboard');
 
 // Route::view('dashboard', 'dashboard')

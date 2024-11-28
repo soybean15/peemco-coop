@@ -26,8 +26,9 @@
 
                 <x-menu-item title="Dashboard" icon="o-computer-desktop" link="{{route('admin.dashboard')}}" />
                 <x-menu-sub title="Users" icon="o-user-group">
-                    <x-menu-item title="List" link="{{route('admin.users')}}" />
-                    <x-menu-item title="Archives"  link="####" />
+                    <x-menu-item title="List" link="{{route('admin.users')}}" exact/>
+                    {{-- 'admin.user-archives' --}}
+                    <x-menu-item title="Archives"  link="{{ route('admin.user-archives') }}" />
                 </x-menu-sub>
 
                 <x-menu-item title="Loan Type" icon="o-computer-desktop" link="{{route('admin.loan-type')}}" />

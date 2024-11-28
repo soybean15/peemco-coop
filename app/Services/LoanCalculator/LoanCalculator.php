@@ -3,15 +3,12 @@
 namespace App\Services\LoanCalculator;
 
 use App\Models\LoanType;
-use App\Models\User;
 use App\Services\LoanType\LoanTypeService;
 use Carbon\Carbon;
 use Exception;
 
 class LoanCalculator
 {
-
-
     protected $user;
     public  $terms_in_year;
 
@@ -156,17 +153,15 @@ class LoanCalculator
 
         // dd($this->loanItems);
         // dd($this->principal,$this->number_of_installment,$this->monthly_payment);//50000 ,12
-
         // dd($this->monthly_payment);//this is 0 why?
-
         return $this;
 
     }
-
-
     public function getLoanItems($callback=null)
     {
 
+
+        if($this->loanType->type=='flexible') return;
 
         $i=1;
         $balance = $this->principal;
@@ -175,10 +170,8 @@ class LoanCalculator
         $dueDate = Carbon::now();
 
         while($i<=$this->number_of_installment){
-
             $loanItem = new LoanItem($this, $balance, $i);
             // $this->loanItems[]=$loanItem;
-
             $this->loanItems[]=[
                 'period'=>$loanItem->getPeriod(),
                 'interest'=>$loanItem->getInterest(),
@@ -203,7 +196,7 @@ class LoanCalculator
     public function getAnnualRate(){
 
         return $this->annual_rate;
-       
+
     }
 
     public function getMonthlyRate()

@@ -19,6 +19,10 @@ class LoanService{
 
         $this->loanHandler->handle($data);
 
+        //EMail
+
+        //adding autdit
+
 
     }
 

@@ -22,7 +22,7 @@ new class extends Component {
                 ['key'=>'loan_type' ,'label'=>'Loan Type'],
 
                 ['key'=>'principal_amount' ,'label'=>'Principal Amount'],
-                ['key'=>'terms_of_loan' ,'label'=>'Terms of loan'],
+                ['key'=>'no_of_installment' ,'label'=>'Number of periods'],
                 ['key'=>'monthly_interest_rate' ,'label'=>'Monthly Rate'],
                 ['key'=>'monthly_payment' ,'label'=>'Monthly Payment'],
                 ['key'=>'status' ,'label'=>'Status'],

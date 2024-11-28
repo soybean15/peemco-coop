@@ -10,30 +10,12 @@ use Mary\Traits\Toast;
 use App\Services\Loans\LoanService;
 use App\Services\LoanPayment\LoanPaymentService;
 use Spatie\LaravelPdf\Facades\Pdf;
+use App\Traits\Loans\LoanTrait;
 new class extends Component {
-    use Toast;
-    public $loan;
 
-    public $loanItems;
-    public $headers;
-    public function mount(Loan $loan){
-        $this->loan=$loan;
-        $this->loanItems = $loan->items;
-        $this->headers = [
+    use LoanTrait;
 
-                    ['key' => 'loan_period', 'label' => 'Period'],
-                    ['key' => 'due_date', 'label' => 'Due Date'],
-                    ['key' => 'amount_due', 'label' => 'Amount Due'],
-                    ['key' => 'past_due', 'label' => 'Past Due'],
-                    ['key' => 'total_due', 'label' => 'Total Due'],
-                    ['key' => 'amount_paid', 'label' => 'Amount Paid'],
-                    ['key' => 'running_balance', 'label' => 'Running Balance'],
-                    ['key' => 'status', 'label' => 'Status'],
-        ];
-
-        (new LoanPaymentService($loan))->handle();
-    }
-
+    public $expanded=[];
 
     // public function with(){
     //     // return [
@@ -50,43 +32,7 @@ new class extends Component {
     //     // ];
     // }
 
-    public function approveLoan(){
-        try{
-          (new LoanService(new LoanApproval()))->handle(
-            [
-                'loan'=>$this->loan
-            ]
-          );
 
-          $this->success('Loan Approved');
-        }catch(\Exception $e){
-
-            $this->error($e->getMessage());
-        }
-
-    }
-    public function rejectLoan(){
-        try{
-          (new LoanService(new LoanRejection()))->handle(
-            [
-                'loan'=>$this->loan
-            ]
-          );
-
-          $this->success('Loan Rejected');
-        }catch(\Exception $e){
-
-            $this->error($e->getMessage());
-        }
-
-    }
-
-    public function print(){
-
-        return (new PdfGenerator('invoices.salary-loan-application'))->stream();
-        // Pdf::view('invoices.salary-loan-application')->save('invoice.pdf');
-
-    }
 }; ?>
 
 <div>
@@ -133,7 +79,7 @@ new class extends Component {
         <div class="grid grid-cols-4">
 
 
-            <x-stat title="Loan Number" value="{{ $this->loan->loan_application_no  }}" />
+            <x-stat title="Loan Number" value="{{ $this->loan->loan_application_no  }}"    description="{{ ucfirst($this->loan->loanType->type) }}"/>
             <x-stat title="Member" value="{{ $this->loan->user->name  }}" />
 
             <x-stat title="Loan Amount" value="{{ number_format($this->loan->principal_amount ,2)}}" />
@@ -147,16 +93,19 @@ new class extends Component {
 
 
     <div class="p-5 mt-3 border">
-        <x-header title="Payment Schedule"  size='text-xl' separator/>
-    <x-table :headers="$headers" :rows="$loanItems" x-on:refresh-page.window="$wire.$refresh()" >
+    <x-header title="Payment Schedule"  size='text-xl' separator/>
+    <x-table :headers="$headers" :rows="$loanItems" x-on:refresh-page.window="$wire.$refresh()" wire:model='expanded' expandable >
 
         @scope('cell_total_due', $loan)
-        <div>
+        <div class="flex items-center">
 
             <span>{{ $loan->total_due }} </span>
             @if($loan->penalty >0)
             <span class="text-red-500">({{ ($loan->penalty) }} )</span>
+
             @endif
+
+
         </div>
 
         @endscope
@@ -177,6 +126,45 @@ new class extends Component {
 
         @endif
         @endscope
+
+
+        @scope('expansion', $loan)
+        <div class="0">
+
+            @if(count($loan->penalties)>0)
+                <strong>Penalties</strong>
+                @foreach ($loan->penalties as $penalty )
+                    <x-list-item :item="$penalty" no-separator no-hover>
+                        <x-slot:avatar>
+                            <x-badge value="{{ $penalty->penalty_date }}" class="badge-error" />
+                        </x-slot:avatar>
+                        <x-slot:value>
+                          Penalty amount: {{$penalty->amount}}
+                        </x-slot:value>
+                        <x-slot:sub-value>
+                            Running balance:  {{$penalty->running_balance}}
+                        </x-slot:sub-value>
+                        <x-slot:actions>
+
+                        </x-slot:actions>
+                    </x-list-item>
+                @endforeach
+
+                {{-- <ul >
+                    @foreach ($loan->penalties as $penalty )
+                    <li class="flex space-x-3 ">
+
+                        <span> {{ $penalty->penalty_date }}</span>
+                        <span> {{ $penalty->amount }}</span>
+                        <span> {{ $penalty->running_balance }}</span>
+                    </li>
+
+                    @endforeach
+                </ul> --}}
+            @endif
+        </div>
+        @endscope
+
     </x-table>
 
     </div>

@@ -16,4 +16,8 @@ class LoanPayment extends Model
         'loan_item_id',
         'added_by'
     ];
+
+    public function addedBy(){
+        return $this->belongsTo(User::class,'added_by');
+    }
 }

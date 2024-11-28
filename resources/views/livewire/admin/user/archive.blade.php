@@ -3,7 +3,10 @@
 use Livewire\Volt\Component;
 use App\Models\User;
 use Livewire\WithPagination;
+use Mary\Traits\Toast;
 new class extends Component {
+
+    use Toast;
     use WithPagination;
     public $search;
     public function with(){
@@ -19,37 +22,51 @@ new class extends Component {
                 ['key' => 'action', 'label' => 'Action', 'class' => 'hidden lg:table-cell'],
                 // Alternative approach
             ],
-            'users'=>User::search($this->search)->paginate(10)
+            'users'=>User::onlyTrashed()->search($this->search)->paginate(10)
         ];
     }
 
-    public function deleteUser(User $user){
 
-        $user->delete();
+    public function restoreUser($userId){
+
+
+        $user = User::withTrashed()->findOrFail($userId);
+
+        if ($user->trashed()) {
+            $user->restore();
+            $this->success('User has been restored!');
+        }
+    }
+    public function deleteUser( $userId){
+        $user = User::withTrashed()->findOrFail($userId);
+
+        if ($user->trashed()) {
+            $user->forceDelete();
+            $this->success('User has been permanently deleted!');
+        }
 
     }
-
 
 }; ?>
 
 <div>
-    @if(session()->has('success'))
+    {{-- @if(session()->has('success'))
         <x-icon name="o-check" class="text-2xl text-green-500 w-9 h-9" label=" {{session('success')}}"/>
-    @endif
+    @endif --}}
 
     <x-header title="Users" subtitle="Your home address" separator>
         <x-slot:actions>
             <x-input icon="o-magnifying-glass" wire:model.live='search' placeholder="Search Members" />
             @can('add user')
-            <x-button icon="o-user-plus" label="Add Member" link="{{route('admin.add-users')}}" class="btn-primary" />
+            <x-button icon="o-user-plus" label="Add Member" link="{{route('admin.add-users')}}" class="btn-primary"  />
             @endcan
         </x-slot:actions>
     </x-header>
     <x-table :headers="$userHeaders" :rows="$users" with-pagination >
 
         @scope('cell_action', $user)
-        <x-button icon='o-eye' class="btn-ghost btn-sm" link="{{route('admin.user',['user'=>$user->id])}}"/>
-        <x-button icon='o-archive-box' class="btn-error btn-sm" wire:confirm='Are you sure you want archive this Employee?' wire:click='deleteUser({{ $user }})'/>
+        <x-button wire:confirm='Are you sure you want archive this user?' wire:click='restoreUser({{ $user->id }})' icon='o-arrow-path' class="btn-info btn-sm"/>
+  
         @endscope
     </x-table>
 </div>

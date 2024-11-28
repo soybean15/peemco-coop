@@ -11,6 +11,8 @@ class LoanItemPenalty extends Model
     [
         'loan_item_id',
         'amount',
-        'rate'
+        'rate',
+        'penalty_date',
+        'running_balance'
     ];
 }

@@ -169,7 +169,7 @@ new class extends Component {
 
           $this->success('Loan Application Successful');
 
-          if($this->renderOn=='user'){
+          if($this->renderFrom=='user'){
             return redirect()->to(route('user.loans'));
 
           }
@@ -177,6 +177,7 @@ new class extends Component {
 
         }catch(\Exception $e){
 
+            dd($e);
             $this->error($e->getMessage());
         }
 
