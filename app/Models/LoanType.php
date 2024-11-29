@@ -42,6 +42,16 @@ class LoanType extends Model
         });
     }
 
+
+    public function scopeCashAdvance(Builder $builder)
+    {
+
+            $builder->where('type', 'cash_advance');
+
+
+    }
+
+
     public function loanTypeUsers(){
         return $this->hasMany(LoanTypeUser::class,);
     }
