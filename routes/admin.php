@@ -32,9 +32,10 @@ Route::prefix('/')->group(function(){
         Volt::route('profile/{loan}','admin.loan.profile')->name('admin.loan-profile');
         Volt::route('/active','admin.loan.active')->name('admin.active');
         Route::get('/loan-application-pdf',[PdfController::class,'generateLoanApplication'])->name( 'admin.generate-loan-application-pdf');
-    Volt::route('/apply-loan','admin.loan-application')->name('admin.loan-application');
-    Volt::route('/regular-loan','admin.loan-calculator')->name(name: 'admin.loan-regular');
-    Volt::route('/cash-advance','admin.loan.cash-advance-application')->name('admin.loan-cash-advance');
+        Volt::route('/apply-loan','admin.loan-application')->name('admin.loan-application');
+        Volt::route('/regular-loan','admin.loan-calculator')->name(name: 'admin.loan-regular');
+        Volt::route('/cash-advance','admin.loan.cash-advance-application')->name('admin.loan-cash-advance');
+    Volt::route('/cash-advance/{cashAdvance}','admin.loan.apply-cash-advance')->name('admin.loan-cash-advance-application');
 
 
         // Volt::route('/completed','admin.loan.completed')->name('admin.completed');

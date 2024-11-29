@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -54,5 +55,17 @@ class LoanType extends Model
 
     public function loanTypeUsers(){
         return $this->hasMany(LoanTypeUser::class,);
+    }
+
+
+    public function chargeAmount():Attribute{
+        return Attribute::make(
+            get:function(){
+
+
+                return $this->minimum_amount *( $this->charges/100);
+
+            }
+        );
     }
 }
