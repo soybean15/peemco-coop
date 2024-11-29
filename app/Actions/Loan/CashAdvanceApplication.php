@@ -11,7 +11,6 @@ class CashAdvanceApplication implements HasLoan{
     public function handle($data): Loan
     {
 
-        return new Loan;
 
 
     }
