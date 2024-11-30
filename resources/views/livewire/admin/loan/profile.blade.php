@@ -15,6 +15,13 @@ new class extends Component {
 
 <div>
 
+    <x-bread-crumbs :routes="[
+        ['label'=>'Loan Details','name'=>'admin.pending'],
+        ['label'=>$this->loan->loan_application_no],
+
+
+    ]" />
+
     @if($this->loan->loanType->type =='regular')
 
     <livewire:components.loan-profile :loan='$loan'/>
