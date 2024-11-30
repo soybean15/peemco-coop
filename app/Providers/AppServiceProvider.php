@@ -14,6 +14,7 @@ use App\View\Components\Charts\PieChart;
 use App\View\Components\Layout\SideBar;
 use App\View\Components\Loan\CashAdvanceCard;
 use App\View\Components\RichTextEditor;
+use App\View\Components\Statistic;
 use App\View\Components\SystemLogo;
 use App\View\Components\UserProfileView;
 use Illuminate\Support\Facades\Blade;
@@ -56,6 +57,8 @@ class AppServiceProvider extends ServiceProvider
         }
 
         Blade::component('bread-crumbs',BreadCrumbs::class);
+        // Blade::component('stat',Statistic::class);
+
 
 
         Blade::component('side-bar',SideBar::class);
