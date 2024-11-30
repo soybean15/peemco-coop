@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Services\Permissions\PermissionGates;
 use App\Services\Settings\GeneralSettingsService;
 use App\Services\Users\UserManagementService;
+use App\View\Components\BreadCrumbs;
 use App\View\Components\Charts\AreaChart;
 use App\View\Components\Charts\BarChart;
 use App\View\Components\Charts\ColumnChart;
@@ -54,8 +55,12 @@ class AppServiceProvider extends ServiceProvider
             PermissionGates::generate();
         }
 
+        Blade::component('bread-crumbs',BreadCrumbs::class);
+
+
         Blade::component('side-bar',SideBar::class);
         Blade::component('profile-view',UserProfileView::class);
+
 
 
 

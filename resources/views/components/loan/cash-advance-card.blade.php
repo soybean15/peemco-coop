@@ -18,7 +18,7 @@
         </div>
         <div class="p-6 mt-auto border-t border-gray-200 bg-gray-50">
 
-            <x-button label="Apply" class="w-full text-base-100 btn btn-success" :disabled="$disabled" link="{{ route('admin.loan-cash-advance-application',['cashAdvance'=>$loanType]) }}"/>
+            <x-button label="Apply" class="w-full text-base-100 btn btn-success" :disabled="$disabled" link="{{ route('admin.loan-cash-advance-list',['cashAdvance'=>$loanType]) }}"/>
         </div>
     </div>
 </div>

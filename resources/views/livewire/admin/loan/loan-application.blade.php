@@ -119,9 +119,13 @@ new class extends Component {
 
 <div>
 
+    <x-bread-crumbs :routes="[
+        ['label'=>'Select Loan','name'=>'admin.loan-application'],
+        ['label'=>'Regular Loan']
 
- 
-    <livewire:components.loan-calculator-component />
+    ]"/>
+
+    <livewire:components.apply-loan renderFrom="admin"/>
 
     {{-- <x-form wire:submit.prevent="compute">
         <x-input label="Principal Amount" wire:model.defer="principalAmount" prefix="PHP" money hint="It submits an unmasked value" />

@@ -7,6 +7,9 @@ new class extends Component {
 }; ?>
 
 <div>
+    {{-- <x-bread-crumbs :routes="[
+        ['label'=>'Select Loan','name'=>null]
+    ]"/> --}}
     <x-header title="Loan Application" subtitle="Choose the type of loan that best fits your needs" separator />
     <div class="max-w-5xl mx-auto space-y-6">
 
