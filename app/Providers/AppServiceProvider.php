@@ -6,12 +6,15 @@ use App\Models\User;
 use App\Services\Permissions\PermissionGates;
 use App\Services\Settings\GeneralSettingsService;
 use App\Services\Users\UserManagementService;
+use App\View\Components\BreadCrumbs;
 use App\View\Components\Charts\AreaChart;
 use App\View\Components\Charts\BarChart;
 use App\View\Components\Charts\ColumnChart;
 use App\View\Components\Charts\PieChart;
 use App\View\Components\Layout\SideBar;
+use App\View\Components\Loan\CashAdvanceCard;
 use App\View\Components\RichTextEditor;
+use App\View\Components\Statistic;
 use App\View\Components\SystemLogo;
 use App\View\Components\UserProfileView;
 use Illuminate\Support\Facades\Blade;
@@ -53,8 +56,14 @@ class AppServiceProvider extends ServiceProvider
             PermissionGates::generate();
         }
 
+        Blade::component('bread-crumbs',BreadCrumbs::class);
+        // Blade::component('stat',Statistic::class);
+
+
+
         Blade::component('side-bar',SideBar::class);
         Blade::component('profile-view',UserProfileView::class);
+
 
 
 
@@ -66,6 +75,13 @@ class AppServiceProvider extends ServiceProvider
         Blade::component('column-chart',ColumnChart::class);
         Blade::component('brand',SystemLogo::class);
         Blade::component('rich-text-editor',RichTextEditor::class);
+
+
+
+        //loans
+        Blade::component('cash-advance-card',CashAdvanceCard::class);
+
+
 
 
 

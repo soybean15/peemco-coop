@@ -24,6 +24,10 @@ class Loan extends Model
     public function items(){
         return $this->hasMany(LoanItem::class);
     }
+
+    public function cashAdvanceItems(){
+        return $this->hasMany(CashAdvanceItem::class);
+    }
     public function scopeSearch(Builder $builder,$search){
         if(empty($search))
         return $builder;

@@ -48,6 +48,7 @@ new class extends Component {
     public function mount($renderFrom=null){
 
 
+        // dd($renderFrom);
 
 
         $loanService = app(LoanCalculator::class);
@@ -145,12 +146,19 @@ new class extends Component {
 
     public function applyLoan(){
 
-        if(!$this->user_id ){
 
-            $this->user_id = auth()->user()->id;
-        }
+
         // dd($this->user_id);
         try{
+
+            if($this->renderFrom =='admin'){
+                if (is_null($this->user_id)) {
+                    throw new \Exception('Please select a member');
+                }
+            }else{
+                $this->user_id = auth()->user()->id;
+            }
+
           (new LoanService(new LoanApplication()))->handle(
             [
                 'monthly_rate'=>$this->monthly_rate,
@@ -177,7 +185,7 @@ new class extends Component {
 
         }catch(\Exception $e){
 
-            dd($e);
+            // dd($e);
             $this->error($e->getMessage());
         }
 

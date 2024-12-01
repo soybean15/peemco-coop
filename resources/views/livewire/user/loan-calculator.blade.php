@@ -11,6 +11,6 @@ new class extends Component {
 
 <div>
 
-    <livewire:components.loan-calculator-component :renderFrom="'user'" />
+    <livewire:components.apply-loan :renderFrom="'user'" />
 
 </div>

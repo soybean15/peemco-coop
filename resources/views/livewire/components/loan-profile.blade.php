@@ -11,12 +11,16 @@ use App\Services\Loans\LoanService;
 use App\Services\LoanPayment\LoanPaymentService;
 use Spatie\LaravelPdf\Facades\Pdf;
 use App\Traits\Loans\LoanTrait;
+
 new class extends Component {
 
     use LoanTrait;
 
     public $expanded=[];
 
+
+
+    // }
     // public function with(){
     //     // return [
 
@@ -131,37 +135,38 @@ new class extends Component {
         @scope('expansion', $loan)
         <div class="0">
 
-            @if(count($loan->penalties)>0)
-                <strong>Penalties</strong>
+            @if( count($loan->penalties)>0)
+            <strong>Penalties</strong>
+            @foreach ($loan->penalties as $penalty )
+                <x-list-item :item="$penalty" no-separator no-hover>
+                    <x-slot:avatar>
+                        <x-badge value="{{ $penalty->penalty_date }}" class="badge-error" />
+                    </x-slot:avatar>
+                    <x-slot:value>
+                      Penalty amount: {{$penalty->amount}}
+                    </x-slot:value>
+                    <x-slot:sub-value>
+                        Running balance:  {{$penalty->running_balance}}
+                    </x-slot:sub-value>
+                    <x-slot:actions>
+
+                    </x-slot:actions>
+                </x-list-item>
+            @endforeach
+
+            {{-- <ul >
                 @foreach ($loan->penalties as $penalty )
-                    <x-list-item :item="$penalty" no-separator no-hover>
-                        <x-slot:avatar>
-                            <x-badge value="{{ $penalty->penalty_date }}" class="badge-error" />
-                        </x-slot:avatar>
-                        <x-slot:value>
-                          Penalty amount: {{$penalty->amount}}
-                        </x-slot:value>
-                        <x-slot:sub-value>
-                            Running balance:  {{$penalty->running_balance}}
-                        </x-slot:sub-value>
-                        <x-slot:actions>
+                <li class="flex space-x-3 ">
 
-                        </x-slot:actions>
-                    </x-list-item>
+                    <span> {{ $penalty->penalty_date }}</span>
+                    <span> {{ $penalty->amount }}</span>
+                    <span> {{ $penalty->running_balance }}</span>
+                </li>
+
                 @endforeach
+            </ul> --}}
+        @endif
 
-                {{-- <ul >
-                    @foreach ($loan->penalties as $penalty )
-                    <li class="flex space-x-3 ">
-
-                        <span> {{ $penalty->penalty_date }}</span>
-                        <span> {{ $penalty->amount }}</span>
-                        <span> {{ $penalty->running_balance }}</span>
-                    </li>
-
-                    @endforeach
-                </ul> --}}
-            @endif
         </div>
         @endscope
 
