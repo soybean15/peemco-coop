@@ -23,7 +23,7 @@ new class extends Component {
 
     <x-header title="Dashboard" subtitle="Welcome ADmin" separator />
 
-    <div class="grid grid-cols-1 gap-5 md:grid-cols-4">
+    <div class="grid grid-cols-1 gap-5 md:grid-cols-4" >
         <x-stat
             title="Members"
             value="5"

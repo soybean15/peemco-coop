@@ -69,8 +69,8 @@ class ComputePenalty{
                 $total_penalty+=$penalty;
                 // $test[]=$total_penalty;
 
-                LoanItemPenalty::updateOrCreate([
-                    'loan_item_id'=>$this->loanItem->id,
+                $this->loanItem->penalties()->updateOrCreate([
+
                     'penalty_date'=>$_due->format('Y-m-d'),
                 ],[
 
@@ -78,6 +78,16 @@ class ComputePenalty{
                     'rate'=>$this->rate,
                     'running_balance'=>$total_penalty + $running_balance
                 ]);
+
+                // LoanItemPenalty::updateOrCreate([
+                //     'loan_item_id'=>$this->loanItem->id,
+                //     'penalty_date'=>$_due->format('Y-m-d'),
+                // ],[
+
+                //     'amount' =>$penalty,
+                //     'rate'=>$this->rate,
+                //     'running_balance'=>$total_penalty + $running_balance
+                // ]);
                 $_due->addDays((int)$this->grace_period);
                 continue;
 

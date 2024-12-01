@@ -26,8 +26,11 @@ new class extends Component {
 
     <livewire:components.loan-profile :loan='$loan'/>
 
-    @else
+    @elseif($this->loan->loanType->type =='flexible')
     <livewire:components.loan-profile-flexible :loan='$loan'/>
+
+    @else
+    <livewire:components.loan-profile-cash-advance :loan='$loan'/>
     @endif
 </div>
 

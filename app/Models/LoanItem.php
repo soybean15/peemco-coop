@@ -15,11 +15,11 @@ class LoanItem extends Model
 
 
     public function payment(){
-        return $this->hasMany(LoanPayment::class);
+        return $this->morphMany(LoanPayment::class,'payable');
     }
 
     public function penalties(){
-        return $this->hasMany(LoanItemPenalty::class);
+        return $this->morphMany(LoanPenalty::class,'penaltyable');
     }
 
     public function loan(){

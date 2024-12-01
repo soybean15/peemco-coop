@@ -16,6 +16,7 @@ class CashAdvanceApplication implements HasLoan{
 
     public function handle($data): Loan
     {
+        // dd('here');
         $loanType = LoanType::find($data['loan_type_id']);
         $user_id = $data['user_id'];
         $principal = $data['principal'];
@@ -45,6 +46,9 @@ class CashAdvanceApplication implements HasLoan{
                 'status' => 'pending'
             ]
         );
+
+
+
 
 
         return $loan;

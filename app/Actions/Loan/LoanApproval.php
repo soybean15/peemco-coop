@@ -28,7 +28,7 @@ class LoanApproval implements HasLoan
 
 
         $dueDate = Carbon::now()
-        // ->subMonths(6)
+        ->subMonths(6)
         ;
 
 
@@ -39,6 +39,37 @@ class LoanApproval implements HasLoan
 
 
         });
+
+
+        $today = Carbon::now()->format('m-d');
+        $releaseDates = $loan->loanType->releaseDates;
+        // dd($releaseDates);
+
+        $matchingDate = collect($releaseDates)->first(function ($date) use ($today) {
+            return $today >= $date['from'] && $today <= $date['to'];
+        });
+
+
+        if ($matchingDate) {
+
+
+            $date =date('Y') .'-'. $matchingDate->to;
+
+        } else {
+            // No matching release date found
+           throw new \Exception('Invalid Date');
+        }
+
+
+        $loan->cashAdvanceItems()->create([
+            'due_date'=>$date,
+            'charge_amount'=>$loan->other_charges,
+            'amount_to_pay'=>$loan->principal_amount
+
+        ]);
+
+
+
 
 
         //create Loan Items

@@ -17,10 +17,12 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Loan::class)->nullable();
 
-            $table->foreignIdFor(LoanItem::class)->nullable();
+            // $table->foreignIdFor(LoanItem::class)->nullable();
             $table->unsignedBigInteger('added_by');
             $table->foreign('added_by')->references('id')->on('users');
             $table->date('date')->nullable();
+
+            $table->morphs('payable');
             $table->string('or_cdv')->nullable();
             $table->decimal('amount_paid',8,2)->nullable();
             $table->timestamps();
