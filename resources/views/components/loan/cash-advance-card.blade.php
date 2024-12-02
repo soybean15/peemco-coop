@@ -2,8 +2,10 @@
     <div class="relative flex flex-col flex-grow overflow-hidden transition-all bg-white border border-gray-200 rounded-lg hover:shadow-lg">
         <div class="absolute inset-0 pointer-events-none bg-gradient-to-r from-green-500/10 to-green-500/5"></div>
         <div class="flex-grow p-6">
-            <h2 class="flex items-center gap-2 mb-2 text-xl font-semibold">
-                {{$loanType->loan_type}}
+            <h2 class="flex items-center justify-between gap-2 mb-2 text-xl font-semibold">
+                <div>{{$loanType->loan_type}}</div>
+                <span class="inline-block px-3 py-1 mb-2 mr-2 text-sm font-semibold text-gray-700 bg-red-200 rounded-full">{{ $loanType->minimum_amount }}</span>
+
             </h2>
             <div class="space-y-4">
                 <div>

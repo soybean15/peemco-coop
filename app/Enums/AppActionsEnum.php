@@ -50,11 +50,11 @@ enum AppActionsEnum: string
                 'link' => route('admin.add-loan-type')
             ],
             self::PROCESS_LOAN => [
-                'name' => 'Process Loan',
+                'name' => 'Apply Loan',
                 'roles'=>[RolesEnum::SUPER_ADMIN->value,RolesEnum::BOOK_KEEPER->value],
                 'description' => 'Process a loan application',
                 'icon' => Blade::render("<x-icon name='o-check' class='p-2 rounded-full w-11 h-11 bg-green-50' />"),
-                'link' => route('admin.loan-calculator')
+                'link' => route('admin.loan-application')
             ],
 
             self::PENDING_LOAN_LIST => [
