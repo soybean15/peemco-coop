@@ -2,6 +2,7 @@
 
 use Livewire\Volt\Component;
 use App\Models\Loan;
+use App\Services\LoanPayment\LoanPaymentService;
 
 use App\Traits\Loans\LoanTrait;
 new class extends Component {
@@ -24,7 +25,7 @@ new class extends Component {
         // dd($this->item);
 
         $this->payments  = $loan->payments;
-
+        (new LoanPaymentService($loan))->handle();
     }
 
 }; ?>
@@ -81,7 +82,7 @@ new class extends Component {
 
 
             <x-stat title="Total Payment" value="{{ number_format($this->loan->totalPayments ,2)}}"
-                description='Balance : {{ number_format(($this->loan->principal_amount - $this->loan->totalPayments))}}' />
+                description='Charge amount : ₱{{ number_format(($this->loan->other_charges))}}' />
 
 
 
@@ -90,19 +91,46 @@ new class extends Component {
         <div class="p-5 mt-3 border">
 
             @foreach ($items as $item)
-            <x-header title="Payment Due Date" subtitle="{{ $item?->due_date??'' }}" size="text-lg" separator />
+            <x-header title="Payment Due Date" subtitle="{{ $item?->due_date??'' }}" size="text-lg" separator >
+                <x-slot:actions>
+                    <div>
+                        <x-icon name="o-exclamation-circle" class="text-sm text-info" label="Charge Amount if not paid full: ₱{{  $item->charge_amount  }}"/>
+
+                    </div>
+
+                    <x-button icon="o-plus" class="btn-primary btn-sm" label="Payment"/>
+                </x-slot:actions>
+
+            </x-header>
+
+            <div>
+                <div class="text-lg font-bold">Penalties</div>
+                <div class="grid grid-cols-1 gap-1">
+                    {{-- {{ $item->penalties }} --}}
+                    @foreach ($item->penalties as $penalty)
+                    <div class="flex items-center justify-between p-1 rounded-md bg-base-200">
+                        <div>{{ $penalty->penalty_date_string }}</div>
+                        {{-- <div>{{ $penalty->amount }}</div> --}}
+                        <x-badge value="{{ $penalty->amount }}" class="badge-error" />
+                    </div>
+                    @endforeach
+
+
+
+                </div>
+            </div>
 
             @endforeach
 
 
         </div>
 
-
+{{--
         <div class="p-5 mt-3 border">
             <x-header title="Payment History"  size='text-xl' separator>
                 <x-slot:actions>
 
-                    <x-button icon="o-plus" x-on:click="$dispatch('add-flexible-payment',{loanId:{{ $loan->id }}})" class="btn-primary"  label="Add Payment"/>
+
                 </x-slot:actions>
 
             </x-header>
@@ -112,7 +140,7 @@ new class extends Component {
                    {{ $payment->addedBy->name}}
                 @endscope
             </x-table>
-        </div>
+        </div> --}}
 
     </div>
 
