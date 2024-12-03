@@ -29,6 +29,7 @@ class CashAdvanceApplication implements HasLoan{
             'principal' => 'required|numeric|min:0',
             'user_id' => 'required|integer|exists:users,id',
             'other_charges' => 'nullable|numeric|min:0',
+            'due_date'=>'required'
         ]);
         if ($validator->fails()) {
             throw new ValidationException($validator);
@@ -46,6 +47,13 @@ class CashAdvanceApplication implements HasLoan{
                 'status' => 'pending'
             ]
         );
+
+        $loan->cashAdvanceItems()->create([
+            'amount_to_pay' => $principal,
+            'charge_amount' =>$other_charges,
+            'due_date' => $data['due_date'],
+
+        ]);
 
 
 

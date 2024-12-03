@@ -8,7 +8,7 @@ new class extends Component {
     use LoanTrait;
 
     public $payments;
-    public $item;
+    public $items;
     public function mount(Loan $loan)
     {
         $this->headers = [
@@ -20,7 +20,7 @@ new class extends Component {
             ['key' => 'amount_paid', 'label' => 'Amount Paid','class'=>'font-bold'],
         ];
 
-        $this->item = $loan->cashAdvanceItems()->latest()->first();
+        $this->items = $loan->cashAdvanceItems()->latest()->get();
         // dd($this->item);
 
         $this->payments  = $loan->payments;
@@ -88,13 +88,12 @@ new class extends Component {
         </div>
 
         <div class="p-5 mt-3 border">
-            <x-header title="Payment Due Date" subtitle="{{ $item?->due_date??'' }}" size="text-lg" separator />
-            <x-header title="Payment Due Date" subtitle="{{ $item?->due_date??'' }}" size="text-lg" separator />
+
+            @foreach ($items as $item)
             <x-header title="Payment Due Date" subtitle="{{ $item?->due_date??'' }}" size="text-lg" separator />
 
-            <x-header title="Payment Due Date" subtitle="{{ $item?->due_date??'' }}" size="text-lg" separator />
+            @endforeach
 
-            <x-header title="Payment Due Date" subtitle="{{ $item?->due_date??'' }}" size="text-lg" separator />
 
         </div>
 

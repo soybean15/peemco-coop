@@ -20,10 +20,31 @@ new class extends Component {
     public $renderFrom;
 
     public $amount;
+
+    public $dateOptions=[];
+    public $selectedLoanDate;
     public function mount(LoanType $loanType,$renderFrom=null){
         $this->loanType = $loanType;
         // dd($this->loanType);
         $this->amount = $this->loanType->minimum_amount;
+        try{
+            $this->dateOptions = $this->loanType->releaseDates->map(function ($item) {
+                // Parse `from` and `to` as mm-dd and append the year
+                $year = now()->year; // Use current year
+                $fromDate = Carbon\Carbon::createFromFormat('m-d-Y', "{$item->from}-{$year}");
+                $toDate = Carbon\Carbon::createFromFormat('m-d-Y', "{$item->to}-{$year}");
+
+                // Format to desired output, e.g., "Jan 1, 2024 to Mar 2, 2024"
+                $formattedDate = $fromDate->format('M j, Y') . ' to ' . $toDate->format('M j, Y');
+
+                return [
+                    'id' =>  $toDate->format('Y-m-d'),
+                    'name' => $formattedDate,
+                ];
+            });
+        }catch(\Exception $e){
+            dd($e);
+        }
 
         $this->renderFrom = $renderFrom;
         $this->search();
@@ -58,7 +79,7 @@ new class extends Component {
     public function apply(){
 
 
-                try{
+        try{
 
 
             if($this->renderFrom =='admin'){
@@ -68,31 +89,33 @@ new class extends Component {
             }else{
                 $this->user_id = auth()->user()->id;
             }
-                (new LoanService(new CashAdvanceApplication()))->handle(
+            // dd($this->selectedLoanDate);
+            (new LoanService(new CashAdvanceApplication()))->handle(
                     [
 
                         'principal'=>$this->amount,
                         'user_id'=>$this->user_id,
                         'loan_type_id'=>$this->loanType->id,
                         'charge_amount'=>$this->loanType->charge_amount,
+                        'due_date'=>$this->selectedLoanDate
                         // 'monthly_payment'=>$this->monthly_payment
                     ]
-                );
+            );
 
-                $this->success('Loan Application Successful');
+            $this->success('Loan Application Successful');
 
-                if($this->renderFrom=='user'){
-                    return redirect()->to(route('user.loans'));
+            if($this->renderFrom=='user'){
+                return redirect()->to(route('user.loans'));
 
-                }
-                return redirect()->to(route('admin.pending'));
+            }
+            return redirect()->to(route('admin.pending'));
 
-                }catch(\Exception $e){
+        }catch(\Exception $e){
 
                     // dd($e);
                     $this->error($e->getMessage());
-                }
-            }
+        }
+    }
 }; ?>
 
 <div>
@@ -114,6 +137,8 @@ new class extends Component {
             <div class="grid grid-cols-2 gap-3">
                 <x-input label="Cash amount" wire:model='amount' placeholder="Cash advance Amount" readonly
                     type="number" />
+
+                    <x-select label="Loan Date" icon="o-user" :options="$dateOptions" wire:model="selectedLoanDate" placeholder="Select loan date" />
 
             </div>
             <div class="p-6 mt-auto border-t border-gray-200">
