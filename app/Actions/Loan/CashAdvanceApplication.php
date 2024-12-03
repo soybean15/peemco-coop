@@ -55,13 +55,7 @@ class CashAdvanceApplication implements HasLoan{
 
         ]);
 
-
-
-
-
         return $loan;
-
-
     }
 
 

@@ -36,7 +36,6 @@ class LoanPaymenItem{
             $this->loanItem->total_due = $this->setTotalDue();
             $this->loanItem->running_balance = $this->setRunningBalance();
             $this->loanItem->penalty =   (new ComputePenalty($this->loanItem))->compute();
-
             $this->loanItem->save();
         }catch(Exception $e){
 
@@ -46,8 +45,6 @@ class LoanPaymenItem{
 
 
     }
-
-
 
 
     public function setStatus(){

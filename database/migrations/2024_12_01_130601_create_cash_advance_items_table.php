@@ -20,7 +20,8 @@ return new class extends Migration
             $table->decimal('amount_to_pay')->default(0);
 
             $table->decimal('charge_amount')->default(0);
-
+            $table->decimal('penalty')->default(0);
+            $table->decimal('status')->default(0);
             $table->timestamps();
         });
     }
