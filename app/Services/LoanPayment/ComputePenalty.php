@@ -181,6 +181,7 @@ class ComputePenalty
 
             break;
         }
+        // dd($total_penalty);
 
         return round($total_penalty, 2);
     }

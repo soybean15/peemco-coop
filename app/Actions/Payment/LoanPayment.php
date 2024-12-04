@@ -1,17 +1,16 @@
 <?php
 
-namespace App\Actions\Loan;
+namespace App\Actions\Payment;
 
-use App\Contracts\HasLoan;
-use App\Models\Loan;
+use App\Contracts\HasLoanPayment;
 use App\Models\LoanPayment as ModelsLoanPayment;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
-class LoanPayment implements HasLoan
-{
+class LoanPayment implements HasLoanPayment{
 
-    public function handle($data): Loan{
+
+    public function handle($data):ModelsLoanPayment{
+
 
         $amount = $data['amount'];
         $or_cdv = $data['or_cdv'];
@@ -21,15 +20,24 @@ class LoanPayment implements HasLoan
         $loanItem = $data['loan_item'];
         $loan = $data['loan'];
 
-        ModelsLoanPayment::create([
+
+       $payment= $loanItem->payments()->create([
             'amount_paid'=>$amount,
             'added_by'=>Auth::id(),
             'or_cdv'=>$or_cdv,
             'loan_id'=>$loanItem->loan?->id ??$loan->id,
-            'loan_item_id'=>$loanItem?->id,
             'date'=>$date
 
         ]);
+        // $payment = ModelsLoanPayment::create([
+        //     'amount_paid'=>$amount,
+        //     'added_by'=>Auth::id(),
+        //     'or_cdv'=>$or_cdv,
+        //     'loan_id'=>$loanItem->loan?->id ??$loan->id,
+        //     'loan_item_id'=>$loanItem?->id,
+        //     'date'=>$date
+
+        // ]);
 
 
         if($loanItem)
@@ -38,13 +46,12 @@ class LoanPayment implements HasLoan
             $loanItem->running_balance-=$amount;
 
             if(  $loanItem->running_balance==0){
-                $loanItem->status=='paid';
+                $loanItem->status='paid';
             }
             $loanItem->save();
         }
 
 
-        return $loanItem?->loan ?? $loan;
+        return $payment;
     }
-
 }

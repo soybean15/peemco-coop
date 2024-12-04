@@ -17,5 +17,8 @@ class CashAdvanceItem extends Model
     public function penalties(){
         return $this->morphMany(LoanPenalty::class,'penaltyable');
     }
+    public function payments(){
+        return $this->morphMany(LoanPayment::class,'payable');
+    }
 
 }

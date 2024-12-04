@@ -14,7 +14,7 @@ class LoanItem extends Model
 
 
 
-    public function payment(){
+    public function payments(){
         return $this->morphMany(LoanPayment::class,'payable');
     }
 

@@ -93,12 +93,21 @@ new class extends Component {
             @foreach ($items as $item)
             <x-header title="Payment Due Date" subtitle="{{ $item?->due_date??'' }}" size="text-lg" separator >
                 <x-slot:actions>
-                    <div>
+                    <div class="flex items-center space-x-3">
                         <x-icon name="o-exclamation-circle" class="text-sm text-info" label="Charge Amount if not paid full: ₱{{  $item->charge_amount  }}"/>
 
-                    </div>
 
-                    <x-button icon="o-plus" class="btn-primary btn-sm" label="Payment"/>
+                    {{-- {{ $item }} --}}
+                    @if($item->status=='paid')
+
+                    <x-badge value="Paid" class="p-2 text-lg badge-success" />
+                    @else
+
+                    <x-button icon="o-plus" x-on:click="$dispatch('add-cash-advance-payment',{loanId:{{ $item->id }}})" class="btn-primary btn-sm"  label="Add Payment"/>
+
+                    @endif
+                    </div>
+                        {{-- <x-button icon="o-plus" class="btn-primary btn-sm" label="Payment"/> --}}
                 </x-slot:actions>
 
             </x-header>
@@ -115,7 +124,15 @@ new class extends Component {
                     </div>
                     @endforeach
 
+                    <div class="flex justify-end">
+                        <div class="flex items-center">
+                            <div>Total Penalty:</div>
+                            <div class="font-bold">
+                                ₱{{ $item->penalty }}
+                            </div>
+                        </div>
 
+                    </div>
 
                 </div>
             </div>
