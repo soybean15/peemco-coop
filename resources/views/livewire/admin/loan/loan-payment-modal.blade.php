@@ -3,10 +3,12 @@
 use Livewire\Volt\Component;
 use Livewire\Attributes\On;
 use App\Models\LoanItem;
-use App\Models\Loan;
+use App\Models\CashAdvanceItem;
 
-use App\Services\Loans\LoanService;
-use App\Actions\Loan\LoanPayment;
+use App\Models\Loan;
+use App\Actions\Payment\CashAdvancePayment;
+use App\Services\Loans\PaymentService;
+use App\Actions\Payment;
 use Mary\Traits\Toast;
 use Illuminate\Support\Carbon;
 
@@ -27,6 +29,7 @@ new class extends Component {
 
     public $loan;
 
+    public $type;
     #[On('add-payment')]
     public function onAddPayment($loanItemId){
         // dd('hjer');
@@ -34,6 +37,7 @@ new class extends Component {
         $this->date = Carbon::now()->format('Y-m-d');
         $this->amount = $this->loanItem->total_amount_due;
         $this->modal =true;
+        $this->type= 'regular';
 
     }
 
@@ -44,12 +48,24 @@ new class extends Component {
         $this->loan = Loan::find($loanId);
         $this->date = Carbon::now()->format('Y-m-d');
         $this->amount =0;
+        $this->type= 'flexible';
         $this->modal =true;
 
     }
 
-    public function submit(){
+    #[On('add-cash-advance-payment')]
+    public function onAddCashAdvancePayment($loanId){
+        // dd('hjer');
+        $this->loanItem = CashAdvanceItem::find($loanId);
+        $this->date = Carbon::now()->format('Y-m-d');
+        $this->amount =$this->loanItem->amount_to_pay + $this->loanItem->penalty;
+        $this->modal =true;
+        $this->type= 'cash_advance';
 
+
+    }
+
+    public function submit(){
         $this->validate(
             [
                 'date'=>'required|date',
@@ -57,10 +73,17 @@ new class extends Component {
                 'or_cdv'=>'required'
                 ]
         );
-
         try{
 
-            (new LoanService(new LoanPayment))->handle([
+            $action = match($this->type){
+                'regular'=>new LoanPayment,
+                'cash_advance'=>new CashAdvancePayment,
+                default =>new LoanPayment
+            };
+
+            // dd($action);
+
+            (new PaymentService($action))->handle([
                 'amount'=>$this->amount,
                 'or_cdv'=>$this->or_cdv,
                 'date'=>$this->date,

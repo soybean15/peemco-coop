@@ -30,6 +30,10 @@ class CashAdvanceItem
 
        $this->item->status =  $this->setStatus();
        $penalty = (new ComputePenalty($this->item))->compute();
+
+    //    dd($penalty);
+       $this->item->penalty = $penalty;
+       $this->item->save();
     //    dd($penalty);
     //    dd($this->item->status);
     }
@@ -42,6 +46,11 @@ class CashAdvanceItem
 
         if($this->currentDate->lte($date)) return LoanItemStatusEnum::PENDING->value;
 
+        $payment = $this->item->payments->first();
+
+        if ($payment && $payment->amount_paid >= $this->item->charge_amount) {
+            return LoanItemStatusEnum::PAID->value;
+        }
 
         return LoanItemStatusEnum::OVERDUE->value;
 
