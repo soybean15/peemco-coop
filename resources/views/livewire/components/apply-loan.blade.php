@@ -55,6 +55,7 @@ new class extends Component {
 
         $this->loanTypes = $loanService->getLoanTypes();
 
+        // dd($this->loanTypes);
         $this->search();
 
     }
@@ -150,13 +151,15 @@ new class extends Component {
 
         // dd($this->user_id);
         try{
-
+            // dd($this->renderFrom);
             if($this->renderFrom =='admin'){
                 if (is_null($this->user_id)) {
                     throw new \Exception('Please select a member');
                 }
             }else{
                 $this->user_id = auth()->user()->id;
+
+
             }
 
           (new LoanService(new LoanApplication()))->handle(

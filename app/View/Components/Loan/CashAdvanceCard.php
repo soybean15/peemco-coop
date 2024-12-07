@@ -14,8 +14,9 @@ class CashAdvanceCard extends Component
      */
 
     public $disabled;
-    public function __construct(public $loanType)
+    public function __construct(public $loanType,public string $renderFrom='admin')
     {
+
 
         $now = Carbon::now()->format('m-d'); // Get the current date in 'mm-dd' format
         // $now = '06-11';

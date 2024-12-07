@@ -52,7 +52,9 @@ class CashAdvanceApplication implements HasLoan{
             'amount_to_pay' => $principal,
             'charge_amount' =>$other_charges,
             'due_date' => $data['due_date'],
+            'penalty'=>0,
 
+            'status'=>'pending'
         ]);
 
         return $loan;

@@ -66,22 +66,25 @@ new class extends Component {
         @endscope
         {{-- Overrides `city.name` header --}}
         @scope('cell_date_applied', $loan)
-        <i>{{ $loan->date_applied }}</i>
+        <i>{{ $loan->date_applied  }}</i>
         @endscope
         @scope('cell_principal_amount', $loan)
-        <i>{{ $loan->principal_amount }}</i>
+        <i>{{ $loan->principal_amount ??'N/A' }}</i>
         @endscope
         @scope('cell_terms_of_loan', $loan)
-        <i>{{ $loan->terms_of_loan }}</i>
+        <i>{{ $loan->terms_of_loan ??'N/A' }}</i>
+        @endscope
+        @scope('cell_no_of_installment', $loan)
+        <i>{{ $loan->no_of_installment ??'N/A' }}</i>
         @endscope
         @scope('cell_monthly_interest_rate', $loan)
-        <i>{{ $loan->monthly_interest_rate }}</i>
+        <i>{{ $loan->monthly_interest_rate??'N/A' }}</i>
         @endscope
         @scope('cell_monthly_payment', $loan)
-        <i>{{ $loan->monthly_payment }}</i>
+        <i>{{ $loan->monthly_payment??'N/A'  }}</i>
         @endscope
         @scope('cell_status', $loan)
-        <i>{{ $loan->status }}</i>
+        <i>{{ $loan->status??'N/A'  }}</i>
         @endscope
 
     </x-table>
