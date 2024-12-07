@@ -79,9 +79,9 @@ new class extends Component {
                     </div>
                 </div>
                 <div class="p-6 border-t border-gray-200 bg-gray-50">
-                    {{-- <a href="{{ route('user.loan-cash-advance') }}" class="inline-block w-full px-4 py-2 font-semibold text-center text-white transition duration-300 ease-in-out bg-teal-600 rounded-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-50">
+                    <a href="{{ route('user.loan-cash-advance') }}" class="inline-block w-full px-4 py-2 font-semibold text-center text-white transition duration-300 ease-in-out bg-teal-600 rounded-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-50">
                         Proceed
-                    </a> --}}
+                    </a>
                 </div>
             </div>
         </div>

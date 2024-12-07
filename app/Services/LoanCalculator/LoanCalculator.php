@@ -26,13 +26,11 @@ class LoanCalculator
     public $charges;
 
     protected $loanItems = [];
-
-
     public function __construct($user)
     {
         $this->user = $user;
     }
-
+    // MVVM
     public function getLoanTypes(){
         return LoanType::regularOrFlexible()->get()->map(function($item){
             return [

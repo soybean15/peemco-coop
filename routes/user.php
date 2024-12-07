@@ -24,7 +24,8 @@ Route::prefix('/')->group(function(){
         Volt::route('/','user.loan-application')->name(name: 'user.loan-application');
         Volt::route('/regular-loan','user.loan.loan-application')->name( 'user.loan-regular');
 
-
+        Volt::route('/cash-advance','user.loan.cash-advance-list')->name('user.loan-cash-advance');
+        Volt::route('/cash-advance/{cashAdvance}','user.loan.cash-advance-application')->name('user.loan-cash-advance-list');
         Volt::route('/profile/{loan}','user.loan.profile')->name('user.loan-profile');
 
     });
