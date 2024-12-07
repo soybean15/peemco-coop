@@ -58,15 +58,8 @@ class LoanCalculator
 
     public function setTerms($terms_in_years, $terms_in_month)
     {
-
-
-
         $this->terms_in_year = $terms_in_years;
-
-
         $this->number_of_installment = ($terms_in_years ? $terms_in_years : 0) * 12;
-
-
         $this->number_of_installment +=$terms_in_month;
 
 

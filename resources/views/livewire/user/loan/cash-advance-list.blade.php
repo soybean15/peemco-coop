@@ -27,7 +27,7 @@ new class extends Component {
 
 
             @foreach ($loanTypes as $loanType )
-             <x-cash-advance-card :loanType="$loanType"/>
+                <x-cash-advance-card :loanType="$loanType" :renderFrom="'user'"/>
             @endforeach
             <!-- Clothing Loan Card -->
 

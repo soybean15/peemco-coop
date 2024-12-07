@@ -23,8 +23,12 @@ new class extends Component {
 
     public $dateOptions=[];
     public $selectedLoanDate;
+
+
     public function mount(LoanType $loanType,$renderFrom=null){
         $this->loanType = $loanType;
+
+
         // dd($this->loanType);
         $this->amount = $this->loanType->minimum_amount;
         try{
@@ -112,7 +116,7 @@ new class extends Component {
 
         }catch(\Exception $e){
 
-                    // dd($e);
+                    dd($e);
                     $this->error($e->getMessage());
         }
     }
@@ -131,8 +135,16 @@ new class extends Component {
 
         <div class="p-5 space-y-2 border">
             <x-header title="Cash advance details" size="text-xl" separator />
+
+
+
+            @if($renderFrom=='user')
+            <x-input label="Member" value="{{ auth()->user()->name }}" placeholder="Cash advance Amount" readonly/>
+            @else
             <x-choices label="Select User" wire:model="user_id" :options="$users" placeholder="Search ..."
                 single searchable />
+
+            @endif
 
             <div class="grid grid-cols-2 gap-3">
                 <x-input label="Cash amount" wire:model='amount' placeholder="Cash advance Amount" readonly
@@ -141,10 +153,13 @@ new class extends Component {
                     <x-select label="Loan Date" icon="o-user" :options="$dateOptions" wire:model="selectedLoanDate" placeholder="Select loan date" />
 
             </div>
+
+            @can('apply loan')
             <div class="p-6 mt-auto border-t border-gray-200">
 
                 <x-button label="Apply" class="w-full text-base-100 btn btn-success"   wire:confirm="Continue Cash advance application?" wire:click='apply' />
             </div>
+            @endcan
         </div>
 
 
