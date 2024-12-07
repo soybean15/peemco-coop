@@ -13,5 +13,11 @@ new class extends Component {
 
 <div>
 
+    <x-bread-crumbs :routes="[
+        ['label'=>'Select Loan','name'=>'admin.loan-application'],
+        ['label'=>'Cash Advance','name'=>'admin.loan-cash-advance'],
+        ['label'=>$loanType->loan_type,]
+
+    ]" />
     <livewire:components.apply-cash-advance :loanType="$loanType" renderFrom='admin'/>
 </div>
