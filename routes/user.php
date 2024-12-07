@@ -20,6 +20,16 @@ Route::prefix('/')->group(function(){
 
     });
 
+    Route::prefix('apply-loan')->group(function(){
+        Volt::route('/','user.loan-application')->name(name: 'user.loan-application');
+        Volt::route('/regular-loan','user.loan.loan-application')->name( 'user.loan-regular');
+
+
+        Volt::route('/profile/{loan}','user.loan.profile')->name('user.loan-profile');
+
+    });
+
+
     Volt::route('/profile','user.profile')->name('user.profile');
     Volt::route('/loan-calculator','user.loan-calculator')->name('user.loan-calculator');
     Volt::route('/capital-build-up','user.capital-build-up')->name('user.capital-build-up');

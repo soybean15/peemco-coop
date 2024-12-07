@@ -88,7 +88,7 @@
 
                 <x-menu-sub title="Loans" icon="o-credit-card">
                     <x-menu-item title="List" icon="s-numbered-list" link="{{route('user.loans')}}" exact/>
-                    <x-menu-item title="Loan Calculator" icon="o-calculator" link="{{route('user.loan-calculator')}}"/>
+                    <x-menu-item title="ApplyLoan" icon="o-calculator" link="{{route('user.loan-application')}}"/>
                 </x-menu-sub>
                 <x-menu-item title="Capital Build Up" icon="o-arrow-trending-up" link="{{route('user.capital-build-up')}}" />
 

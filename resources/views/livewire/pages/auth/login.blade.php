@@ -20,10 +20,10 @@ new #[Layout('layouts.guest')] class extends Component
         $this->form->authenticate();
 
         Session::regenerate();
-        $route = 'dashboard';
-    if (Auth::check() && Auth::user()->hasRole('super admin')) { // Checking if the user has the admin role
-        $route = 'admin.dashboard';
-    }
+        $route = 'user.dashboard';
+        if (Auth::check() && Auth::user()->hasRole('super admin')) { // Checking if the user has the admin role
+            $route = 'admin.dashboard';
+        }
 
         $this->redirectIntended(default: route($route, absolute: false), navigate: true);
     }
