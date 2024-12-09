@@ -12,6 +12,7 @@
         <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
 
         {{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
+        <script src="{{ asset('js/sweet-alert.min.js') }}"></script>
 
         {{-- TinyMCE --}}
         {{-- <script src="https://cdn.tiny.cloud/1/9ev6kqpg87qel9tdtodze09h1uc1wx4287qxz7h1la4hso0n/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script> --}}
