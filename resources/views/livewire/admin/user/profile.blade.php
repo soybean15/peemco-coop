@@ -40,22 +40,37 @@ new class extends Component {
 
 }; ?>
 <div>
-    <div class="p-3 m-1 border-2 rounded shadow-md ">
+    <div class="p-3 m-1 rounded">
+        <div class="flex p-5 space-x-5">
+
+            <x-file wire:model="photo" accept="image/png, image/jpeg">
+                <img src="{{ $user->avatar ?? '/default/default-user.png' }}" class="!w-28" />
+            </x-file>
+            <div class="w-full pt-3">
+                <x-header
+                class="w-full "
+                title="{{html_entity_decode($user->name)}} {{html_entity_decode($user->middlename)}} {{html_entity_decode($user->lastname)}}"
+                subtitle="{{$user->email}}" separator >
+                <x-slot:middle class="!justify-end ">
+                    <span class="text-base label-text">Member ID: <b>{{html_entity_decode($user->mid)}}</b></span>
+                </x-slot:middle></x-header>
+
+            </div>
+        </div>
+
         <div class="flex flex-col justify-start md:flex-row">
 
             @if(session()->has('success'))
                 <x-icon name="o-check" class="text-2xl text-green-500 w-9 h-9" label=" {{session('success')}}"/>
             @endif
 
-            <div class="flex justify-center my-5 md:p-20">
+            {{-- <div class="flex justify-center my-5 md:p-20">
 
                 <x-file wire:model="photo" accept="image/png, image/jpeg">
                     <img src="{{ $user->avatar ?? '/default/default-user.png' }}" class="!w-52" />
                 </x-file>
-                {{-- <x-mary-file wire:model="photo" accept="image/png" crop-after-change>
-                    <img src="{{ $user->avatar ?? '/storage/defaults/user-default.png' }}" class="h-40 rounded-lg" />
-                </x-mary-file> --}}
-            </div>
+
+            </div> --}}
 
 
             <div class="flex flex-col w-full px-5 md:p-5">
