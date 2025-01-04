@@ -21,8 +21,11 @@ new #[Layout('layouts.guest')] class extends Component
 
         Session::regenerate();
         $route = 'user.dashboard';
+
         if (Auth::check() && Auth::user()->hasRole('super admin')) { // Checking if the user has the admin role
             $route = 'admin.dashboard';
+
+            dd('here');
         }
 
         $this->redirectIntended(default: route($route, absolute: false), navigate: true);
