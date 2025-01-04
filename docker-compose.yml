@@ -23,7 +23,7 @@ services:
     container_name:  peemco-nginx-webserver
     restart: unless-stopped
     ports:
-      - "8082:80"
+      - "80:80"
     volumes:
       - .:/var/www
       - ./docker-compose/nginx:/etc/nginx/conf.d/
@@ -44,7 +44,7 @@ services:
       # MYSQL_USER: ${MYSQL_USER}
       # MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
-      - "3308:3306"
+      - "3306:3306"
     volumes:
       - dbdata:/var/lib/mysql
     networks:
