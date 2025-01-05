@@ -36,7 +36,7 @@ class UserStoreJob implements ShouldQueue
 
 
         $this->jobProcess->increment('processed_rows',1);
-       
+
         $row=$this->data;
         if(!(new UserImportValidation($row))->validate()){
             $this->jobProcess->increment('failed_rows');
@@ -46,7 +46,7 @@ class UserStoreJob implements ShouldQueue
 
         $user = User::create([
             'mid'      => IdGenerator::generateId(LoanServiceProvider::LOAN_PREFIX, LoanServiceProvider::LOAN_LEN),
-            'name'     => $row['name'],
+            'name'     => $row['name'],//FIRSTNAME
             'email'    => $row['email'],
             'username'=>    $row['username'],
             'lastname'=>$row['lastname'],
