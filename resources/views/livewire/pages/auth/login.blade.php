@@ -38,6 +38,7 @@ new #[Layout('layouts.guest')] class extends Component
 
     <form wire:submit="login">
         <!-- Email Address -->
+        @csrf
         <div>
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input wire:model="form.login" id="email" class="block w-full mt-1" type="text" name="email" required autofocus autocomplete="username" />
