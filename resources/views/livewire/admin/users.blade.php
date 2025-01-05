@@ -38,10 +38,15 @@ new class extends Component {
     @endif
 
     <x-header title="Users" subtitle="Your home address" separator>
-        <x-slot:actions>
+        {{-- <x-slot:actions>
             <x-input icon="o-magnifying-glass" wire:model.live='search' placeholder="Search Members" />
             @can('add user')
             <x-button icon="o-user-plus" label="Add Member" link="{{route('admin.add-users')}}" class="btn-primary" />
+            @endcan
+        </x-slot:actions> --}}
+        <x-slot:actions>
+            @can('add user')
+            <x-button icon="o-user-plus" label="Add Member" link="{{route('admin.add-users')}}" class="btn-primary btn-sm" />
             @endcan
         </x-slot:actions>
     </x-header>

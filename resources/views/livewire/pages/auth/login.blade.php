@@ -16,13 +16,16 @@ new #[Layout('layouts.guest')] class extends Component
     {
         $this->validate();
 
+        // dd('here');
 
         $this->form->authenticate();
 
         Session::regenerate();
         $route = 'user.dashboard';
+
         if (Auth::check() && Auth::user()->hasRole('super admin')) { // Checking if the user has the admin role
             $route = 'admin.dashboard';
+
         }
 
         $this->redirectIntended(default: route($route, absolute: false), navigate: true);
@@ -35,6 +38,7 @@ new #[Layout('layouts.guest')] class extends Component
 
     <form wire:submit="login">
         <!-- Email Address -->
+
         <div>
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input wire:model="form.login" id="email" class="block w-full mt-1" type="text" name="email" required autofocus autocomplete="username" />
