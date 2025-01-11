@@ -23,7 +23,7 @@ services:
     container_name:  peemco-nginx-webserver
     restart: unless-stopped
     ports:
-      - "8083:80"
+      - "80:80"
     volumes:
       - .:/var/www
       - ./docker-compose/nginx:/etc/nginx/conf.d/
@@ -56,7 +56,7 @@ services:
     container_name: peemco-phpmyadmin
     restart: unless-stopped
     ports:
-      - "8085:80"  # Access phpMyAdmin at http://localhost:8081
+      - "8083:80"  # Access phpMyAdmin at http://localhost:8081
     environment:
       PMA_HOST: db  # This should match your database service name
     #   PMA_USER: root  # MySQL user
