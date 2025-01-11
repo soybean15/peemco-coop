@@ -68,4 +68,6 @@ COPY ./docker-compose/supervisor/supervisor.conf /etc/supervisor/conf.d/supervis
 EXPOSE 9000
 
 # Start PHP-FPM
-CMD ["php-fpm"]
+# CMD ["php-fpm"]
+CMD ["/usr/bin/supervisord", "-n"]
+

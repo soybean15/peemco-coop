@@ -52,9 +52,9 @@ class AppServiceProvider extends ServiceProvider
 
 
         //check if permissions table exist
-        if (Schema::hasTable('permissions')) {
-            PermissionGates::generate();
-        }
+        // if (Schema::hasTable('permissions')) {
+        //     PermissionGates::generate();
+        // }
 
         Blade::component('bread-crumbs',BreadCrumbs::class);
         // Blade::component('stat',Statistic::class);
