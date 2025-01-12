@@ -4,11 +4,25 @@ use Livewire\Volt\Component;
 use App\Models\User;
 use Livewire\WithPagination;
 use Mary\Traits\Toast;
+use Illuminate\View\View;
+
+
 new class extends Component {
 
     use Toast;
     use WithPagination;
     public $search;
+
+
+
+
+
+    public function rendering(View $view): void
+    {
+        $view->title('Admin - Archives');
+
+
+    }
     public function with(){
         return
         [
@@ -66,7 +80,7 @@ new class extends Component {
 
         @scope('cell_action', $user)
         <x-button wire:confirm='Are you sure you want archive this user?' wire:click='restoreUser({{ $user->id }})' icon='o-arrow-path' class="btn-info btn-sm"/>
-  
+
         @endscope
     </x-table>
 </div>

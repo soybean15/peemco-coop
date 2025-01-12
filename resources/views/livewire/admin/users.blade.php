@@ -3,9 +3,20 @@
 use Livewire\Volt\Component;
 use App\Models\User;
 use Livewire\WithPagination;
+use Livewire\Attributes\{Layout, Title};
+use Illuminate\View\View;
+
 new class extends Component {
     use WithPagination;
     public $search;
+
+    public function rendering(View $view): void
+    {
+        $view->title('Admin - Users');
+
+
+    }
+
     public function with(){
         return
         [
