@@ -13,48 +13,52 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout code
-      - name: Checkout Code
-        uses: actions/checkout@v3
 
-      # Step 2: Set up Docker
-      - name: Set up Docker
-        uses: docker/setup-buildx-action@v2
-
-      # Step 3: Build and Run Services with Docker Compose
-      - name: Build and Start Services
-      
+      - name: TEst env
         run: |
-          docker compose up -d --build
           echo 'Test env ${{ env.DB_CONNECTION }}'
+    
+      # # Step 1: Checkout code
+      # - name: Checkout Code
+      #   uses: actions/checkout@v3
+
+      # # Step 2: Set up Docker
+      # - name: Set up Docker
+      #   uses: docker/setup-buildx-action@v2
+
+      # # Step 3: Build and Run Services with Docker Compose
+      # - name: Build and Start Services
+      #   run: |
+      #     docker compose up -d --build
+      #     echo 'Test env ${{ env.DB_CONNECTION }}'
 
 
 
-      # Step 4: Checkout code
-      - name: Checkout Code
-        uses: actions/checkout@v3
+      # # Step 4: Checkout code
+      # - name: Checkout Code
+      #   uses: actions/checkout@v3
 
-      # Step 5: Copy .env.example to .env
-      - name: Copy .env.example to .env
-        run: |
-          cp .env.example .env
+      # # Step 5: Copy .env.example to .env
+      # - name: Copy .env.example to .env
+      #   run: |
+      #     cp .env.example .env
 
-      # Step 6: Replace variables in .env file with GitHub Secrets
-      - name: Replace .env variables with secrets
-        run: |
-          sed -i 's/APP_KEY=.*/APP_KEY=${{ secrets.APP_KEY }}/' .env
-          sed -i 's/DB_HOST=.*/DB_HOST=${{ secrets.DB_HOST }}/' .env
-          sed -i 's/DB_USERNAME=.*/DB_USERNAME=${{ secrets.DB_USERNAME }}/' .env
-          sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=${{ secrets.DB_PASSWORD }}/' .env
+      # # Step 6: Replace variables in .env file with GitHub Secrets
+      # - name: Replace .env variables with secrets
+      #   run: |
+      #     sed -i 's/APP_KEY=.*/APP_KEY=${{ secrets.APP_KEY }}/' .env
+      #     sed -i 's/DB_HOST=.*/DB_HOST=${{ secrets.DB_HOST }}/' .env
+      #     sed -i 's/DB_USERNAME=.*/DB_USERNAME=${{ secrets.DB_USERNAME }}/' .env
+      #     sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=${{ secrets.DB_PASSWORD }}/' .env
        
 
-      # Step 7: Run Tests
-      - name: Run Tests
-        run: docker exec peemco php artisan test
+      # # Step 7: Run Tests
+      # - name: Run Tests
+      #   run: docker exec peemco php artisan test
 
-      # Step 5: Shut Down Services
-      - name: Shut Down Services
-        run: docker compose down
+      # # Step 5: Shut Down Services
+      # - name: Shut Down Services
+      #   run: docker compose down
 
   deploy:
     runs-on: ubuntu-latest
