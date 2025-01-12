@@ -34,13 +34,13 @@ new class extends Component {
 
         $loan_type_id = session('loan_type_id');
         // dd($loan_type_id);
-        $this->loanType = LoanType::find($loan_type_id);
+    $this->loanType = LoanType::find($loan_type_id);
 
 
         $this->applyTo = $this->loanType->apply_to ??'all';
 
         $this->loanType->update(['apply_to'=>$this->applyTo]);
-     
+
         if($this->loanType){
 
             $this->loanTypeUsers = $this->loanType->loanTypeUsers;

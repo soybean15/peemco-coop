@@ -47,7 +47,7 @@ new class extends Component {
                 ];
             });
         }catch(\Exception $e){
-            dd($e);
+            // dd($e);
         }
 
         $this->renderFrom = $renderFrom;
@@ -116,7 +116,7 @@ new class extends Component {
 
         }catch(\Exception $e){
 
-                    dd($e);
+         
                     $this->error($e->getMessage());
         }
     }
