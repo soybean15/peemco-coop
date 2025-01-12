@@ -101,10 +101,7 @@ new class extends Component {
     </div>
     <hr class="my-5"/>
     <div>
-        <div>
 
-            <strong class="text-lg">Users</strong>
-        </div>
 
         <livewire:admin.loan-type.loan-type-user-list :loanType="$loanType"/>
 

@@ -14,9 +14,6 @@
         {{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
         <script src="{{ asset('js/sweet-alert.min.js') }}"></script>
 
-        {{-- TinyMCE --}}
-        {{-- <script src="https://cdn.tiny.cloud/1/9ev6kqpg87qel9tdtodze09h1uc1wx4287qxz7h1la4hso0n/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script> --}}
-
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -25,7 +22,7 @@
         <script src="https://unpkg.com/flatpickr/dist/plugins/monthSelect/index.js"></script>
         <link href="https://unpkg.com/flatpickr/dist/plugins/monthSelect/style.css" rel="stylesheet">
 
-
+        <link rel="icon" href="{{ asset('system-logo.png') }}" type="image/x-icon">
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
             @vite(['resources/css/app.css', 'resources/js/app.js'])
