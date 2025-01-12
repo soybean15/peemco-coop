@@ -54,5 +54,5 @@ jobs:
               cd main/peemco-coop
               git pull origin main
               docker compose up -d
-              docker exec -t peemco bash
+              docker exec -it peemco bash
               npm run build
