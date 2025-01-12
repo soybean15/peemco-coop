@@ -1,7 +1,7 @@
 <div>
 
 
-    {{ $settings->logo  }}
+    {{-- {{ $settings->logo  }} --}}
     {{-- {{ $hasName }} --}}
     <div class="{{ $class }}">
         <img src="{{ $settings->logo ?? '/default/default-logo.png' }}" class="rounded-lg w-{{ $size }}" />
