@@ -6,12 +6,22 @@ use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use App\Services\Permissions\RolePermissionService;
 use Mary\Traits\Toast;
+use Illuminate\View\View;
+
 new class extends Component {
     //
     use Toast;
     public $selectedTab = 'general';
 
     public $roles=[];
+
+
+    public function rendering(View $view): void
+    {
+        $view->title('Admin - Settings');
+
+
+    }
 
 
     public function mount(){
