@@ -24,7 +24,7 @@ jobs:
       # Step 3: Build and Run Services with Docker Compose
       - name: Build and Start Services
         run: |
-          docker-compose up -d --build
+          docker compose up -d --build
 
       # Step 4: Run Tests
       - name: Run Tests
@@ -32,7 +32,7 @@ jobs:
 
       # Step 5: Shut Down Services
       - name: Shut Down Services
-        run: docker-compose down
+        run: docker compose down
 
   deploy:
     runs-on: ubuntu-latest
