@@ -53,5 +53,6 @@ jobs:
             script: |
               cd main/peemco-coop
               git pull origin main
-              docker-compose pull
-              docker-compose up -d
+              docker compose up -d
+              docker exec -t peemco bash
+              npm run build
