@@ -17,7 +17,7 @@ new class extends Component {
 
     public function with(){
         return [
-                'loanTypes'=>LoanType::all(),
+                'loanTypes'=>LoanType::whereNotNull('completed_at')->get(),
                 'headers'=>[
 
                     [ 'key'=>'loan_type', 'label'=>'Loan Type'],
