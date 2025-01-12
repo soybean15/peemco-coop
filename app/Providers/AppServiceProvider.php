@@ -14,6 +14,7 @@ use App\View\Components\Charts\PieChart;
 use App\View\Components\Layout\SideBar;
 use App\View\Components\Loan\CashAdvanceCard;
 use App\View\Components\RichTextEditor;
+use Illuminate\Database\QueryException;
 
 use App\View\Components\SystemLogo;
 use App\View\Components\UserProfileView;
@@ -21,6 +22,7 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Support\Facades\Log;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -53,9 +55,19 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if (Schema::hasTable('permissions')) {
-            PermissionGates::generate();
+
+
+
+        try {
+            if (Schema::hasTable('permissions')) {
+                PermissionGates::generate();
+            }
+        } catch (QueryException $e) {
+            // You can log the error or handle it as needed
+            // For example, log the exception message
+            Log::warning('Permission table not found or other database error: ' . $e->getMessage());
         }
+
 
 
         //check if permissions table exist
