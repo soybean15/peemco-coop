@@ -16,7 +16,7 @@ jobs:
 
       - name: TEst env
         run: |
-          echo 'Test env ${{ vars.DB_CONNECTION }}'
+          echo 'Test env ${{ vars.DB_DATABASE }}'
       - name: TEst secrets
         run: |
           echo 'Test env ${{ secrets.SSH_HOST }}'
