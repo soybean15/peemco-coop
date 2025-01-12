@@ -29,18 +29,12 @@ jobs:
           docker compose up -d --build
           echo 'Test env ${{ env.DB_CONNECTION }}'
 
-
-
-      # Step 4: Checkout code
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      # Step 5: Copy .env.example to .env
+      # Step 4: Copy .env.example to .env
       - name: Copy .env.example to .env
         run: |
           cp .env.example .env
 
-      # Step 6: Replace variables in .env file with GitHub Secrets
+      # Step 5: Replace variables in .env file with GitHub Secrets
       - name: Replace .env variables with secrets
         run: |
           sed -i 's/APP_KEY=.*/APP_KEY=${{ vars.DB_DATABASE }}/' .env
@@ -49,11 +43,11 @@ jobs:
           sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=${{ vars.DB_PASSWORD }}/' .env
        
 
-      # Step 7: Run Tests
+      # Step 6: Run Tests
       - name: Run Tests
         run: docker exec peemco php artisan test
 
-      # Step 5: Shut Down Services
+      # Step 7: Shut Down Services
       - name: Shut Down Services
         run: docker compose down
 
