@@ -39,15 +39,16 @@ class LoanType extends Model
     {
         $builder->where(function ($query) {
             $query->where('type', 'regular')
-                  ->orWhere('type', 'flexible');
-        });
+                  ->orWhere('type', 'flexible')
+                 ;
+        }) ->whereNotNull('completed_at');
     }
 
 
     public function scopeCashAdvance(Builder $builder)
     {
 
-            $builder->where('type', 'cash_advance');
+            $builder->where('type', 'cash_advance')->whereNotNull('completed_at');
 
 
     }
