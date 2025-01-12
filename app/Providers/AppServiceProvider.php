@@ -55,6 +55,7 @@ class AppServiceProvider extends ServiceProvider
         // if (Schema::hasTable('permissions')) {
         //     PermissionGates::generate();
         // }
+        PermissionGates::generate();
 
         Blade::component('bread-crumbs',BreadCrumbs::class);
         // Blade::component('stat',Statistic::class);
