@@ -45,8 +45,8 @@ jobs:
         run: |
           sed -i 's/APP_KEY=.*/APP_KEY=${{ vars.DB_DATABASE }}/' .env
           sed -i 's/DB_HOST=.*/DB_HOST=${{ vars.DB_HOST }}/' .env
-          sed -i 's/DB_USERNAME=.*/DB_USERNAME=${{ var.DB_USERNAME }}/' .env
-          sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=${{ var.DB_PASSWORD }}/' .env
+          sed -i 's/DB_USERNAME=.*/DB_USERNAME=${{ vars.DB_USERNAME }}/' .env
+          sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=${{ vars.DB_PASSWORD }}/' .env
        
 
       # Step 7: Run Tests
