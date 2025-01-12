@@ -48,7 +48,10 @@ new class extends Component {
 
         $this->search();
 
-        $this->applyTo = $this->loanType->apply_to;
+        $this->applyTo = $this->loanType->apply_to ??'all';
+
+        $this->loanType->update(['apply_to'=>$this->applyTo]);
+        // dd('here');
         if($this->loanType){
 
             $this->loanTypeUsers = $this->loanType->loanTypeUsers;
@@ -85,18 +88,20 @@ new class extends Component {
 
 
         <div class="flex items-center mb-4">
-            <input id="default-radio-1" type="radio" value="all"  wire:model.live='applyTo' name="default-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+            <input id="default-radio-1" type="radio" value="all" wire:model.live='applyTo' name="default-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+
             <label for="default-radio-1" class="text-sm font-medium text-gray-900 ms-2 dark:text-gray-300">All</label>
         </div>
         <div class="flex items-center">
-            <input  id="default-radio-2" type="radio" value="selected"  wire:model.live='applyTo' name="default-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+            <input id="default-radio-2" type="radio" value="selected" wire:model.live='applyTo' name="default-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
             <label for="default-radio-2" class="text-sm font-medium text-gray-900 ms-2 dark:text-gray-300">Selected</label>
         </div>
+
 
     </x-card>
 
 
-    @if($this->loanType && $this->loanType->apply_to =='selected')
+    @if($this->loanType && $this->applyTo =='selected')
     <div class="grid grid-cols-1 md:grid-cols-2 ">
         <div class="flex flex-col">
             <x-choices
@@ -115,7 +120,7 @@ new class extends Component {
         </div>
 
     </div>
-    @endif
+
 
 
     <div x-data x-on:refresh-page.window='$wire.$refresh()'>
@@ -124,5 +129,8 @@ new class extends Component {
 
 
     </div>
+    @endif
+
+
 
 </div>

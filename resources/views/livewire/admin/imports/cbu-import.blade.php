@@ -9,9 +9,19 @@ use Illuminate\Support\Facades\Auth;
 use App\Jobs\NotifyUserOfCompletedImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\CbuExport;
+use Illuminate\View\View;
+
 new class extends Component {
     use  WithFileUploads;
     public $file;
+
+
+    public function rendering(View $view): void
+    {
+        $view->title('Admin - Import CBU');
+
+
+    }
     public function import(){
 
 // dd($this->file);

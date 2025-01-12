@@ -139,7 +139,7 @@ new class extends Component {
         $service->update([
             'form'=>$this->form,
             'type'=>$this->type,
-            'releases'=>$this->releaseDates
+            'releaseDates'=>$this->releaseDates
         ]);
 
     }
@@ -197,7 +197,6 @@ new class extends Component {
                 <span>{{ count($releaseDates) }}</span>
                 <x-button icon="o-plus" class="mx-3 btn-circle btn-sm btn-success" wire:click='addReleases' />
             </div>
-
 
 
 

@@ -2,8 +2,17 @@
 
 use Livewire\Volt\Component;
 use  App\Enums\AppActionsEnum;
+use Illuminate\View\View;
+
 new class extends Component {
 
+
+    public function rendering(View $view): void
+    {
+        $view->title('Admin - Profile: Dashboard');
+
+
+    }
     public function mount(){
 
 

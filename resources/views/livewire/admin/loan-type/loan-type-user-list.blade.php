@@ -1,4 +1,5 @@
 <?php
+use App\Models\LoanType;
 
 use Livewire\Volt\Component;
 use App\Models\LoanTypeUser;
@@ -26,6 +27,29 @@ new class extends Component {
         }
     }
 
+            #[On('move-next-step')]
+            public function onMove(){
+
+
+
+        $loan_type_id = session('loan_type_id');
+        // dd($loan_type_id);
+    $this->loanType = LoanType::find($loan_type_id);
+
+
+        $this->applyTo = $this->loanType->apply_to ??'all';
+
+        $this->loanType->update(['apply_to'=>$this->applyTo]);
+
+        if($this->loanType){
+
+            $this->loanTypeUsers = $this->loanType->loanTypeUsers;
+
+        }
+
+        }
+
+
 
     public function remove(LoanTypeUser $user){
 
@@ -37,23 +61,30 @@ new class extends Component {
 
 }; ?>
 
-<div >
+<div>
+
 
     @if($loanType && $loanType->apply_to=='selected')
 
 
-        @php
-            $headers = [
-                ['key' => 'id', 'label' => '#'],
-                ['key' => 'name', 'label' => 'Name'],
-                ['key' => 'email', 'label' => 'Email'],
-                ['key' => 'action', 'label' => 'Action'],
-            ]
-        @endphp
+    @php
+    $headers = [
+    ['key' => 'id', 'label' => '#'],
+    ['key' => 'name', 'label' => 'Name'],
+    ['key' => 'email', 'label' => 'Email'],
+    ['key' => 'action', 'label' => 'Action'],
+    ]
+    @endphp
 
-<div x-data x-on:refresh-page.window='$wire.$refresh()'>
+    <div>
 
-        <x-table :headers="$headers" :rows="$loanTypeUsers" show-empty-text empty-text="No users found!" >
+        <strong class="text-lg">Users</strong>
+    </div>
+
+
+    <div x-data x-on:refresh-page.window='$wire.$refresh()'>
+
+        <x-table :headers="$headers" :rows="$loanTypeUsers" show-empty-text empty-text="No users found!">
             @scope('cell_name',$loanTypeUser)
 
             {{ $loanTypeUser->user->name }}
@@ -63,10 +94,11 @@ new class extends Component {
             @endscope
             @scope('cell_action',$loanTypeUser)
 
-            <x-button icon="o-trash" class="btn-circle btn-error" wire:confirm='Are you sure you want the delete this user?' wire:click='remove({{ $loanTypeUser }})' />
+            <x-button icon="o-trash" class="btn-circle btn-error"
+                wire:confirm='Are you sure you want the delete this user?' wire:click='remove({{ $loanTypeUser }})' />
             @endscope
         </x-table>
-</div>
-        @endif
+    </div>
+    @endif
 
 </div>

@@ -7,6 +7,8 @@ use Illuminate\Support\Carbon;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Validate;
 use Mary\Traits\Toast;
+use Illuminate\View\View;
+
 new class extends Component {
     use Toast;
     use WithFileUploads;
@@ -19,7 +21,12 @@ new class extends Component {
 
     public $form;
 
+    public function rendering(View $view): void
+    {
+        $view->title('Admin - Profile:'.$this->user->name);
 
+
+    }
     public function mount()
     {
 
@@ -64,13 +71,6 @@ new class extends Component {
                 <x-icon name="o-check" class="text-2xl text-green-500 w-9 h-9" label=" {{session('success')}}"/>
             @endif
 
-            {{-- <div class="flex justify-center my-5 md:p-20">
-
-                <x-file wire:model="photo" accept="image/png, image/jpeg">
-                    <img src="{{ $user->avatar ?? '/default/default-user.png' }}" class="!w-52" />
-                </x-file>
-
-            </div> --}}
 
 
             <div class="flex flex-col w-full px-5 md:p-5">

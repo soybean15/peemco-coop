@@ -7,12 +7,19 @@ use App\Imports\UsersImport;
 use Illuminate\Support\Facades\Auth;
 use App\Jobs\NotifyUserOfCompletedImport;
 use App\Models\JobProcess;
+use Illuminate\View\View;
 
 new class extends Component {
     //
   use  WithFileUploads;
     public $file;
 
+    public function rendering(View $view): void
+    {
+        $view->title('Admin - Import User');
+
+
+    }
     public function import(){
 
         // dd($this->file);

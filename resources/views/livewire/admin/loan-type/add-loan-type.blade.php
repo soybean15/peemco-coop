@@ -3,10 +3,18 @@
 use Livewire\Volt\Component;
 use  App\Services\LoanType\LoanTypeService;
 use Livewire\Attributes\On;
+use Illuminate\View\View;
 
 new class extends Component {
     //
     public $step=1;
+
+    public function rendering(View $view): void
+    {
+        $view->title('Admin - Add Loan Type');
+
+
+    }
 
     public function next(){
 
@@ -31,9 +39,6 @@ new class extends Component {
 
     #[On('move-next-step')]
     public function moveNextStep(){
-
-
-
         $this->step++;
 
     }

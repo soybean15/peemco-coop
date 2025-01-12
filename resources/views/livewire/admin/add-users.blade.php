@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Mary\Traits\Toast;
 use App\Helpers\PasswordGenerator;
+
 new class extends Component {
 
     use Toast;
