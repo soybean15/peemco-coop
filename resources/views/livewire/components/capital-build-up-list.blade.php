@@ -45,9 +45,6 @@ new class extends Component {
 
 
 
-        <x-slot:middle>
-            <x-input icon="o-magnifying-glass" wire:model.live='search' placeholder="Search..." />
-        </x-slot:middle>
     </x-header>
 
 
