@@ -42,6 +42,10 @@ class AppServiceProvider extends ServiceProvider
 
             return new GeneralSettingsService();
         });
+
+
+
+
     }
 
     /**
@@ -49,13 +53,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if (Schema::hasTable('permissions')) {
+            PermissionGates::generate();
+        }
 
 
         //check if permissions table exist
-        // if (Schema::hasTable('permissions')) {
-        //     PermissionGates::generate();
-        // }
-        PermissionGates::generate();
+
 
         Blade::component('bread-crumbs',BreadCrumbs::class);
         // Blade::component('stat',Statistic::class);
