@@ -43,7 +43,7 @@ jobs:
       # Step 6: Replace variables in .env file with GitHub Secrets
       - name: Replace .env variables with secrets
         run: |
-          sed -i 's/APP_KEY=.*/APP_KEY=${{ var.DB_DATABASE }}/' .env
+          sed -i 's/APP_KEY=.*/APP_KEY=${{ vars.DB_DATABASE }}/' .env
           sed -i 's/DB_HOST=.*/DB_HOST=${{ vars.DB_HOST }}/' .env
           sed -i 's/DB_USERNAME=.*/DB_USERNAME=${{ var.DB_USERNAME }}/' .env
           sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=${{ var.DB_PASSWORD }}/' .env
