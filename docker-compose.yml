@@ -1,15 +1,17 @@
 services:
-  app:
+  # Production app container
+  app-prod:
     build:
       context: .
       dockerfile: Dockerfile
     image: peemco
-    container_name:  peemco
+    container_name: peemco-prod
     restart: unless-stopped
     tty: true
     environment:
       SERVICE_NAME: app
-      SERVICE_TAGS: dev
+      SERVICE_TAGS: prod
+      APP_ENV: production
     working_dir: /var/www
     volumes:
       - .:/var/www
@@ -17,10 +19,39 @@ services:
       - ./docker-compose/php/local.ini:/usr/local/etc/php/conf.d/local.ini
     networks:
       - app-network
+    profiles:
+      - prod
 
+  # Testing app container
+  app-test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: peemco
+    container_name: peemco-test
+    restart: unless-stopped
+    tty: true
+
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+      APP_ENV: testing
+    env_file:
+        - .env.testing  # This will load the .env.testing file
+    working_dir: /var/www
+    volumes:
+      - .:/var/www
+      - /var/www/vendor
+      - ./docker-compose/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - app-network
+    profiles:
+      - dev
+
+  # Nginx webserver
   webserver:
     image: nginx:alpine
-    container_name:  peemco-nginx-webserver
+    container_name: peemco-nginx-webserver
     restart: unless-stopped
     ports:
       - "80:80"
@@ -29,20 +60,21 @@ services:
       - ./docker-compose/nginx:/etc/nginx/conf.d/
     networks:
       - app-network
+    depends_on:
+      - app-prod
+      - app-test
 
+  # MySQL Database
   db:
     image: mysql:5.7
     container_name: peemco-mysql
     restart: unless-stopped
     environment:
-      MYSQL_DATABASE:  ${DB_DATABASE}
-      MYSQL_ROOT_PASSWORD:  ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       PHP_UPLOAD_MAX_FILESIZE: 400M
       PHP_POST_MAX_SIZE: 400M
       PHP_MEMORY_LIMIT: 512M
-
-      # MYSQL_USER: ${MYSQL_USER}
-      # MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
       - "3306:3306"
     volumes:
@@ -50,22 +82,19 @@ services:
     networks:
       - app-network
 
-
+  # phpMyAdmin for database management
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: peemco-phpmyadmin
     restart: unless-stopped
     ports:
-      - "8083:80"  # Access phpMyAdmin at http://localhost:8081
+      - "8083:80"
     environment:
-      PMA_HOST: db  # This should match your database service name
-    #   PMA_USER: root  # MySQL user
-    #   PMA_PASSWORD: root  # MySQL user's password
+      PMA_HOST: db
       PMA_ARBITRARY: 1
       UPLOAD_LIMIT: 600M
     networks:
       - app-network
-
 
 networks:
   app-network:
