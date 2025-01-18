@@ -26,7 +26,7 @@ new class extends Component {
                 ['key' => 'action', 'label' => 'Action', ],
                 // Alternative approach
             ],
-            'capitalBuildUp'=>$this->user->capitalBuildUp()->search($this->search)->paginate(5)
+            'capitalBuildUp'=>$this->user->capitalBuildUp()->search($this->search)->paginate(10)
         ];
     }
 
@@ -61,10 +61,10 @@ new class extends Component {
             {{ $capitalBuildUp->or_cdv}}
         @endscope
         @scope('cell_date', $capitalBuildUp)
-            {{ $capitalBuildUp->date}}
+            {{ \Carbon\Carbon::parse($capitalBuildUp->date)->toFormattedDateString() }}
         @endscope
         @scope('cell_amount_received', $capitalBuildUp)
-            {{ $capitalBuildUp->amount_received}}
+            ₱ {{ number_format(($capitalBuildUp->amount_received),2) }}
         @endscope
         @scope('cell_added_by', $capitalBuildUp)
             {{ $capitalBuildUp->addedBy->name}}

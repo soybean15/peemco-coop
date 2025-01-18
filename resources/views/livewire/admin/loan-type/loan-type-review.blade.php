@@ -80,13 +80,13 @@ new class extends Component {
         </div>
         <div>
             <strong>Maximum Amount</strong>
-
-            <div>{{ $loanType->maximum_amount }}%</div>
+          
+            <div>₱{{  number_format(($loanType->maximum_amount),2) }}</div>
         </div>
         <div>
             <strong>Minimum Amount</strong>
 
-            <div>{{ $loanType->minimum_amount }}%</div>
+            <div>₱{{ number_format(($loanType->minimum_amount),2) }}</div>
         </div>
         <div>
             <strong>Penalty</strong>
@@ -96,7 +96,7 @@ new class extends Component {
         <div>
             <strong>Grace Period</strong>
 
-            <div class="">{{ $loanType->grace_period }}</div>
+            <div class="">{{ number_format(($loanType->grace_period),0) }} Days</div>
         </div>
     </div>
     <hr class="my-5"/>
