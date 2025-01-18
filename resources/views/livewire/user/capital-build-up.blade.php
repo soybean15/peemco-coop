@@ -10,9 +10,12 @@ new class extends Component {
     public $search;
     public $users;
 
+   
+
     public function mount()
     {
        $this->users = auth()->user()->id;
+       $this->sample =1;
     }
 
     public function with(): array
@@ -29,7 +32,7 @@ new class extends Component {
             ],
             'capitalBuildUp'=> CapitalBuildUp::where('user_id',$this->users)
                 ->where('or_cdv', 'LIKE', "%$this->search%")
-                ->paginate(2)
+                ->paginate(10)
         ];
     }
 
