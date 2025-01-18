@@ -26,7 +26,7 @@ new class extends Component {
                 ['key' => 'action', 'label' => 'Action', ],
                 // Alternative approach
             ],
-            'capitalBuildUp'=>$this->user->capitalBuildUp()->search($this->search)->paginate(5)
+            'capitalBuildUp'=>$this->user->capitalBuildUp()->search($this->search)->paginate(10)
         ];
     }
 
