@@ -26,7 +26,6 @@ new class extends Component {
                 ['key' => 'date', 'label' => 'Date', ],
                 ['key' => 'amount_received', 'label' => 'Amount Received', 'class' => 'hidden lg:table-cell'],
                 ['key' => 'added_by', 'label' => 'Added By', ],
-                ['key' => 'action', 'label' => 'Action', ],
                 // Alternative approach
             ],
             'capitalBuildUp'=> CapitalBuildUp::where('user_id',$this->users)
@@ -54,6 +53,18 @@ new class extends Component {
         value="₱{{ number_format(CapitalBuildUp::where('user_id',$this->users)->sum('amount_received'),2) }}"
         icon="o-arrow-trending-up"
     />
-    <x-table :headers="$cbuHeaders" :rows="$capitalBuildUp" striped with-pagination x-on:refresh-table.window='$wire.$refresh()' />   
-   
+    <x-table :headers="$cbuHeaders" :rows="$capitalBuildUp" striped with-pagination x-on:refresh-table.window='$wire.$refresh()'>   
+        @scope('cell_or_cdv', $capitalBuildUp)
+            {{ $capitalBuildUp->or_cdv}}
+        @endscope
+        @scope('cell_date', $capitalBuildUp)
+            {{ \Carbon\Carbon::parse($capitalBuildUp->date)->toFormattedDateString() }}
+        @endscope
+        @scope('cell_amount_received', $capitalBuildUp)
+            ₱ {{ number_format(($capitalBuildUp->amount_received),2) }}
+        @endscope
+        @scope('cell_added_by', $capitalBuildUp)
+            {{ $capitalBuildUp->addedBy->name}}
+        @endscope
+    </x-table>
 </div>
