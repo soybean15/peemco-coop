@@ -10,6 +10,8 @@ new class extends Component {
     public $search;
     public $users;
 
+   
+
     public function mount()
     {
        $this->users = auth()->user()->id;
@@ -29,7 +31,7 @@ new class extends Component {
             ],
             'capitalBuildUp'=> CapitalBuildUp::where('user_id',$this->users)
                 ->where('or_cdv', 'LIKE', "%$this->search%")
-                ->paginate(2)
+                ->paginate(10)
         ];
     }
 
@@ -37,12 +39,21 @@ new class extends Component {
 
 }; ?>
 
+
+    
 <div>
+   
     <x-header title="Capital Build up" subtitle="Total Shares" separator>
         <x-slot:actions>
             <x-input icon="o-magnifying-glass" wire:model.live='search' placeholder="Search..." />
         </x-slot:actions>
     </x-header>
+    <x-stat
+        title="Capital Buildup"
+        {{-- description="This month" --}}
+        value="₱{{ number_format(CapitalBuildUp::where('user_id',$this->users)->sum('amount_received'),2) }}"
+        icon="o-arrow-trending-up"
+    />
     <x-table :headers="$cbuHeaders" :rows="$capitalBuildUp" striped with-pagination x-on:refresh-table.window='$wire.$refresh()' />   
    
 </div>
