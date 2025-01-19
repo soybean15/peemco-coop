@@ -203,20 +203,7 @@ new class extends Component {
 
     <x-header title="Apply Loan" subtitle='Loan Calculator' separator>
         <x-slot:actions>
-            <ul>
-                @foreach (auth()->user()->roles as $role)
-                    <li>{{ $role->name }}</li>
-                @endforeach
-            </ul>
-            
-            <p>
-                <strong>Permission Check:</strong>
-                <br>
-                Can Process Loan: {{ auth()->user()->can('process loan') ? 'Yes' : 'No' }}
-                <br>
-                Can Apply Loan: {{ auth()->user()->can('apply loan') ? 'Yes' : 'No' }}
-            </p>
-
+          
             @if(auth()->user()->can('process loan') || auth()->user()->can('apply loan'))
             <x-button class="btn-success" label='Apply Loan' wire:confirm='Are you sure you want to apply this loan?'
                 wire:click='applyLoan' />
