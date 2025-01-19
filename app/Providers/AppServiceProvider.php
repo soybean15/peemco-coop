@@ -57,16 +57,16 @@ class AppServiceProvider extends ServiceProvider
     {
 
 
-        PermissionGates::generate();
 
-        // try {
-        //     if (Schema::hasTable('permissions')) {
-        //     }
-        // } catch (QueryException $e) {
-        //     // You can log the error or handle it as needed
-        //     // For example, log the exception message
-        //     Log::warning('Permission table not found or other database error: ' . $e->getMessage());
-        // }
+        try {
+            // if (Schema::hasTable('permissions')) {
+                PermissionGates::generate();
+            // }
+        } catch (QueryException $e) {
+            // You can log the error or handle it as needed
+            // For example, log the exception message
+            Log::warning('Permission table not found or other database error: ' . $e->getMessage());
+        }
 
 
 
