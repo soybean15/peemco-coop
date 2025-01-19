@@ -26,7 +26,7 @@ class RoleAndPermissionSeeder{
         foreach(RolesEnum::cases() as $role){
 
             $_role = Role::create(
-                attributes: ['name'=>$role->value,'guard_name'=>'web']
+                 ['name'=>$role->value,'guard_name'=>'web']
             );
 
 

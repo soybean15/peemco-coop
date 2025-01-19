@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
 
         RoleAndPermissionSeeder::seed();
 
-        // $user = User::factory(10)->create();
+        $user = User::factory(10)->create();
 
         $user =  User::factory()->create([
             'mid' => 'MID-0000000',
