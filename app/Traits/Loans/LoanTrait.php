@@ -20,6 +20,9 @@ trait LoanTrait
 
     public function mount(Loan $loan){
 
+
+
+
         $this->loan=$loan;
         $this->loanItems = $loan->items;
         $this->headers = [

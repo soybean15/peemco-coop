@@ -53,13 +53,14 @@ class LoanPaymenItem{
             return LoanItemStatusEnum::PENDING->value;
         }
 
+        
+        if($this->loanItem->running_balance==0){
+            return  LoanItemStatusEnum::PAID->value;
+        }
         if($this->dueDate->between($this->currentDate, $this->currentDate->copy()->subMonth())){
             return LoanItemStatusEnum::TO_PAY->value;
         }
 
-        if($this->loanItem->running_balance==0){
-            return  LoanItemStatusEnum::PAID->value;
-        }
 
         return LoanItemStatusEnum::OVERDUE->value;
 
