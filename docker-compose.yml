@@ -54,7 +54,7 @@ services:
     container_name: peemco-nginx-webserver
     restart: unless-stopped
     ports:
-      - "8080:80"
+      - "80:80"
     volumes:
       - .:/var/www
       - ./docker-compose/nginx:/etc/nginx/conf.d/
@@ -76,7 +76,7 @@ services:
       PHP_POST_MAX_SIZE: 400M
       PHP_MEMORY_LIMIT: 512M
     ports:
-      - "3307:3306"
+      - "3306:3306"
     volumes:
       - dbdata:/var/lib/mysql
     networks:
