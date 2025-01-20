@@ -36,6 +36,8 @@ class CashAdvanceItem
        $this->item->save();
     //    dd($penalty);
     //    dd($this->item->status);
+    // dd('jer');
+
     }
 
     public function setStatus(){
@@ -49,6 +51,7 @@ class CashAdvanceItem
         $payment = $this->item->payments->first();
 
         if ($payment && $payment->amount_paid >= $this->item->charge_amount) {
+
             return LoanItemStatusEnum::PAID->value;
         }
 
