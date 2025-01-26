@@ -47,45 +47,45 @@ class ComputePenalty
 
     public function computePenalty($runningBalance)
     {
+        // Return 0 if the due date is greater than or equal to the current date
         if ($this->dueDate->gte($this->currentDate)) {
             return 0;
         }
 
-        $total_penalty = 0;
-        $is_compound = $this->loanType->is_compound_penalty == 1;
-        $_due = $this->dueDate->copy()->addDays((int)$this->grace_period);
+        $totalPenalty = 0;
+        $isCompound = $this->loanType->is_compound_penalty == 1;
+        $dueDate = $this->dueDate->copy()->addDays((int) $this->grace_period);
 
-        // dd($_due->format('Y-m-d'));
-        while ($_due->lt($this->endOfTerm)) {
-            if ($_due->lte($this->currentDate)) {
-
-                if ($this->loanItem->penalties()->where('penalty_date', $_due->format('Y-m-d'))->exists()) {
-                    $_due->addDays((int)$this->grace_period);
-                    continue;
-                }
-                if ($is_compound) {
-                    $runningBalance += $total_penalty;
-                }
-
-                $penalty = $runningBalance * ($this->rate / 100);
-                $total_penalty += $penalty;
-
-                $this->loanItem->penalties()->firstOrCreate([
-                    'penalty_date' => $_due->format('Y-m-d'),
-                ], [
-                    'amount' => $penalty,
-                    'rate' => $this->rate,
-                    'running_balance' => $total_penalty + $runningBalance,
-                ]);
-
-                $_due->addDays((int)$this->grace_period);
+        // Loop until the due date is within the term and overdue
+        while ($dueDate->lt($this->endOfTerm) && $dueDate->lte($this->currentDate)) {
+            // Skip if a penalty already exists for this date
+            if ($this->loanItem->penalties()->where('penalty_date', $dueDate->format('Y-m-d'))->exists()) {
+                $dueDate->addDays((int) $this->grace_period);
                 continue;
             }
 
-            break;
+            // Add existing penalties to the running balance for compound penalties
+            if ($isCompound) {
+                $runningBalance += $totalPenalty;
+            }
+
+            // Calculate the penalty
+            $penalty = $runningBalance * ($this->rate / 100);
+            $totalPenalty += $penalty;
+
+            // Record the penalty
+            $this->loanItem->penalties()->create([
+                'penalty_date' => $dueDate->format('Y-m-d'),
+                'amount' => $penalty,
+                'rate' => $this->rate,
+                'running_balance' => $totalPenalty + $runningBalance,
+            ]);
+
+            // Move to the next grace period
+            $dueDate->addDays((int) $this->grace_period);
         }
 
-
+        // Return the total penalties summed up
         return round($this->loanItem->penalties()->sum('amount'), 2);
     }
 
