@@ -19,18 +19,18 @@ class DatabaseSeeder extends Seeder
 
 
 
-        RoleAndPermissionSeeder::seed();
+        // RoleAndPermissionSeeder::seed();
 
-        $user = User::factory(10)->create();
+    User::factory(10)->create();
 
-        $user =  User::factory()->create([
-            'mid' => 'MID-0000000',
-            'name' => 'Test User',
-            'username'=>'TestUser',
-            'email' => env('SUPER_ADMIN','test@example'),
-        ]);
+        // $user =  User::factory()->create([
+        //     'mid' => 'MID-0000000',
+        //     'name' => 'Test User',
+        //     'username'=>'TestUser',
+        //     'email' => env('SUPER_ADMIN','test@example'),
+        // ]);
 
 
-        $user->assignRole(RolesEnum::SUPER_ADMIN->value);
+        // $user->assignRole(RolesEnum::SUPER_ADMIN->value);
     }
 }
