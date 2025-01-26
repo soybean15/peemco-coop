@@ -10,6 +10,7 @@ use App\Models\JobProcess;
 use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\UsersExport;
+use App\Enums\ImportCacheNameEnum;
 
 new class extends Component {
     //
@@ -20,7 +21,7 @@ new class extends Component {
     {
         $view->title('Admin - Import User');
 
-
+    //    dd( Cache::get(ImportCacheNameEnum::USER->value,  []));
     }
     public function import(){
 
@@ -61,8 +62,8 @@ new class extends Component {
 
     public function exportTemplate(){
 
-return Excel::download(new UsersExport, 'cbu.xlsx');
-}
+        return Excel::download(new UsersExport, 'user.xlsx');
+        }
 
 }; ?>
 
