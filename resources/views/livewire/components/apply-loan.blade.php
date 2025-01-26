@@ -203,9 +203,7 @@ new class extends Component {
 
     <x-header title="Apply Loan" subtitle='Loan Calculator' separator>
         <x-slot:actions>
-
-
-
+          
             @if(auth()->user()->can('process loan') || auth()->user()->can('apply loan'))
             <x-button class="btn-success" label='Apply Loan' wire:confirm='Are you sure you want to apply this loan?'
                 wire:click='applyLoan' />

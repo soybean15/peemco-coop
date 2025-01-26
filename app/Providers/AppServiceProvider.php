@@ -59,9 +59,9 @@ class AppServiceProvider extends ServiceProvider
 
 
         try {
-            if (Schema::hasTable('permissions')) {
+            // if (Schema::hasTable('permissions')) {
                 PermissionGates::generate();
-            }
+            // }
         } catch (QueryException $e) {
             // You can log the error or handle it as needed
             // For example, log the exception message

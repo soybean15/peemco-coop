@@ -7,6 +7,7 @@ use App\Models\CashAdvanceItem;
 
 use App\Models\Loan;
 use App\Actions\Payment\CashAdvancePayment;
+use App\Actions\Payment\LoanPayment;
 use App\Services\Loans\PaymentService;
 use App\Actions\Payment;
 use Mary\Traits\Toast;

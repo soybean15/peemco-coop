@@ -162,26 +162,33 @@ new class extends Component {
 }; ?>
 
 <div>
+
+
+    @php
+
+    $disabled = request()->route()->getName()=='admin.loan-type-profile';
+    @endphp
+
     <x-header title="{{ !$loanType ?'Add ':'' }}Loan Type" separator />
 
     <x-form wire:submit="save" >
 
 
-            <x-select label="Type" icon="o-user" :options="$types" wire:model.live="type" placeholder="Select loan type" />
+            <x-select label="Type" icon="o-user" :options="$types" wire:model.live="type" placeholder="Select loan type" :disabled="$disabled"/>
 
-            <x-input label="Loan Type" wire:model.live="form.loan_type" hint='ex: Salary loan, Calamity loan' />
+            <x-input label="Loan Type" wire:model.live="form.loan_type" hint='ex: Salary loan, Calamity loan' :disabled="$disabled" />
 
             @if($type=='regular' || $type=='flexible')
 
 
-            <x-input label="Annual Rate" type='number' wire:model="form.annual_rate" prefix="%" step="0.01" />
-            <x-input label="Charges" type='number' wire:model="form.charges" prefix="%" step="0.01" />
-            <x-input label="Minimum Amount" wire:model.live="form.minimum_amount" prefix="PHP" step="0.01" />
-            <x-input label="Maximum Amount" wire:model="form.maximum_amount" prefix="PHP" step="0.01" />
+            <x-input label="Annual Rate" type='number' wire:model="form.annual_rate" prefix="%" step="0.01" :disabled="$disabled"/>
+            <x-input label="Charges" type='number' wire:model="form.charges" prefix="%" step="0.01" :disabled="$disabled"/>
+            <x-input label="Minimum Amount" wire:model.live="form.minimum_amount" prefix="PHP" step="0.01" :disabled="$disabled"/>
+            <x-input label="Maximum Amount" wire:model="form.maximum_amount" prefix="PHP" step="0.01" :disabled="$disabled"/>
 
-            <x-input label="Maximum Period" wire:model="form.maximum_period" hint="Maximum period in months" type="number" />
+            <x-input label="Maximum Period" wire:model="form.maximum_period" hint="Maximum period in months" type="number" :disabled="$disabled"/>
             @endif
-            <x-input label="Penalty" wire:model="form.penalty" prefix="%" step="0.01" />
+            <x-input label="Penalty" wire:model="form.penalty" prefix="%" step="0.01" :disabled="$disabled"/>
             <x-input label="Grace period" wire:model="form.grace_period" prefix="Days" step="0.01" />
             <x-checkbox label="Compound penalty" wire:model="is_compound_penalty" hint="When enabled, penalties from the previous term will be added to the next penalty calculation." />
 

@@ -53,7 +53,8 @@ jobs:
             script: |
               cd main/peemco-coop
               git pull origin main
-              docker compose up -d
-              docker exec peemco npm run build
+              docker compose --profile prod --profile dev up -d
+              docker exec peemco-test npm run build
+              docker exec peemco-prod npm run build
 
 

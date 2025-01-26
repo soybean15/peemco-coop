@@ -39,7 +39,7 @@ new class extends Component {
                 $toDate = Carbon\Carbon::createFromFormat('m-d-Y', "{$item->to}-{$year}");
 
                 // Format to desired output, e.g., "Jan 1, 2024 to Mar 2, 2024"
-                $formattedDate = $fromDate->format('M j, Y') . ' to ' . $toDate->format('M j, Y');
+                $formattedDate = $fromDate->format('M j') . ' to ' . $toDate->format('M j');
 
                 return [
                     'id' =>  $toDate->format('Y-m-d'),
@@ -117,6 +117,7 @@ new class extends Component {
         }catch(\Exception $e){
 
          
+            dd($e->getMessage());
                     $this->error($e->getMessage());
         }
     }

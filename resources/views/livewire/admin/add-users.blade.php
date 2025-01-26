@@ -44,6 +44,8 @@ new class extends Component {
         $validated['password'] = Hash::make($password);
         $validated['mid'] = IdGenerator::generateId('MID',10);
         $user = User::create($validated);
+        $user->assignRole(RolesEnum::MEMBER->value);
+
         UserProfile::firstOrCreate(['user_id' => $user->id]);
         $this->success('New Member Successfully added');
         // session()->flash('success','Member Created Successfully');
@@ -60,20 +62,22 @@ new class extends Component {
 }; ?>
 
 <div>
-    <x-header title="Add User"  separator />
+    <x-header title="Add User" separator />
 
     <form wire:confirm='Continue adding user?' wire:submit="register" class="flex flex-col space-y-4">
         <!-- Name -->
         <div>
             <x-input-label for="name" :value="__('Firstname')" />
-            <x-text-input wire:model="name" id="name" class="block w-full mt-1" type="text" name="name" required autofocus autocomplete="name" />
+            <x-text-input wire:model="name" id="name" class="block w-full mt-1" type="text" name="name" required
+                autofocus autocomplete="name" />
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
 
         <!-- Middlename -->
         <div>
             <x-input-label for="middlename" :value="__('Middlename')" />
-            <x-text-input wire:model="middlename" id="middlename" class="block w-full mt-1" type="text" name="middlename" required autofocus autocomplete="middlename" />
+            <x-text-input wire:model="middlename" id="middlename" class="block w-full mt-1" type="text"
+                name="middlename" required autofocus autocomplete="middlename" />
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
 
@@ -81,14 +85,16 @@ new class extends Component {
         <!-- Lastname -->
         <div>
             <x-input-label for="lastname" :value="__('Lastname')" />
-            <x-text-input wire:model="lastname" id="lastname" class="block w-full mt-1" type="text" name="lastname" required autofocus autocomplete="lastname" />
+            <x-text-input wire:model="lastname" id="lastname" class="block w-full mt-1" type="text" name="lastname"
+                required autofocus autocomplete="lastname" />
             <x-input-error :messages="$errors->get('lastname')" class="mt-2" />
         </div>
 
         <!-- Username -->
         <div>
             <x-input-label for="username" :value="__('Username')" />
-            <x-text-input wire:model="username" id="username" class="block w-full mt-1" type="text" name="username" required autofocus autocomplete="username" />
+            <x-text-input wire:model="username" id="username" class="block w-full mt-1" type="text" name="username"
+                required autofocus autocomplete="username" />
             <x-input-error :messages="$errors->get('username')" class="mt-2" />
         </div>
 
@@ -96,18 +102,18 @@ new class extends Component {
         <!-- Email Address -->
         <div class="mt-4">
             <x-input-label for="email" :value="__('Email')" />
-            <x-text-input wire:model="email" id="email" class="block w-full mt-1" type="email" name="email" required autocomplete="username" />
+            <x-text-input wire:model="email" id="email" class="block w-full mt-1" type="email" name="email" required
+                autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
-        {{-- <!-- Password -->
+        {{--
+        <!-- Password -->
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />
 
-            <x-text-input wire:model="password" id="password" class="block w-full mt-1"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
+            <x-text-input wire:model="password" id="password" class="block w-full mt-1" type="password" name="password"
+                required autocomplete="new-password" />
 
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div> --}}
@@ -117,8 +123,7 @@ new class extends Component {
             <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
 
             <x-text-input wire:model="password_confirmation" id="password_confirmation" class="block w-full mt-1"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
+                type="password" name="password_confirmation" required autocomplete="new-password" />
 
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div> --}}
@@ -134,7 +139,7 @@ new class extends Component {
 
 
     <script>
-         window.addEventListener('user-added', (event) => {
+        window.addEventListener('user-added', (event) => {
             Swal.fire({
                 title: 'User Created!',
                 text: 'Do you want to continue',

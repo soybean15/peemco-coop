@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Enums\RolesEnum;
 use App\Helpers\IdGenerator;
 use App\Models\User;
 use App\Models\UserProfile;
@@ -54,6 +55,8 @@ class UserStoreJob implements ShouldQueue
             'extension'=>$row['extension']??'',
             'password' => Hash::make('password'),
         ]);
+
+        $user->assignRole(RolesEnum::MEMBER->value);
 
         if($user){
             UserProfile::firstOrCreate([
