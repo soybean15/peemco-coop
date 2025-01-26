@@ -37,15 +37,37 @@
     <header class="sticky top-0 z-50 border-b border-gray-100 bg-white/80 backdrop-blur-md">
         <nav class="container flex items-center justify-between px-6 py-4 mx-auto">
             <a href="#" class="text-2xl font-bold gradient-text">QuickLoan</a>
-            <div class="items-center hidden space-x-8 md:flex">
-                <a href="#mission-vision" class="font-medium text-gray-600 transition-all duration-300 hover:text-indigo-600">About</a>
-                <a href="#features" class="font-medium text-gray-600 transition-all duration-300 hover:text-indigo-600">Features</a>
-                <a href="#how-it-works" class="font-medium text-gray-600 transition-all duration-300 hover:text-indigo-600">Process</a>
-                <a href="#testimonials" class="font-medium text-gray-600 transition-all duration-300 hover:text-indigo-600">Reviews</a>
+            <div class="items-center hidden space-x-6 md:flex">
+                <nav class="flex items-center space-x-6">
+                    <a href="#mission-vision" class="text-sm font-medium text-gray-500 transition-colors duration-200 hover:text-indigo-600 hover:underline hover:underline-offset-8 decoration-2">
+                        About
+                    </a>
+                    <a href="#features" class="text-sm font-medium text-gray-500 transition-colors duration-200 hover:text-indigo-600 hover:underline hover:underline-offset-8 decoration-2">
+                        Features
+                    </a>
+                    <a href="#how-it-works" class="text-sm font-medium text-gray-500 transition-colors duration-200 hover:text-indigo-600 hover:underline hover:underline-offset-8 decoration-2">
+                        Process
+                    </a>
+                    <a href="#testimonials" class="text-sm font-medium text-gray-500 transition-colors duration-200 hover:text-indigo-600 hover:underline hover:underline-offset-8 decoration-2">
+                        Reviews
+                    </a>
+                </nav>
+
+                <div class="h-6 w-px bg-gray-200 mx-2"></div>
+
                 @if(!auth()->user())
-                <a href="{{ route('login') }}" class="px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-indigo-500 text-white rounded-lg font-medium hover:shadow-lg transition-all duration-300">Get Started</a>
+                <div class="flex items-center space-x-4">
+                    <a href="{{ route('login') }}" class="px-4 py-2 text-sm font-medium text-indigo-600 transition-colors duration-200 hover:bg-indigo-50 rounded-lg">
+                        Login
+                    </a>
+                    <a href="{{ route('register') }}" class="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-indigo-500 rounded-lg shadow-sm hover:shadow-md hover:from-indigo-700 hover:to-indigo-600 transition-all duration-200">
+                        Register
+                    </a>
+                </div>
                 @else
-                <a href="{{ route('user.dashboard') }}" class="px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-indigo-500 text-white rounded-lg font-medium hover:shadow-lg transition-all duration-300">Dashboard</a>
+                <a href="{{ route('user.dashboard') }}" class="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-indigo-500 rounded-lg shadow-sm hover:shadow-md hover:from-indigo-700 hover:to-indigo-600 transition-all duration-200">
+                    Dashboard
+                </a>
                 @endif
             </div>
         </nav>
