@@ -173,6 +173,7 @@ new class extends Component {
     </x-table>
 
     </div>
+    <livewire:components.payment-history :loan="$loan"/>
 
     <livewire:admin.loan.loan-payment-modal />
 
