@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Jobs\NotifyUserOfCompletedImport;
 use App\Models\JobProcess;
 use Illuminate\View\View;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\UsersExport;
 
 new class extends Component {
     //
@@ -39,23 +41,28 @@ new class extends Component {
             ]
         );
 
-        $import =new UsersImport($jobProcess);
-        // dd($import->getRowCount());
-        ($import)->queue($this->file)->chain([
+                $import =new UsersImport($jobProcess);
+                // dd($import->getRowCount());
+                ($import)->queue($this->file)->chain([
 
-            new NotifyUserOfCompletedImport($jobProcess,Auth::user()),
-        ]);
+                    new NotifyUserOfCompletedImport($jobProcess,Auth::user()),
+                ]);
 
-        // $import = new UsersImport();
-        // $import->import('testemail.xlsx');
+                // $import = new UsersImport();
+                // $import->import('testemail.xlsx');
 
-        // dd($import->errors());        // (new UsersImport)->withOutput($this->output)->import('testemail.xlsx');
-    } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+                // dd($import->errors());        // (new UsersImport)->withOutput($this->output)->import('testemail.xlsx');
+            } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
 
 
 
-   }
+        }
     }
+
+    public function exportTemplate(){
+
+return Excel::download(new UsersExport, 'cbu.xlsx');
+}
 
 }; ?>
 
@@ -65,7 +72,7 @@ new class extends Component {
     <x-header title="User Import" subtitle="Drag or select you file" separator>
 
         <x-slot:middle class="!justify-end">
-            <livewire:components.job-progress :processFor="'user_import'"/>
+            <livewire:components.job-progress :processFor="'user_import'" />
 
         </x-slot:middle>
         <x-slot:actions>
@@ -73,6 +80,7 @@ new class extends Component {
             <x-button label="Import" class="btn-success" wire:click='import' />
 
             @endif
+            <x-button label="Download Template" class="btn-ghost " wire:click='exportTemplate' />
 
         </x-slot:actions>
     </x-header>

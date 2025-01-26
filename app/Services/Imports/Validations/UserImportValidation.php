@@ -24,14 +24,15 @@ class UserImportValidation implements WithImportValidation
         $validator =  Validator::make($this->row, [
             'email' => 'required|unique:users,email',
             'username' => 'required|unique:users,username',
-            'name' => 'required'
+            'firstname' => 'required',
+            'lastname'=>'required',
         ]);
         if ($validator->fails()) {
             $errors = $validator->errors()->toArray();
             $this->row['errors'] = $errors;
             $failedRows = Cache::get(ImportCacheNameEnum::USER->value, []);
             $failedRows[] = $this->row; // Add current row to the array
-            Cache::put(ImportCacheNameEnum::USER->value, $failedRows, 3600); // Save for 1 hour
+            Cache::put(ImportCacheNameEnum::USER->value,  $failedRows, 3600); // Save for 1 hour
             return false;
         }
 
