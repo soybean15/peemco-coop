@@ -44,7 +44,7 @@ new class extends Component {
 
     <x-header title="Settings" separator />
 
-    <livewire:components.query-fixer />
+    {{-- <livewire:components.query-fixer /> --}}
     <x-tabs wire:model="selectedTab">
         <x-tab name="general">
             <x-slot:label>
