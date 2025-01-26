@@ -15,7 +15,7 @@ new class extends Component {
 
     public $roles=[];
 
-    
+
 
     public function rendering(View $view): void
     {
@@ -40,7 +40,11 @@ new class extends Component {
 }; ?>
 
 <div>
+
+
     <x-header title="Settings" separator />
+
+    <livewire:components.query-fixer />
     <x-tabs wire:model="selectedTab">
         <x-tab name="general">
             <x-slot:label>
