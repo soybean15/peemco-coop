@@ -47,7 +47,7 @@ class UserStoreJob implements ShouldQueue
 
         $user = User::create([
             'mid'      => IdGenerator::generateId(LoanServiceProvider::LOAN_PREFIX, LoanServiceProvider::LOAN_LEN),
-            'name'     => $row['name'],//FIRSTNAME
+            'name'     => $row['firstname'],//FIRSTNAME
             'email'    => $row['email'],
             'username'=>    $row['username'],
             'lastname'=>$row['lastname'],

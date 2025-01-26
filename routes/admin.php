@@ -68,7 +68,10 @@ Route::prefix('/')->group(function(){
 
     });
 
+    Route::prefix('reports')->group(function(){
+        Volt::route('/','admin.reports')->name('admin.reports');
 
+    });
 
 
 });

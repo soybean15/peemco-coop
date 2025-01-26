@@ -116,6 +116,7 @@ new class extends Component {
 
         $loanService = app(LoanCalculator::class);
 
+        // dd($this->principal);
         $this->validate(
             [
                 // 'terms_in_year'=>'required',
@@ -203,7 +204,7 @@ new class extends Component {
 
     <x-header title="Apply Loan" subtitle='Loan Calculator' separator>
         <x-slot:actions>
-          
+
             @if(auth()->user()->can('process loan') || auth()->user()->can('apply loan'))
             <x-button class="btn-success" label='Apply Loan' wire:confirm='Are you sure you want to apply this loan?'
                 wire:click='applyLoan' />
@@ -235,8 +236,7 @@ new class extends Component {
 
 
 
-            <x-input label="Principal Amount" wire:model.live.debounce.250="principal" prefix="PHP" money
-                 />
+            <x-input label="Principal Amount" wire:model.live="principal" prefix="PHP"  type="number"/>
 
             <div class="max-w-sm">
                 <label class="block mb-2 text-sm font-medium text-gray-900">Loan Terms</label>

@@ -35,8 +35,9 @@ new class extends Component {
     public function onAddPayment($loanItemId){
         // dd('hjer');
         $this->loanItem = LoanItem::find($loanItemId);
+        // dd($this->loanItem);
         $this->date = Carbon::now()->format('Y-m-d');
-        $this->amount = $this->loanItem->total_amount_due;
+        $this->amount = $this->loanItem->running_balance;
         $this->modal =true;
         $this->type= 'regular';
 
@@ -109,7 +110,8 @@ new class extends Component {
         <x-form  wire:confirm='Continue Payment' wire:submit="submit">
             <x-datetime label="Date" wire:model="date" icon="o-calendar" />
             <x-input label="OR CDV" wire:model.live="or_cdv"  />
-            <x-input label="Amount to pay" wire:model.live="amount" prefix="PHP" money />
+            <x-input label="Amount to pay" wire:model="amount" prefix="PHP" type="number" step="0.01"/>
+
 
             <x-slot:actions>
                 <x-button label="Cancel" @click="$wire.modal = false" />

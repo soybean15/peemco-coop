@@ -114,7 +114,7 @@ new class extends Component {
 
         @endscope
         @scope('cell_status', $loan)
-        @if($loan->status=='to pay')
+        @if($loan->status=='to pay' )
         <x-badge :value="$loan->status" class="badge-info" />
 
         <x-button x-on:click="$dispatch('add-payment',{loanItemId:{{ $loan->id }}})" icon="o-currency-dollar"

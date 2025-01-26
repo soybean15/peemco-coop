@@ -1,6 +1,10 @@
 <?php
 
 namespace App\Services\LoanPayment;
+
+use App\Enums\LoanItemStatusEnum;
+use App\Models\LoanItem;
+
 class  LoanPaymentService
 {
     public $loan;
@@ -11,16 +15,39 @@ class  LoanPaymentService
         $this->loan = $loan;
         $this->loanType=$loan->loanType;
     }
-    public function processRegularLoan(){
+    // public function processRegularLoan(){
 
+    //     if ($this->loan->status != 'approved') return;
+
+    //     $loanItems = $this->loan->items;
+    //     $loanItems->each(function ($item)  {
+
+    //         (new LoanPaymenItem($item))->handle();
+
+    //     });
+
+    // }
+    public function processRegularLoan()
+    {
         if ($this->loan->status != 'approved') return;
 
         $loanItems = $this->loan->items;
-        $loanItems->each(function ($item)  {
 
+        // Get the last item
+
+
+        // Check if the last item is overdue
+
+        // Process the loan items
+        $loanItems->each(function ($item) {
             (new LoanPaymenItem($item))->handle();
-
         });
+        $lastItem = $loanItems->last();
+        if ($lastItem && $lastItem->status== LoanItemStatusEnum::OVERDUE->value) {
+            // Set status to LoanItemStatusEnum::TO_PAY if overdue
+            $lastItem->status = LoanItemStatusEnum::TO_PAY->value;
+            $lastItem->save();
+        }
 
     }
 
