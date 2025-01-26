@@ -50,6 +50,8 @@
                     {{--  <x-menu-item title="Completed" icon="s-check-circle" link="{{route('admin.completed')}}" />--}}
                     {{-- <x-menu-item title="Apply Loan" icon="o-calculator" link="{{route('admin.loan-calculator')}}"/> --}}
                 </x-menu-sub>
+                <x-menu-item title="Reports" icon="o-clipboard-document-check" link="{{route('admin.reports')}}" />
+
                 <x-menu-item title="Settings" icon="o-cog-6-tooth" link="{{route('admin.settings')}}" />
 
             </x-menu>
