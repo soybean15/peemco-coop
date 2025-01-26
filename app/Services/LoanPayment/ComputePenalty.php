@@ -44,108 +44,6 @@ class ComputePenalty
     }
 
 
-    // public function computeRegularLoanPenalty(){
-    //     if($this->dueDate->gte($this->currentDate)){
-    //         return 0;
-    //     }
-    //     $total_penalty=0;
-    //     $running_balance =     $this->loanItem->running_balance ;
-    //     $is_compound= $this->loanType->is_compound_penalty==1;
-    //     $_due = $this->dueDate->copy()->addDays((int)$this->grace_period);
-
-
-    //     $test=[];
-    //     while($_due->lt($this->endOfTerm)){
-
-    //         if($_due->lte($this->currentDate)){
-
-    //             if($is_compound){
-    //                 $running_balance+=$total_penalty;
-    //             }
-
-
-    //             $penalty = $running_balance * ($this->rate / 100);
-    //             $total_penalty+=$penalty;
-    //             // $test[]=$total_penalty;
-
-    //             $this->loanItem->penalties()->updateOrCreate([
-
-    //                 'penalty_date'=>$_due->format('Y-m-d'),
-    //             ],[
-
-    //                 'amount' =>$penalty,
-    //                 'rate'=>$this->rate,
-    //                 'running_balance'=>$total_penalty + $running_balance
-    //             ]);
-
-    //             $_due->addDays((int)$this->grace_period);
-    //             continue;
-
-    //         }
-
-    //         break;
-
-
-    //     }
-    //     return round($total_penalty,2);
-
-    // }
-
-    // public function computeCashAdvancePenalty(){
-    //     if($this->dueDate->gte($this->currentDate)){
-    //         return 0;
-    //     }
-    //     $total_penalty=0;
-    //     $running_balance =     $this->loanItem->amount_to_pay ;
-    //     $is_compound= $this->loanType->is_compound_penalty==1;
-    //     $_due = $this->dueDate->copy()->addDays((int)$this->grace_period);
-    //     while($_due->lt($this->endOfTerm)){
-
-    //         if($_due->lte($this->currentDate)){
-
-    //             if($is_compound){
-    //                 $running_balance+=$total_penalty;
-    //             }
-
-
-    //             $penalty = $running_balance * ($this->rate / 100);
-    //             $total_penalty+=$penalty;
-    //             // $test[]=$total_penalty;
-
-    //             $this->loanItem->penalties()->updateOrCreate([
-
-    //                 'penalty_date'=>$_due->format('Y-m-d'),
-    //             ],[
-
-    //                 'amount' =>$penalty,
-    //                 'rate'=>$this->rate,
-    //                 'running_balance'=>$total_penalty + $running_balance
-    //             ]);
-
-    //             $_due->addDays((int)$this->grace_period);
-    //             continue;
-
-    //         }
-
-    //         break;
-
-
-    //     }
-    //     return round($total_penalty,2);
-
-
-    // }
-    // public function compute(){
-
-    //     return match($this->loanType->type){
-    //         'regular'=>$this->computeRegularLoanPenalty(),
-    //         'cash_advance'=>$this->computeCashAdvancePenalty(),
-    //         default =>$this->computeRegularLoanPenalty()
-    //     };
-
-
-    // }
-
 
     public function computePenalty($runningBalance)
     {
@@ -160,6 +58,11 @@ class ComputePenalty
         // dd($_due->format('Y-m-d'));
         while ($_due->lt($this->endOfTerm)) {
             if ($_due->lte($this->currentDate)) {
+
+                if ($this->loanItem->penalties()->where('penalty_date', $_due->format('Y-m-d'))->exists()) {
+                    $_due->addDays((int)$this->grace_period);
+                    continue;
+                }
                 if ($is_compound) {
                     $runningBalance += $total_penalty;
                 }
@@ -167,7 +70,7 @@ class ComputePenalty
                 $penalty = $runningBalance * ($this->rate / 100);
                 $total_penalty += $penalty;
 
-                $this->loanItem->penalties()->updateOrCreate([
+                $this->loanItem->penalties()->firstOrCreate([
                     'penalty_date' => $_due->format('Y-m-d'),
                 ], [
                     'amount' => $penalty,
@@ -181,9 +84,9 @@ class ComputePenalty
 
             break;
         }
-        // dd($total_penalty);
 
-        return round($total_penalty, 2);
+
+        return round($this->loanItem->penalties()->sum('amount'), 2);
     }
 
     public function compute()

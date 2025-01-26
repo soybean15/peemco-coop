@@ -25,6 +25,8 @@ class LoanPaymenItem{
 
         $this->dueDate =Carbon::parse($loanItem->due_date);
 
+        // $this->loanItem->update(['running_balance'=>0,'penalty'=>0]);
+
     }
 
 
@@ -53,7 +55,7 @@ class LoanPaymenItem{
             return LoanItemStatusEnum::PENDING->value;
         }
 
-        
+
         if($this->loanItem->running_balance==0){
             return  LoanItemStatusEnum::PAID->value;
         }
