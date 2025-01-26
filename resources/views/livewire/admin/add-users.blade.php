@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Mary\Traits\Toast;
 use App\Helpers\PasswordGenerator;
+use App\Enums\RolesEnum;
+
 
 new class extends Component {
 
