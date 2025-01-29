@@ -15,30 +15,16 @@ class  LoanPaymentService
         $this->loan = $loan;
         $this->loanType=$loan->loanType;
     }
-    // public function processRegularLoan(){
 
-    //     if ($this->loan->status != 'approved') return;
 
-    //     $loanItems = $this->loan->items;
-    //     $loanItems->each(function ($item)  {
 
-    //         (new LoanPaymenItem($item))->handle();
 
-    //     });
-
-    // }
     public function processRegularLoan()
     {
         if ($this->loan->status != 'approved') return;
 
         $loanItems = $this->loan->items;
 
-        // Get the last item
-
-
-        // Check if the last item is overdue
-
-        // Process the loan items
         $loanItems->each(function ($item) {
             (new LoanPaymenItem($item))->handle();
         });

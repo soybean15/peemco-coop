@@ -84,4 +84,11 @@ class Loan extends Model
     }
 
 
+    public function canProcessLoan(){
+
+
+        
+    }
+
+
 }
