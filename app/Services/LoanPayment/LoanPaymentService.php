@@ -21,19 +21,28 @@ class  LoanPaymentService
 
     public function processRegularLoan()
     {
-        if ($this->loan->status != 'approved') return;
-
         $loanItems = $this->loan->items;
-
-        $loanItems->each(function ($item) {
-            (new LoanPaymenItem($item))->handle();
-        });
         $lastItem = $loanItems->last();
+
+        // dd($lastItem);
         if ($lastItem && $lastItem->status== LoanItemStatusEnum::OVERDUE->value) {
             // Set status to LoanItemStatusEnum::TO_PAY if overdue
             $lastItem->status = LoanItemStatusEnum::TO_PAY->value;
             $lastItem->save();
         }
+
+        if ($lastItem && $lastItem->status== LoanItemStatusEnum::PAID->value) {
+            $this->loan->status = 'completed';
+            $this->loan->save();
+        }
+        if ($this->loan->status != 'approved') return;
+
+
+
+        $loanItems->each(function ($item) {
+            (new LoanPaymenItem($item))->handle();
+        });
+
 
     }
 

@@ -31,6 +31,8 @@ Route::prefix('/')->group(function(){
         Volt::route('/pending','admin.loan.pending')->name('admin.pending');
         Volt::route('profile/{loan}','admin.loan.profile')->name('admin.loan-profile');
         Volt::route('/active','admin.loan.active')->name('admin.active');
+        Volt::route('/completed','admin.loan.completed')->name(name: 'admin.completed');
+
         Route::get('/loan-application-pdf',[PdfController::class,'generateLoanApplication'])->name( 'admin.generate-loan-application-pdf');
 
 

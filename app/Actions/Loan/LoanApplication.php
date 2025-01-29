@@ -7,9 +7,11 @@ use App\Helpers\IdGenerator;
 use App\Models\Loan;
 use App\Models\LoanItem;
 use App\Models\LoanType;
+use App\Models\User;
 use App\Providers\LoanServiceProvider;
 use App\Services\LoanCalculator\LoanCalculator;
 use App\Services\Loans\LoanService;
+use Exception;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -30,6 +32,13 @@ class LoanApplication implements HasLoan
             // 'terms_in_year' => 'required|integer|min:1',
             'other_charges' => 'nullable|numeric|min:0',
         ]);
+
+
+        $user = User::find($data['user_id']);
+
+        if(!$user->canProcessLoan()){
+            throw new Exception('User Has Active Loan');
+        }
 
         // Add conditional validation for "no_of_installment" and "monthly_payment"
         $validator->sometimes('no_of_installment', 'required|integer|min:1', function () use ($loanType) {

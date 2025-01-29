@@ -206,8 +206,12 @@ new class extends Component {
         <x-slot:actions>
 
             @if(auth()->user()->can('process loan') || auth()->user()->can('apply loan'))
-            <x-button class="btn-success" label='Apply Loan' wire:confirm='Are you sure you want to apply this loan?'
-                wire:click='applyLoan' />
+
+            @if(auth()->user()->canProcessLoan())
+                <x-button class="btn-success" label='Apply Loan' wire:confirm='Are you sure you want to apply this loan?'
+                    wire:click='applyLoan' />
+
+            @endif
             @endif
 
         </x-slot:actions>
