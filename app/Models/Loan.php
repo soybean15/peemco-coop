@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\LoanItemStatusEnum;
 use App\Enums\LoanStatuEnum;
 use Dompdf\Css\Content\Attr;
 use Illuminate\Database\Eloquent\Builder;
@@ -85,9 +86,11 @@ class Loan extends Model
 
 
     public function canProcessLoan(){
+      
 
+        $thirdMonth = $this->items->where('loan_period',3);
 
-        
+        return $thirdMonth->status == LoanItemStatusEnum::PAID->value;
     }
 
 
