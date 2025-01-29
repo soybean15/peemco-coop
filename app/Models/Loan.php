@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\LoanItemStatusEnum;
 use App\Enums\LoanStatuEnum;
 use Dompdf\Css\Content\Attr;
 use Illuminate\Database\Eloquent\Builder;
@@ -82,6 +83,9 @@ class Loan extends Model
             get:fn()=>$this->payments()->sum('amount_paid')
         );
     }
+
+
+
 
 
 }

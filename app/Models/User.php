@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Enums\LoanItemStatusEnum;
 use App\Enums\RolesEnum;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -148,4 +149,43 @@ class User extends Authenticatable implements HasMedia
         return $this->jobProcess()->whereNull('completed_at')->get();
     }
 
+
+    public function canProcessLoan()
+    {
+        // If user has no loans, can process
+        if ($this->loans()->doesntExist()) {
+            return true;
+        }
+        // Check if user has any pending loans (assuming 'pending' status exists)
+        if ($this->loans()->where('status', 'pending')->exists()) {
+            return false;
+        }
+
+        // Get all active approved loans
+        $activeLoans = $this->loans()
+            ->where('status', 'approved')
+            ->with('items') // Eager load loan items
+            ->get();
+
+        // If no active loans, can process
+        if ($activeLoans->isEmpty()) {
+            return true;
+        }
+
+        // Check all active loans' 3-month items
+        foreach ($activeLoans as $loan) {
+            $threeMonthItems = $loan->items()
+                ->where('loan_period', 3)
+                ->get();
+
+            // If any 3-month item is not paid, cannot process
+            if ($threeMonthItems->isEmpty() || !$threeMonthItems->every(function ($item) {
+                return $item->status === LoanItemStatusEnum::PAID->value;
+            })) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

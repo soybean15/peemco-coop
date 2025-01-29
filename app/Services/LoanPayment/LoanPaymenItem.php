@@ -50,18 +50,31 @@ class LoanPaymenItem{
 
 
     public function setStatus(){
+        $loanPeriod = $this->loanItem->loan_period - 1;
+
+
+        if($this->loan->items()->count() < $loanPeriod){
+            $previous = $this->loan->items()->where('loan_period', $loanPeriod)->first();
+
+            if ($previous && $previous->status == LoanItemStatusEnum::PAID->value) {
+                return LoanItemStatusEnum::TO_PAY->value;
+            }
+
+        }
+
+        if($this->loanItem->running_balance==0){
+            return  LoanItemStatusEnum::PAID->value;
+        }
 
         if($this->dueDate->gt($this->currentDate)){
             return LoanItemStatusEnum::PENDING->value;
         }
 
 
-        if($this->loanItem->running_balance==0){
-            return  LoanItemStatusEnum::PAID->value;
-        }
         if($this->dueDate->between($this->currentDate, $this->currentDate->copy()->subMonth())){
             return LoanItemStatusEnum::TO_PAY->value;
         }
+
 
 
         return LoanItemStatusEnum::OVERDUE->value;
