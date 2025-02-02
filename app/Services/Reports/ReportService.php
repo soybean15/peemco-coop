@@ -16,7 +16,12 @@ class ReportService
 
     public function getCbuReport($mode='monthly',$series=10)
     {
-        return $this->cbuReports = (new CbuReport($mode))->generate($series);
+
+
+
+
+
+        return $this->cbuReports = new CbuReport($mode,$series);
     }
 
 }

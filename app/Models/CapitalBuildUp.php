@@ -19,6 +19,10 @@ class CapitalBuildUp extends Model
 
     }
 
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
     public function addedBy(){
         return $this->belongsTo(User::class,'added_by');
     }

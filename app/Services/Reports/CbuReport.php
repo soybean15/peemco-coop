@@ -6,44 +6,73 @@ use App\Models\CapitalBuildUp;
 
 class CbuReport
 {
+    public $reports;
     public $graph;
     protected $mode;
+    protected $series;
 
-    public function __construct($mode = 'monthly')
+    public function __construct($mode = 'monthly', $series = 10)
     {
         $this->mode = $mode;
+        $this->series = $series;
     }
 
-    public function generate($series = 10)
+    public function generateReports($month=null)
+    {
+        if (is_null($month)) {
+            $month = date('n'); // Get current month as a number (1-12)
+        }
+
+        $this->reports = CapitalBuildUp::whereMonth('date', $month)
+            ->get();
+
+        return $this->reports;
+    }
+
+    public function generateGraph()
     {
         switch ($this->mode) {
             case 'monthly':
-                return $this->generateGraph($series);
+                return $this->generateMonthlyGraph();
             case 'yearly':
-                // Your yearly report generation logic here
-                break;
+                return $this->generateYearlyGraph();
             default:
-                // Default report generation logic here
-                break;
+                return []; // Return empty array or a default response
         }
     }
 
-
-    public function generateGraph($series = 10)
+    protected function generateMonthlyGraph()
     {
-
         $data = [];
         $this->graph = CapitalBuildUp::selectRaw('SUM(amount_received) as total, CONCAT(YEAR(date), "-", LPAD(MONTH(date), 2, "0"), "-01") as month_year')
             ->groupBy('month_year')
             ->orderBy('month_year') // Ensure chronological order
-            ->take($series)
+            ->take($this->series)
             ->get()
             ->each(function ($item) use (&$data) {
                 $data['values'][] = (float) $item->total;
                 $data['labels'][] = $item->month_year;
             });
 
-        $data['name'] = 'Capital Buildup';
+        $data['name'] = 'Capital Buildup (Monthly)';
+
+        return $data;
+    }
+
+    protected function generateYearlyGraph()
+    {
+        $data = [];
+        $this->graph = CapitalBuildUp::selectRaw('SUM(amount_received) as total, YEAR(date) as year')
+            ->groupBy('year')
+            ->orderBy('year') // Ensure chronological order
+            ->take($this->series)
+            ->get()
+            ->each(function ($item) use (&$data) {
+                $data['values'][] = (float) $item->total;
+                $data['labels'][] = (string) $item->year; // Ensure years are treated as strings for labels
+            });
+
+        $data['name'] = 'Capital Buildup (Yearly)';
 
         return $data;
     }
