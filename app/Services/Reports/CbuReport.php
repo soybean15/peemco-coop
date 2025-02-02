@@ -24,7 +24,7 @@ class CbuReport
         }
 
         $this->reports = CapitalBuildUp::whereMonth('date', $month)
-            ->get();
+            ;
 
         return $this->reports;
     }

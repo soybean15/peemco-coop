@@ -15,7 +15,7 @@ new class extends Component {
     {
         $report = $service->getCbuReport('monthly', 12);
         $this->series = $report->generateGraph();
-        $this->reports = $report->generateReports();
+        $this->reports = $report->generateReports()->paginate(20);
 
 
 
