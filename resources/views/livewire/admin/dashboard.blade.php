@@ -3,9 +3,15 @@
 use Livewire\Volt\Component;
 use  App\Enums\AppActionsEnum;
 use Illuminate\View\View;
+use App\Services\Dashboard\DashboardService;
 
 new class extends Component {
 
+
+    public $totalMembers;
+    public $activeLoanCount;
+    public $pendingLoanCount;
+    public $totalCollection;
 
     public function rendering(View $view): void
     {
@@ -13,16 +19,18 @@ new class extends Component {
 
 
     }
-    public function mount(){
+    public function mount(DashboardService $service){
 
 
-//         try{
-//             $actions = array_map(fn($case) => $case->getActions(), AppActionsEnum::cases());
+        $this->totalCollection = $service->getTotalCollection();
 
-// dd($actions);
-//         }catch(\Exception $e){
-//             dd($e);
-//         }
+        $this->totalMembers = $service->getTotalMembers();
+        $this->activeLoanCount = $service->getActiveLoanCount();
+        $this->pendingLoanCount = $service->getPendingLoanCount();
+
+
+
+
 
     }
 }; ?>
@@ -35,23 +43,23 @@ new class extends Component {
     <div class="grid grid-cols-1 gap-5 md:grid-cols-4" >
         <x-stat
             title="Members"
-            value="5"
+            value="{{ $totalMembers }}"
             description="3 Active today"
         />
         <x-stat
-        title="Pending Loan"
-        value="5"
-        description="Pending Loan Request"
+            title="Pending Loan"
+            value="{{ $pendingLoanCount }}"
+            description="Pending Loan Request"
         />
         <x-stat
-        title="Total Loan Approved "
-        value="33"
-        description="This month"
+            title="Active Loans"
+            value="{{ $activeLoanCount }}"
+            description="This month"
         />
         <x-stat
-        title="Revenue "
-        value="5,000"
-        description="This month"
+            title="Total Collection"
+            value="{{ $totalCollection }}"
+            description="This month"
         />
     </div>
 
