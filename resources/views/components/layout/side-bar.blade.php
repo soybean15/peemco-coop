@@ -56,6 +56,8 @@
                 <x-menu-sub title="Reports" icon="o-arrow-down-on-square">
 
                     <x-menu-item title="Capital Build up"    icon="o-clipboard-document-check" link="{{route('admin.cbu-reports')}}" />
+                    <x-menu-item title="Loan Reports"    icon="o-clipboard-document-check" link="{{route('admin.loan-reports')}}" />
+
                     {{-- <x-menu-item title="Payments"    icon="o-clipboard-document-check" link="{{route('admin.reports')}}" /> --}}
 
                     {{-- <x-menu-item title="Active" icon="o-credit-card" link="{{route('admin.active')}}" /> --}}
