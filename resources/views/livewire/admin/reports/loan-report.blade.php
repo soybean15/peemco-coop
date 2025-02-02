@@ -14,10 +14,14 @@ new class extends Component {
 
     public $headers;
 
+
+    public $stats;
+
     public function mount(ReportService $service)
     {
-        $report = $service->getCbuReport('monthly', 12);
-        $this->series = $report->generateGraph();
+        $report = $service->getLoanReport('monthly', 12);
+        $this->stats = $report->generateStat();
+
         // $this->reports = $report->generateReports() ->paginate(5);
 
 
@@ -42,26 +46,24 @@ new class extends Component {
 }; ?>
 
 <div>
-    <x-header title="Reports" separator />
+    <x-header title="Loan Reports" separator />
 
-    <div class="flex ">
-        <x-area-chart :series="$series" label="Monthly capital build up reports" />
+
+
+    <div class="p-4 border rounded-lg shadow bg-white">
+        <h2 class="text-xl font-semibold mb-4 text-gray-700">Loans Summary</h2>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            @foreach ($stats as $key => $value)
+                <x-stat
+                    title="{{ ucwords($key) }}"
+                    value="{{ number_format($value) }}"
+                    class="p-4 bg-gray-100 border border-gray-300 rounded-lg shadow-sm"
+                />
+            @endforeach
+        </div>
     </div>
 
 
 
-
-    <div class="p-2 border rounded">
-    <x-header title="Reports" separator size="text-lg" />
-
-    <x-table :headers="$headers" :rows="$this->paginatedReports"  with-pagination>
-        @scope('cell_user', $cbu)
-        {{ $cbu->user->name }}
-        @endscope
-        @scope('cell_added_by', $cbu)
-            {{ $cbu->addedBy->name }}
-        @endscope
-        </x-table>
-
-</div>
 </div>
