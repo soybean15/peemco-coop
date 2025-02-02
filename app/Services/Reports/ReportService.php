@@ -16,12 +16,11 @@ class ReportService
 
     public function getCbuReport($mode='monthly',$series=10)
     {
-
-
-
-
-
         return $this->cbuReports = new CbuReport($mode,$series);
+    }
+
+    public function getLoanReport($mode='monthly',$series=10){
+        return new LoanReport();
     }
 
 }

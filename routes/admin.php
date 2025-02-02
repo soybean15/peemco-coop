@@ -63,6 +63,7 @@ Route::prefix('/')->group(function(){
 
 
 
+
     });
 
     Route::prefix('settings')->group(function(){
@@ -70,8 +71,10 @@ Route::prefix('/')->group(function(){
 
     });
 
-    Route::prefix('reports')->group(function(){
-        Volt::route('/','admin.cbu-reports')->name(name: 'admin.cbu-reports');
+    Route::prefix('reports')->group(callback: function(){
+        Volt::route('/cbu',componentName: 'admin.reports.cbu-reports')->name(name: 'admin.cbu-reports');
+        Volt::route('/loan',componentName: 'admin.reports.loan-report')->name('admin.loan-reports');
+
 
     });
 
