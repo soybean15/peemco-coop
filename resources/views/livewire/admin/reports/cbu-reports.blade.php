@@ -41,27 +41,26 @@ new class extends Component {
 
 }; ?>
 
-<div>
+<div class="p-6 bg-white rounded-lg shadow-md">
     <x-header title="Reports" separator />
 
-    <div class="flex ">
-        <x-area-chart :series="$series" label="Monthly capital build up reports" />
+    <div class="mb-6">
+        <x-area-chart :series="$series" label="Monthly Capital Build-up Reports" />
     </div>
 
+    <div class="p-4 rounded-lg shadow-sm bg-gray-50">
+        <x-header title="Detailed Reports" separator size="text-lg" />
 
-
-
-    <div class="p-2 border rounded">
-    <x-header title="Reports" separator size="text-lg" />
-
-    <x-table :headers="$headers" :rows="$this->paginatedReports"  with-pagination>
-        @scope('cell_user', $cbu)
-        {{ $cbu->user->name }}
-        @endscope
-        @scope('cell_added_by', $cbu)
-            {{ $cbu->addedBy->name }}
-        @endscope
-        </x-table>
-
+        <div class="mt-4 overflow-x-auto">
+            <x-table :headers="$headers" :rows="$this->paginatedReports" with-pagination>
+                @scope('cell_user', $cbu)
+                    {{ $cbu->user->name }}
+                @endscope
+                @scope('cell_added_by', $cbu)
+                    {{ $cbu->addedBy->name }}
+                @endscope
+            </x-table>
+        </div>
+    </div>
 </div>
-</div>
+
