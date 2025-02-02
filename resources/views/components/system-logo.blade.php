@@ -1,18 +1,13 @@
-<div>
+<div class="flex items-center space-x-4">
+    <!-- Logo Section -->
+    <div class="flex items-center space-x-3">
+        <img src="{{ $settings->logo ?? '/default/default-logo.png' }}" class="w-{{ $size }} h-auto rounded-lg shadow-md" alt="Logo" />
 
-
-    {{-- {{ $settings->logo  }} --}}
-    {{-- {{ $hasName }} --}}
-    <div class="{{ $class }}">
-        <img src="{{ $settings->logo ?? '/default/default-logo.png' }}" class="rounded-lg w-{{ $size }}" />
-
-        {{-- {{$settings->logo }} --}}
+        <!-- Company Name Section -->
         @if($hasName)
-            <div>
+            <div class="text-xl font-semibold text-gray-800">
                 {{ $settings->company_name }}
             </div>
         @endif
-
-
     </div>
 </div>
