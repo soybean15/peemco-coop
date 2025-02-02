@@ -53,19 +53,19 @@
                     </a>
                 </nav>
 
-                <div class="h-6 w-px bg-gray-200 mx-2"></div>
+                <div class="w-px h-6 mx-2 bg-gray-200"></div>
 
                 @if(!auth()->user())
                 <div class="flex items-center space-x-4">
-                    <a href="{{ route('login') }}" class="px-4 py-2 text-sm font-medium text-indigo-600 transition-colors duration-200 hover:bg-indigo-50 rounded-lg">
+                    <a href="{{ route('login') }}" class="px-4 py-2 text-sm font-medium text-indigo-600 transition-colors duration-200 rounded-lg hover:bg-indigo-50">
                         Login
                     </a>
-                    <a href="{{ route('register') }}" class="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-indigo-500 rounded-lg shadow-sm hover:shadow-md hover:from-indigo-700 hover:to-indigo-600 transition-all duration-200">
+                    <a href="{{ route('register') }}" class="px-4 py-2 text-sm font-medium text-white transition-all duration-200 rounded-lg shadow-sm bg-gradient-to-r from-indigo-600 to-indigo-500 hover:shadow-md hover:from-indigo-700 hover:to-indigo-600">
                         Register
                     </a>
                 </div>
                 @else
-                <a href="{{ route('user.dashboard') }}" class="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-indigo-500 rounded-lg shadow-sm hover:shadow-md hover:from-indigo-700 hover:to-indigo-600 transition-all duration-200">
+                <a href="{{ route('user.dashboard') }}" class="px-4 py-2 text-sm font-medium text-white transition-all duration-200 rounded-lg shadow-sm bg-gradient-to-r from-indigo-600 to-indigo-500 hover:shadow-md hover:from-indigo-700 hover:to-indigo-600">
                     Dashboard
                 </a>
                 @endif
