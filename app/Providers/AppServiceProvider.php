@@ -14,6 +14,7 @@ use App\View\Components\Charts\PieChart;
 use App\View\Components\Layout\SideBar;
 use App\View\Components\Loan\CashAdvanceCard;
 use App\View\Components\RichTextEditor;
+use App\View\Components\Statistic;
 use Illuminate\Database\QueryException;
 
 use App\View\Components\SystemLogo;
