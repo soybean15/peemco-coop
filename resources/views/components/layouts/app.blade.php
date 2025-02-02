@@ -48,29 +48,29 @@
             {{-- Right side actions --}}
             <x-slot:actions>
 
-
             <div
             role="button"
             x-data
             @click.stop="$dispatch('mary-search-open')"
             @keydown.window.ctrl.k.prevent="$dispatch('mary-search-open')"
-            class="flex items-center p-2 rounded-full shadow-inner bg-slate-100 hover:text-blue-600"
-            >
-            <span class="px-3 text-sm">Search</span>
-            <div>
+            class="flex items-center p-1.5 md:p-2 rounded-full shadow-inner bg-slate-100 hover:text-blue-600 transition-colors duration-200"
+        >
+            <!-- Search icon for mobile -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+
+            <!-- Text for desktop -->
+            <span class="hidden md:inline-block px-2 md:px-3 text-sm">Search</span>
+
+            <!-- Keyboard shortcut for desktop -->
+            <div class="hidden md:flex items-center gap-1">
                 <x-kbd class="kbd-sm hover:text-blue-600">ctrl</x-kbd>
                 <x-kbd class="kbd-sm hover:text-blue-600">K</x-kbd>
             </div>
-            </div>
+        </div>
 
 
-
-
-                {{-- <x-button label="Search" @click.stop="$dispatch('mary-search-open')" >
-
-                </x-button> --}}
-                {{-- <x-button label="Messages" icon="o-envelope" link="###" class="btn-ghost btn-sm" responsive />
-                <x-button label="Notifications" icon="o-bell" link="###" class="btn-ghost btn-sm" responsive /> --}}
             </x-slot:actions>
         </x-nav>
 
