@@ -11,20 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('user_profiles', function (Blueprint $table) {
-            $table->string('status')->default('active');
-        });
-    }
-
-    public function down(): void
-    {
-        Schema::table('user_profiles', function (Blueprint $table) {
-            $table->dropColumn('status');
+        Schema::table('loan_penalties', function (Blueprint $table) {
+            $table->string('status')->after('rate')->nullable();
         });
     }
 
     /**
      * Reverse the migrations.
      */
-
+    public function down(): void
+    {
+        Schema::table('loan_item_penalties', function (Blueprint $table) {
+            $table->dropColumn('status');
+        });
+    }
 };

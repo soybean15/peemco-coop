@@ -10,6 +10,7 @@ use Mary\Traits\Toast;
 use App\Services\Loans\LoanService;
 use App\Services\LoanPayment\LoanPaymentService;
 use Spatie\LaravelPdf\Facades\Pdf;
+use App\Models\LoanPenalty;
 use App\Traits\Loans\LoanTrait;
 
 new class extends Component {
@@ -20,6 +21,11 @@ new class extends Component {
 
 
 
+    public function voidPenalty($penaltyId){
+        $penalty = LoanPenalty::find($penaltyId);
+    $penalty->update(['status'=>'void']);
+        
+    }
     // }
     // public function with(){
     //     // return [
@@ -66,7 +72,8 @@ new class extends Component {
                 <div class="flex items-center space-x-5">
                     {{-- <x-icon name="o-check" class="text-2xl text-green-500 w-9 h-9" label="{{  $this->loan->status }}" /> --}}
 
-                    <a href="{{ route('admin.generate-loan-application-pdf') }}" target="_blank"><x-icon name="o-printer" class="text-info" label="Print Loan Application" /></a>
+                    <a href="{{ route('admin.generate-loan-application-pdf', ['loan' => $this->loan->id]) }}"
+                        target="_blank"><x-icon name="o-printer" class="text-info" label="Print Loan Application" /></a>
                     {{-- <x-button label="Print Loan Application" icon='o-printer' class="mx-3 btn btn-sm btn-info" link="{{ route('admin.generate-loan-application-pdf') }}"> --}}
                 </div>
 
@@ -137,7 +144,7 @@ new class extends Component {
 
             @if( count($loan->penalties)>0)
             <strong>Penalties</strong>
-            @foreach ($loan->penalties as $penalty )
+            @foreach ($loan->penalties->whereNull('status') as $penalty )
                 <x-list-item :item="$penalty" no-separator no-hover>
                     <x-slot:avatar>
                         <x-badge value="{{ $penalty->penalty_date }}" class="badge-error" />
@@ -149,6 +156,8 @@ new class extends Component {
                         Running balance:  {{$penalty->running_balance}}
                     </x-slot:sub-value>
                     <x-slot:actions>
+
+                    <x-button label="Void" class="btn-error btn-sm" wire:confirm='Are you sure you want to void this penalty?' wire:click='voidPenalty({{$penalty->id}})' />
 
                     </x-slot:actions>
                 </x-list-item>

@@ -2,80 +2,120 @@
 <html lang="fil">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Application for Salary Loan</title>
     <style>
+        /* PDF-Friendly Styles */
         body {
             font-family: Arial, sans-serif;
-            line-height: 1.2;
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
+            margin: 0;
+            padding: 30px;
+            font-size: 12px;
+            line-height: 1.4;
+            color: #000;
         }
+
         .header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
+
         .header h1 {
             font-size: 16px;
-            margin-bottom: 5px;
+            margin: 5px 0;
+            font-weight: bold;
         }
-        .header p {
-            font-size: 14px;
-            margin: 0;
-        }
+
         .form-title {
             text-align: center;
             font-weight: bold;
-            margin: 10px 0;
+            margin: 25px 0;
+            text-decoration: underline;
         }
+
+        .section {
+            margin-bottom: 25px;
+            page-break-inside: avoid;
+        }
+
         .form-row {
             display: flex;
-            gap: 10px;
-            margin-bottom: 5px;
+            margin-bottom: 15px;
+            gap: 20px;
         }
+
         .form-field {
             flex: 1;
+            min-width: 0;
         }
+
         label {
-            display: inline;
-            margin-right: 5px;
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
         }
-        input[type="text"],
-        input[type="number"] {
-            width: calc(100% - 120px);
+
+        .input-field {
             border-bottom: 1px solid #000;
-            border-top: none;
-            border-left: none;
-            border-right: none;
+            padding: 4px 0;
+            width: 100%;
+            display: block;
+            min-height: 20px;
         }
+
         .checkbox-group {
             display: flex;
-            gap: 10px;
+            gap: 25px;
+            align-items: center;
+            margin-top: 10px;
         }
+
         .terms {
-            margin: 10px 0;
-            font-size: 12px;
+            margin: 20px 0;
+            font-size: 11px;
+            text-align: justify;
         }
-        .signatures {
-            margin-top: 20px;
+
+        .signature-section {
+            margin-top: 40px;
+            page-break-inside: avoid;
         }
-        .signature-line {
-            border-top: 1px solid #000;
-            margin-top: 20px;
+
+        .signature-box {
             width: 45%;
             display: inline-block;
+            margin-right: 5%;
         }
-        .committee {
-            margin-top: 20px;
+
+        .signature-line {
+            border-top: 1px solid #000;
+            margin-top: 40px;
+            padding-top: 5px;
+            text-align: center;
         }
+
         .committee-members {
             display: flex;
             justify-content: space-between;
+            margin-top: 30px;
         }
+
         .committee-member {
             width: 30%;
             text-align: center;
+        }
+
+        .underline {
+            border-bottom: 1px solid #000;
+            display: inline-block;
+            min-width: 100px;
+            text-align: center;
+            padding: 0 5px;
+        }
+
+        .dynamic-value {
+            font-weight: bold;
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -87,136 +127,114 @@
 
     <div class="form-title">APPLICATION FOR SALARY LOAN</div>
 
-    <form>
+    <!-- Personal Information Section -->
+    <div class="section">
         <div class="form-row">
             <div class="form-field">
-                <label for="pangalan">PANGALAN:</label>
-                <input type="text" id="pangalan" name="pangalan">
+                <label>PANGALAN:</label>
+                <span class="input-field">{{ $loan->borrower_name ?? 'KEVIN EVANISTO DEL ROSARIO' }}</span>
             </div>
             <div class="form-field">
-                <label for="petsa">PETSA:</label>
-                <input type="text" id="petsa" name="petsa">
+                <label>PETSA:</label>
+                <span class="input-field">{{ $loan->date_confirmed ?? '2023-07-03' }}</span>
             </div>
         </div>
 
         <div class="form-row">
             <div class="form-field">
-                <label for="tirahan">TIRAHAN:</label>
-                <input type="text" id="tirahan" name="tirahan">
+                <label>TIRAHAN:</label>
+                <span class="input-field">{{ $loan->address ?? 'Poblacion I, Peñaranda, Nueva Ecija' }}</span>
             </div>
             <div class="form-field">
-                <label for="contact">TEL NO./CELL NO.:</label>
-                <input type="text" id="contact" name="contact">
+                <label>KONTAK:</label>
+                <span class="input-field">{{ $loan->contact_number ?? '0912-345-6789' }}</span>
             </div>
         </div>
+    </div>
 
+    <!-- Loan Details Section -->
+    <div class="section">
         <div class="form-row">
             <div class="form-field">
-                <label for="halaga">HALAGA NG INUTANG: P</label>
-                <input type="number" id="halaga" name="halaga">
+                <label>HALAGA NG INUTANG:</label>
+                <span class="input-field dynamic-value">₱{{ number_format($loan->principal_amount ?? 200000, 2) }}</span>
             </div>
             <div class="form-field">
-                <label>TYPE OF LOAN:</label>
+                <label>URI NG PAUTANG:</label>
                 <div class="checkbox-group">
-                    <label><input type="checkbox" name="loan_type" value="appliance"> Appliance</label>
-                    <label><input type="checkbox" name="loan_type" value="salary"> Salary</label>
-                    <label><input type="checkbox" name="loan_type" value="groceries"> Groceries</label>
+                    <span>☒ Salary Loan</span>
+                    <span>☐ Appliance Loan</span>
+                    <span>☐ Groceries Loan</span>
                 </div>
             </div>
         </div>
 
         <div class="form-row">
-            <label>TAGAL NG PAGBABAYAD:</label>
-            <div class="checkbox-group">
-                <label><input type="checkbox" name="term" value="isang_taon"> ISANG TAON</label>
-                <label><input type="checkbox" name="term" value="dalawang_taon"> DALAWANG TAON</label>
-                <label><input type="checkbox" name="term" value="tatlong_taon"> TATLONG TAON</label>
-                <label><input type="checkbox" name="term" value="iba_pa"> IBA PA:</label>
-                <input type="text" name="iba_pa_specify" style="width: 100px;">
+            <div class="form-field">
+                <label>TAGAL NG PAGBABAYAD:</label>
+                <div class="checkbox-group">
+                    <span>☐ 1 Taon</span>
+                    <span>☐ 2 Taon</span>
+                    <span>☒ 3 Taon</span>
+                </div>
             </div>
         </div>
+    </div>
 
+    <!-- Terms and Conditions -->
+    <div class="section">
+        <div class="terms">
+            <p>
+                INTERES: <span class="dynamic-value">{{ $loan->interest_rate ?? '7.5' }}%</span> bawat taon (Diminishing Balance)<br>
+                PENALTY: <span class="dynamic-value">3%</span> buwanan sa natitirang prinsipal
+            </p>
+            
+            <p>
+                Nangangako akong magbabayad ng buwanang hulog na <span class="dynamic-value">₱{{ number_format($loan->monthly_payment ?? 6221.24, 2) }}</span> 
+                simula <span class="dynamic-value">25 Agosto 2023</span> hanggang 
+                <span class="dynamic-value">25 Agosto 2026</span>.
+            </p>
+
+            <p>
+                Sumasang-ayon akong ang aking Capital Build-Up (CBU) na <span class="dynamic-value">₱{{ number_format($loan->cbu ?? 50000, 2) }}</span> 
+                ay magsisilbing collateral sa pautang na ito.
+            </p>
+        </div>
+    </div>
+
+    <!-- Signatures Section -->
+    <div class="section signature-section">
         <div class="form-row">
-            <div class="form-field">
-                <label for="kasalukuyang_puhunang">KASALUKUYANG PUHUNANG (CAPITAL):</label>
-                <input type="text" id="kasalukuyang_puhunang" name="kasalukuyang_puhunang">
+            <div class="signature-box">
+                <p>Lagda ng Humiram</p>
+                <div class="signature-line"></div>
+                <p>Petsa: ___________________</p>
             </div>
-            <div class="form-field">
-                <label for="kasalukuyang_utang">KASALUKUYANG UTANG P:</label>
-                <input type="text" id="kasalukuyang_utang" name="kasalukuyang_utang">
+
+            <div class="signature-box">
+                <p>Lagda ng Tagapagsangla</p>
+                <div class="signature-line"></div>
+                <p>Petsa: ___________________</p>
             </div>
         </div>
 
-        <div class="form-title">KATIBAYAN NG PAGKAKAUTANG AT PANGAKO SA PAGBABAYAD</div>
-
-        <div class="terms">
-            <p>HALAGA NG UTANG/INUTANG:</p>
-            <p>PHP: _____________ Monthly Due: _____________ Petsa: _____________</p>
-            <p>Interest: _____ Diminishing per annum; Penalty 3% per month on principal due or 36% per annum on principal due.</p>
-            <p>Dahilan at alang-alang sa halagang aking tinanggap/tatanggapin ayon sa tadkang nakalahat dito, ay nangangako ako na aking babayaran ang PEEMCO o sa utos/atas nito ang nasabing halaga na ang aabutin ay ________________ at ito'y babayaran tuwing kada-buwan</p>
-            <p>ng bawat taon na magsisimula sa ika- ____ ng _____________ at ganun ding halaga, tuwing kada-buwan ng bawat taon pagkaraan ng unang hulog hanggang sa ang buong pagkakautang kasama ang napagkasunduang pakinabang o tubo na ____________ (_____%) kada taon batay sa nababawasang balance (diminishing balance) na babayaran naman ng buwanan ay akingmabayaran ng buha kasama ang penalty.</p>
-            <p>Ang aking pangako sa katibayan ng pangako na rin na magbabayad ng pagkakautang ay ang aking Saping Puhunan (CBU) na nakalahad sa P______________.</p>
-            <p>Sa sandaling ang alinsong bulog ay hindi ko mabayaran ayon sa kasunduan sa itaas nito, ang saping puhunan, iba pang mga deposito at anumang benepisyo na matatanggap kaugnay ng pagiging kasapi ay masasaing ibabwas sa utang sa kapasyahan ng kooperatiba.</p>
-        </div>
-
-        <div class="terms">
-            <p>NALALAMAN KO NA ANG PAGKAKAUTANG NA ITO AY NASASAKOP/HINDI NASASAKOP (WITH WAIVER) NG LOAN PROTECTION PLAN KAHIT ITO AY SINASAGOT NG AKING CAPITAL SHARE.</p>
-            <p>NABASA KO AT NAINTINDIHAN ANG LAHAT NG NASASAAD SA KASULATAN ITO AT WALANG SINUMANG PUMILIT O TUMAKOT SA AKIN UPANG LAGDAAN ANG KATIBAYAN NG PAGKAKAUTANG AT PANGAKO SA PAGBABAYAD.</p>
-        </div>
-
-        <div class="signatures">
-            <div class="signature-line">
-                <p>Pangalan at Lagda ng Humiram</p>
+        <div class="committee-members">
+            <div class="committee-member">
+                <p>JOSEFINA P. LADIA</p>
+                <div class="signature-line"></div>
+                <p>Pangulo, Lupon ng Pautang</p>
             </div>
-            <div class="signature-line" style="float: right;">
-                <p>Tirahan</p>
+            <div class="committee-member">
+                <p>RACHELLE A. YAN</p>
+                <div class="signature-line"></div>
+                <p>Kalihim</p>
+            </div>
+            <div class="committee-member">
+                <p>MAY ZEN C. GREGORIO</p>
+                <div class="signature-line"></div>
+                <p>Taga-pagtaya</p>
             </div>
         </div>
-
-        <div class="signatures">
-            <div class="signature-line">
-                <p>Pangalan at Lagda ng Ka-ako (co-maker)</p>
-            </div>
-            <div class="signature-line" style="float: right;">
-                <p>Tirahan</p>
-            </div>
-        </div>
-
-        <div class="signatures">
-            <div class="signature-line">
-                <p>Pangalan at Lagda ng Ka-ako (co-maker)</p>
-            </div>
-            <div class="signature-line" style="float: right;">
-                <p>Tirahan</p>
-            </div>
-        </div>
-
-        <div class="committee">
-            <p>Credit Committee:</p>
-            <div class="committee-members">
-                <div class="committee-member">
-                    <div class="signature-line">JOSEFINA P. LADIA</div>
-                </div>
-                <div class="committee-member">
-                    <div class="signature-line">RACHELLE KAREN R. ROQUE</div>
-                </div>
-                <div class="committee-member">
-                    <div class="signature-line">WILLY F. PERMISON</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="form-title">KAPAHINTULUTAN</div>
-
-        <div class="terms">
-            <p>Sa pamamagitan nito, binibyan ko ng pahintulot ang mga-ayaman ng Kooperatiba na kunin ang aking mga pangakong saping rosso, tubo at aking kinukuning panggot bilang pambayad sa aking himiram na puhunang kasama ang natupok na interest kung hindi ako makabayad sa aking himiram na puhunang kasama.</p>
-            <p>At pinahihintulutan din ang Kahera ng PNHS (Disbursing Officer) na bawasan sa aking buwanang sweldo ang karampatang hulog sa aking pagkakautang sa PEEMCO sa halagang _____________.</p>
-        </div>
-        <div class="signatures" style="margin-top: 30px;">
-            <div class="signature-line">
-                <p>Pangalan at Lagda</p>
-            </div>
-        </div>
-    </form>
+    </div>
 </body>
 </html>

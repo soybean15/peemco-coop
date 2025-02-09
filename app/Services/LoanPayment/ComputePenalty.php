@@ -84,9 +84,12 @@ class ComputePenalty
             // Move to the next grace period
             $dueDate->addDays((int) $this->grace_period);
         }
-
-        // Return the total penalties summed up
-        return round($this->loanItem->penalties()->sum('amount'), 2);
+        $totalPenalties = $this->loanItem->penalties()
+       ->whereNull('status')
+        ->sum('amount');
+    
+            return round($totalPenalties, 2);
+    
     }
 
     public function compute()
