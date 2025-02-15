@@ -6,15 +6,17 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class BarChart extends Component
+class TimelineChart extends Component
 {
     /**
      * Create a new component instance.
      */
-    public function __construct(public $apiUrl)
-    {
+    public $apiUrl;
 
-        // dd($apiUrl);
+    public function __construct($apiUrl = null)
+    {
+        $this->apiUrl = $apiUrl;
+        // dd(vars: $apiUrl);
     }
 
     /**
@@ -22,6 +24,6 @@ class BarChart extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.charts.bar-chart');
+        return view('components.charts.timeline-chart');
     }
 }

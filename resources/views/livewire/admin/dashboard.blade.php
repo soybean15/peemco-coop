@@ -4,7 +4,8 @@ use Livewire\Volt\Component;
 use  App\Enums\AppActionsEnum;
 use Illuminate\View\View;
 use App\Services\Dashboard\DashboardService;
-
+use  App\Services\Reports\Analytics;
+use App\Enums\FrequencyEnum;
 new class extends Component {
 
 
@@ -27,7 +28,6 @@ new class extends Component {
         $this->totalMembers = $service->getTotalMembers();
         $this->activeLoanCount = $service->getActiveLoanCount();
         $this->pendingLoanCount = $service->getPendingLoanCount();
-
 
 
 
@@ -64,9 +64,11 @@ new class extends Component {
     </div>
 
 
-    <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
-        <x-bar-chart/>
-        <x-area-chart/>
+    <div class="flex flex-col">
+        <x-bar-chart :apiUrl="route('analytics.top-contributors')" />
+
+        {{-- {{ route('analytics.total-loan') }} --}}
+        <x-timeline-chart :apiUrl="route('analytics.total-loan')" />
         <x-pie-chart/>
         <x-column-chart/>
 

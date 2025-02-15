@@ -9,4 +9,5 @@ enum LoanItemStatusEnum :string
     case TO_PAY= 'to pay';
     case OVERDUE='overdue';
     case PAID ='paid';
+    
 }
