@@ -1,35 +1,51 @@
 <div>
-    <!-- Live as if you were to die tomorrow. Learn as if you were to live forever. - Mahatma Gandhi -->
-
     <div id='bar-chart'></div>
-    <script>
+</div>
 
-var options = {
-          series: [{
-          data: [400, 430, 448, 470, 540, 580, 690, 1100, 1200, 1380]
-        }],
-          chart: {
-          type: 'bar',
-          height: 350
-        },
-        plotOptions: {
-          bar: {
-            borderRadius: 4,
-            borderRadiusApplication: 'end',
-            horizontal: true,
-          }
-        },
-        dataLabels: {
-          enabled: false
-        },
-        xaxis: {
-          categories: ['South Korea', 'Canada', 'United Kingdom', 'Netherlands', 'Italy', 'France', 'Japan',
-            'United States', 'China', 'Germany'
-          ],
-        }
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    let apiUrl = @json($apiUrl);
+
+
+    function fetchChartData() {
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                console.log("Fetched Data:", data.categories); // Debugging
+                renderChart(data.categories, data.series);
+            })
+            .catch(error => console.error("Error fetching chart data:", error));
+    }
+
+    function renderChart(categories, values) {
+        var options = {
+            series: [{
+                data: values // Dynamically set values
+            }],
+            chart: {
+                type: 'bar',
+                height: 350
+            },
+            plotOptions: {
+                bar: {
+                    borderRadius: 4,
+                    borderRadiusApplication: 'end',
+                    horizontal: true,
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            xaxis: {
+                categories: categories, // Dynamically set categories
+            }
         };
 
         var chart = new ApexCharts(document.querySelector("#bar-chart"), options);
         chart.render();
-        </script>
-</div>
+    }
+
+    fetchChartData(); // Load chart data
+});
+</script>

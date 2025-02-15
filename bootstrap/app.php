@@ -21,6 +21,10 @@ return Application::configure(basePath: dirname(__DIR__))
             Route::middleware(['web','auth'])
                 ->prefix('user')
                 ->group(base_path('routes/user.php'));
+
+            Route::middleware(['api'])
+
+                ->group(base_path('routes/api.php'));
         }
     )
     ->withMiddleware(function (Middleware $middleware) {
@@ -32,7 +36,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         ]);
 
- 
+
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

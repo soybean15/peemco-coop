@@ -11,6 +11,7 @@ use App\View\Components\Charts\AreaChart;
 use App\View\Components\Charts\BarChart;
 use App\View\Components\Charts\ColumnChart;
 use App\View\Components\Charts\PieChart;
+use App\View\Components\Charts\TimelineChart;
 use App\View\Components\Layout\SideBar;
 use App\View\Components\Loan\CashAdvanceCard;
 use App\View\Components\RichTextEditor;
@@ -91,8 +92,12 @@ class AppServiceProvider extends ServiceProvider
         Blade::component('pie-chart',PieChart::class);
 
         Blade::component('column-chart',ColumnChart::class);
+        Blade::component('timeline-chart',TimelineChart::class);
+
+
         Blade::component('brand',SystemLogo::class);
         Blade::component('rich-text-editor',RichTextEditor::class);
+
 
 
 

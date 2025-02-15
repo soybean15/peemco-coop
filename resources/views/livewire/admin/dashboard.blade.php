@@ -4,7 +4,8 @@ use Livewire\Volt\Component;
 use  App\Enums\AppActionsEnum;
 use Illuminate\View\View;
 use App\Services\Dashboard\DashboardService;
-
+use  App\Services\Reports\Analytics;
+use App\Enums\FrequencyEnum;
 new class extends Component {
 
 
@@ -31,14 +32,13 @@ new class extends Component {
 
 
 
-
     }
 }; ?>
 
 <div>
   <div>
 
-    <x-header title="Dashboard" subtitle="Welcome ADmin" separator />
+    <x-header title="Dashboard" subtitle="Welcome Admin" separator />
 
     <div class="grid grid-cols-1 gap-5 md:grid-cols-4" >
         <x-stat
@@ -63,13 +63,22 @@ new class extends Component {
         />
     </div>
 
-
-    <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
-        <x-bar-chart/>
-        <x-area-chart/>
-        <x-pie-chart/>
-        <x-column-chart/>
-
+    <div class="mt-6 rounded-lg">
+        <h2 class="mb-4 text-xl font-bold text-gray-800">Analytics Overview</h2>
+        <div class="flex flex-col gap-6">
+            <div class="p-6 bg-white border border-gray-200 shadow-md rounded-xl">
+                <h3 class="mb-3 text-lg font-semibold text-gray-900">Top Contributors</h3>
+                <x-bar-chart :apiUrl="route('analytics.top-contributors')" />
+            </div>
+            <div class="p-6 bg-white border border-gray-200 shadow-md rounded-xl">
+                <h3 class="mb-3 text-lg font-semibold text-gray-900">Total Loan</h3>
+                <x-timeline-chart :apiUrl="route('analytics.total-loan')" />
+            </div>
+            <div class="p-6 bg-white border border-gray-200 shadow-md rounded-xl">
+                <h3 class="mb-3 text-lg font-semibold text-gray-900">Loan Issued</h3>
+                <x-pie-chart :apiUrl="route('analytics.loan-issued')" />
+            </div>
+        </div>
     </div>
   </div>
 </div>
