@@ -57,7 +57,7 @@ class AnalyticsController extends Controller
             $labels[]=$key;
         }
 
-        dd($series,$labels);
+        // dd($series,$labels);
         return response()->json(['series' => $series, 'labels' => $labels]);
     }
 
