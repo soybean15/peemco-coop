@@ -24,7 +24,7 @@
                     <x-menu-separator />
                 @endif
 
-                <x-menu-item title="Dashboard" icon="o-computer-desktop" link="{{route('admin.dashboard')}}" />
+                <x-menu-item title="Dashboard" icon="o-computer-desktop" link="{{route('admin.dashboard')}}"  :noWireNavigate="true" />
                 <x-menu-sub title="Users" icon="o-user-group">
                     <x-menu-item title="List" link="{{route('admin.users')}}" exact/>
                     {{-- 'admin.user-archives' --}}
