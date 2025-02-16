@@ -24,7 +24,7 @@ new class extends Component {
     public function voidPenalty($penaltyId){
         $penalty = LoanPenalty::find($penaltyId);
     $penalty->update(['status'=>'void']);
-        
+
     }
     // }
     // public function with(){
@@ -72,8 +72,11 @@ new class extends Component {
                 <div class="flex items-center space-x-5">
                     {{-- <x-icon name="o-check" class="text-2xl text-green-500 w-9 h-9" label="{{  $this->loan->status }}" /> --}}
 
-                    <a href="{{ route('admin.generate-loan-application-pdf', ['loan' => $this->loan->id]) }}"
-                        target="_blank"><x-icon name="o-printer" class="text-info" label="Print Loan Application" /></a>
+                    <a class="p-1 border rounded-md border-info"  href="{{ route('admin.generate-loan-application-pdf', ['loan' => $this->loan->id]) }}"
+                        target="_blank"><x-icon name="o-printer" class="text-info" label="Loan Application" /></a>
+
+                    <a class="p-1 border rounded-md border-primary" href="{{ route('admin.generate-loan-report-pdf', ['loan' => $this->loan->id]) }}"
+                        target="_blank"><x-icon name="o-printer" class=" text-primary" label="Loan Report" /></a>
                     {{-- <x-button label="Print Loan Application" icon='o-printer' class="mx-3 btn btn-sm btn-info" link="{{ route('admin.generate-loan-application-pdf') }}"> --}}
                 </div>
 

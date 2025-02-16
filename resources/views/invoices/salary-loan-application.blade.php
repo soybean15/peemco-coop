@@ -1,240 +1,132 @@
 <!DOCTYPE html>
-<html lang="fil">
+<html>
 <head>
-    <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Application for Salary Loan</title>
+    <title>Loan Contract Agreement</title>
     <style>
-        /* PDF-Friendly Styles */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 30px;
-            font-size: 12px;
-            line-height: 1.4;
-            color: #000;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .header h1 {
-            font-size: 16px;
-            margin: 5px 0;
-            font-weight: bold;
-        }
-
-        .form-title {
-            text-align: center;
-            font-weight: bold;
-            margin: 25px 0;
-            text-decoration: underline;
-        }
-
-        .section {
-            margin-bottom: 25px;
-            page-break-inside: avoid;
-        }
-
-        .form-row {
-            display: flex;
-            margin-bottom: 15px;
-            gap: 20px;
-        }
-
-        .form-field {
-            flex: 1;
-            min-width: 0;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        .input-field {
-            border-bottom: 1px solid #000;
-            padding: 4px 0;
-            width: 100%;
-            display: block;
-            min-height: 20px;
-        }
-
-        .checkbox-group {
-            display: flex;
-            gap: 25px;
-            align-items: center;
-            margin-top: 10px;
-        }
-
-        .terms {
-            margin: 20px 0;
-            font-size: 11px;
-            text-align: justify;
-        }
-
-        .signature-section {
-            margin-top: 40px;
-            page-break-inside: avoid;
-        }
-
-        .signature-box {
-            width: 45%;
-            display: inline-block;
-            margin-right: 5%;
-        }
-
-        .signature-line {
-            border-top: 1px solid #000;
-            margin-top: 40px;
-            padding-top: 5px;
-            text-align: center;
-        }
-
-        .committee-members {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 30px;
-        }
-
-        .committee-member {
-            width: 30%;
-            text-align: center;
-        }
-
-        .underline {
-            border-bottom: 1px solid #000;
-            display: inline-block;
-            min-width: 100px;
-            text-align: center;
-            padding: 0 5px;
-        }
-
-        .dynamic-value {
-            font-weight: bold;
-            text-decoration: underline;
-        }
+        body { font-family: 'Times New Roman', serif; margin: 1.5cm; line-height: 1.6; }
+        .header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #000; padding-bottom: 20px; }
+        .parties { margin: 30px 0; display: flex; justify-content: space-between; }
+        .section { margin: 25px 0; }
+        .section-title { font-size: 18px; font-weight: bold; margin-bottom: 15px; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { border: 1px solid #000; padding: 10px; text-align: left; }
+        .signature-block { margin-top: 50px; display: flex; justify-content: space-around; }
+        .footer { margin-top: 50px; font-size: 12px; color: #666; }
+        .important-note { background: #f8f8f8; padding: 15px; margin: 20px 0; border-left: 4px solid #cc0000; }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>PEÑARANDA EDUCATORS AND EMPLOYEES MULTI-PURPOSE COOPERATIVE</h1>
-        <p>Poblacion I, Peñaranda, Nueva Ecija</p>
+        <h1>LOAN CONTRACT AGREEMENT</h1>
+        <p>This Agreement made this {{ \Carbon\Carbon::parse($loan->created_at)->format('jS day of F, Y') }}</p>
     </div>
 
-    <div class="form-title">APPLICATION FOR SALARY LOAN</div>
+    <div class="parties">
 
-    <!-- Personal Information Section -->
+        <div style="width: 45%;">
+            <h3>BORROWER:</h3>
+            <p>{{ $loan->user->name }}<br>
+            Address{{ $loan->user->profile->address }}<br>
+            Contact:{{ $loan->user->profile->contact_number }}</p>
+        </div>
+    </div>
+
     <div class="section">
-        <div class="form-row">
-            <div class="form-field">
-                <label>PANGALAN:</label>
-                <span class="input-field">{{ $loan->borrower_name ?? 'KEVIN EVANISTO DEL ROSARIO' }}</span>
-            </div>
-            <div class="form-field">
-                <label>PETSA:</label>
-                <span class="input-field">{{ $loan->date_confirmed ?? '2023-07-03' }}</span>
-            </div>
-        </div>
-
-        <div class="form-row">
-            <div class="form-field">
-                <label>TIRAHAN:</label>
-                <span class="input-field">{{ $loan->address ?? 'Poblacion I, Peñaranda, Nueva Ecija' }}</span>
-            </div>
-            <div class="form-field">
-                <label>KONTAK:</label>
-                <span class="input-field">{{ $loan->contact_number ?? '0912-345-6789' }}</span>
-            </div>
-        </div>
+        <div class="section-title">1. RECITALS</div>
+        <p>This Loan Contract Agreement ("Agreement") sets forth the terms and conditions under which the Lender agrees to lend and the Borrower agrees to repay the Loan Amount as specified below.</p>
     </div>
 
-    <!-- Loan Details Section -->
     <div class="section">
-        <div class="form-row">
-            <div class="form-field">
-                <label>HALAGA NG INUTANG:</label>
-                <span class="input-field dynamic-value">₱{{ number_format($loan->principal_amount ?? 200000, 2) }}</span>
-            </div>
-            <div class="form-field">
-                <label>URI NG PAUTANG:</label>
-                <div class="checkbox-group">
-                    <span>☒ Salary Loan</span>
-                    <span>☐ Appliance Loan</span>
-                    <span>☐ Groceries Loan</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="form-row">
-            <div class="form-field">
-                <label>TAGAL NG PAGBABAYAD:</label>
-                <div class="checkbox-group">
-                    <span>☐ 1 Taon</span>
-                    <span>☐ 2 Taon</span>
-                    <span>☒ 3 Taon</span>
-                </div>
-            </div>
-        </div>
+        <div class="section-title">2. LOAN DETAILS</div>
+        <table>
+            <tr>
+                <th>Principal Loan Amount</th>
+                <td>{{ number_format($loan->principal_amount, 2) }} (PHP)</td>
+            </tr>
+            <tr>
+                <th>Annual Interest Rate</th>
+                <td>{{ $loan->monthly_interest_rate * 12 }}% ({{ $loan->monthly_interest_rate }}% monthly)</td>
+            </tr>
+            <tr>
+                <th>Loan Term</th>
+                <td>{{ $loan->term_months }} months</td>
+            </tr>
+            <tr>
+                <th>Repayment Schedule</th>
+                <td>Monthly amortization payments</td>
+            </tr>
+        </table>
     </div>
 
-    <!-- Terms and Conditions -->
     <div class="section">
-        <div class="terms">
-            <p>
-                INTERES: <span class="dynamic-value">{{ $loan->interest_rate ?? '7.5' }}%</span> bawat taon (Diminishing Balance)<br>
-                PENALTY: <span class="dynamic-value">3%</span> buwanan sa natitirang prinsipal
-            </p>
-            
-            <p>
-                Nangangako akong magbabayad ng buwanang hulog na <span class="dynamic-value">₱{{ number_format($loan->monthly_payment ?? 6221.24, 2) }}</span> 
-                simula <span class="dynamic-value">25 Agosto 2023</span> hanggang 
-                <span class="dynamic-value">25 Agosto 2026</span>.
-            </p>
+        <div class="section-title">3. TERMS & CONDITIONS</div>
 
-            <p>
-                Sumasang-ayon akong ang aking Capital Build-Up (CBU) na <span class="dynamic-value">₱{{ number_format($loan->cbu ?? 50000, 2) }}</span> 
-                ay magsisilbing collateral sa pautang na ito.
-            </p>
+        <h4>3.1 Payment Obligations</h4>
+        <p>The Borrower agrees to repay the Loan Amount with interest through {{ $loan->term_months }} equal monthly installments of {{ number_format($loan->monthly_payment, 2) }} PHP, beginning on {{ \Carbon\Carbon::parse($loan->date_confirmed)->addMonth()->format('F j, Y') }}.</p>
+
+        <h4>3.2 Late Payment Penalties</h4>
+        <p>Late payments shall incur a penalty of {{ $loan->penalty_rate }}% per day on the overdue amount until paid in full.</p>
+
+        <h4>3.3 Prepayment</h4>
+        <p>The Borrower may prepay the loan in whole or in part at any time without penalty.</p>
+
+        <div class="important-note">
+            <strong>Important:</strong> Failure to make three consecutive payments constitutes default,
+            at which point the entire outstanding balance becomes immediately due and payable.
         </div>
     </div>
 
-    <!-- Signatures Section -->
-    <div class="section signature-section">
-        <div class="form-row">
-            <div class="signature-box">
-                <p>Lagda ng Humiram</p>
-                <div class="signature-line"></div>
-                <p>Petsa: ___________________</p>
-            </div>
+    <div class="section">
+        <div class="section-title">4. REPAYMENT SCHEDULE</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Due Date</th>
+                    <th>Principal</th>
+                    <th>Interest</th>
+                    <th>Total Payment</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($loan->items as $item)
+                <tr>
+                    <td>{{ \Carbon\Carbon::parse($item->due_date)->format('M j, Y') }}</td>
+                    <td>{{ number_format($item->principal, 2) }}</td>
+                    <td>{{ number_format($item->interest, 2) }}</td>
+                    <td>{{ number_format($item->amount_due, 2) }}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 
-            <div class="signature-box">
-                <p>Lagda ng Tagapagsangla</p>
-                <div class="signature-line"></div>
-                <p>Petsa: ___________________</p>
-            </div>
-        </div>
+    <div class="section">
+        <div class="section-title">5. SECURITY & COLLATERAL</div>
+        <p>[Description of collateral if applicable]</p>
+        <p>The Borrower agrees that the Lender may pursue all available legal remedies in case of default,
+        including but not limited to seizure of collateral and legal action.</p>
+    </div>
 
-        <div class="committee-members">
-            <div class="committee-member">
-                <p>JOSEFINA P. LADIA</p>
-                <div class="signature-line"></div>
-                <p>Pangulo, Lupon ng Pautang</p>
-            </div>
-            <div class="committee-member">
-                <p>RACHELLE A. YAN</p>
-                <div class="signature-line"></div>
-                <p>Kalihim</p>
-            </div>
-            <div class="committee-member">
-                <p>MAY ZEN C. GREGORIO</p>
-                <div class="signature-line"></div>
-                <p>Taga-pagtaya</p>
-            </div>
+    <div class="signature-block">
+        <div>
+            <p>_________________________<br>
+            <strong>Borrower's Signature</strong><br>
+            {{ $loan->user->name }}<br>
+            Date: ___________________</p>
         </div>
+        <div>
+            <p>_________________________<br>
+            <strong>Authorized Representative</strong><br>
+            [Your Company Name]<br>
+            Date: ___________________</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>This document constitutes the entire agreement between the parties.
+        Any amendments must be made in writing and signed by both parties.</p>
+        <p>Generated on: {{ \Carbon\Carbon::now()->format('M j, Y \a\t H:i') }}</p>
     </div>
 </body>
 </html>

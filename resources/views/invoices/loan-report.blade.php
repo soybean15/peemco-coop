@@ -42,7 +42,7 @@
                 <th>Penalty</th>
                 {{-- <th>Interest</th> --}}
                 {{-- <th>GBT</th> --}}
-             
+
                 <th>Deferred Date of Payment</th>
                 <th>Paid Amortization</th>
                 <th>Unpaid Amortization</th>
@@ -55,20 +55,20 @@
             @foreach ($loan->items as $item)
             <tr>
                 <td>{{
-                    
+
                     \Carbon\Carbon::parse($item->due_date)->format('M d, Y')}}</td>
                 <td class="text-right">{{$item->amount_due}}</td>
                 <td>{{$item->penalty}}</td>
                 {{-- <td>{{$item->interest}}</td> --}}
                 {{-- <td></td> --}}
-              
+
                 <td>{{$item->payments?->last()->date ??''}}</td>
                 <td class="text-right">{{$item->payments?->sum('amount_paid')??''}}</td>
                 <td class="text-right">{{$item->payments?->last()??$item->amount_due}}</td>
                 <td>{{$item->penalty}}</td>
             </tr>
             @endforeach
-        
+
             <!-- Add all other payment rows here following the same pattern -->
         </tbody>
     </table>
@@ -81,11 +81,11 @@
             $totalPayments = $loan->items->flatMap(function ($item) {
                 return $item->payments ?? [];
             })->sum('amount_paid');
-            
+
             $totalAmountPayable = $totalPrincipal + $totalInterest + $totalPenalty;
             $totalDue = $totalAmountPayable - $totalPayments;
         @endphp
-    
+
         <tr>
             <td class="bold">Total</td>
             <td class="text-right bold">{{ number_format($totalPrincipal + $totalInterest, 2) }}</td>

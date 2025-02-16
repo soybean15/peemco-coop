@@ -8,7 +8,7 @@
             <button id="all">ALL</button>
         </div>
     </div>
-    <div id="chart-timeline"></div> <!-- Fixed ID to match JavaScript -->
+    <div id="chart-timeline"></div>
 </div>
 <script>
 

@@ -7,9 +7,11 @@ use App\Services\Permissions\PermissionGates;
 use App\Services\Settings\GeneralSettingsService;
 use App\Services\Users\UserManagementService;
 use App\View\Components\BreadCrumbs;
+
 use App\View\Components\Charts\AreaChart;
 use App\View\Components\Charts\BarChart;
 use App\View\Components\Charts\ColumnChart;
+use App\View\Components\Charts\LoanComparisonAmount;
 use App\View\Components\Charts\PieChart;
 use App\View\Components\Charts\TimelineChart;
 use App\View\Components\Layout\SideBar;
@@ -90,6 +92,7 @@ class AppServiceProvider extends ServiceProvider
         Blade::component('bar-chart',BarChart::class);
         Blade::component('area-chart',AreaChart::class);
         Blade::component('pie-chart',PieChart::class);
+        Blade::component('loan-comparison-chart',alias: LoanComparisonAmount::class);
 
         Blade::component('column-chart',ColumnChart::class);
         Blade::component('timeline-chart',TimelineChart::class);

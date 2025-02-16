@@ -6,114 +6,114 @@ use App\Enums\FrequencyEnum;
 use App\Services\Reports\Analytics;
 use Illuminate\Http\Request;
 
-
 class AnalyticsController extends Controller
 {
+    protected $analytics;
+
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Inject Analytics service into the controller.
+     */
+    public function __construct(Analytics $analytics)
+    {
+        $this->analytics = $analytics;
+    }
+
+    /**
+     * Get total amount issued.
      */
     public function getTotalAmountIssued(Request $request)
     {
-        $frequency = $request->frequency;
-
-        $analytics = new Analytics();
-        $totalAmount = $analytics->totalAmountIssued(FrequencyEnum::MONTHLY->value);
-
-
+        $frequency = $request->frequency ?? FrequencyEnum::MONTHLY->value;
+        $totalAmount = $this->analytics->totalAmountIssued($frequency);
 
         return response()->json(['total_amount_issued' => $totalAmount]);
     }
 
-    public function getTopContributor(Request $request)
+    /**
+     * Get top contributors.
+     */
+    public function getTopContributor()
     {
+        $series = [];
+        $categories = [];
 
-        $series=[];
-        $categories=[];
-        $analytics = new Analytics();
-        $data = $analytics->topContributor()->each(function($item) use (&$series, &$categories) {
-            $series[]= $item->total_contribution??0;
-            $categories[]=$item->name . ' '.$item->lastname;
+        $this->analytics->topContributor()->each(function ($item) use (&$series, &$categories) {
+            $series[] = $item->total_contribution ?? 0;
+            $categories[] = "{$item->name} {$item->lastname}";
         });
 
         return response()->json(['series' => $series, 'categories' => $categories]);
     }
+
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Get loan issued statistics.
      */
-    public function getLoanIssued()
+    public function getLoanIssued(Request $request)
     {
-        $analytics = new Analytics();
+        $year = $request->year ?? now()->year;
+        $data = $this->analytics->numberOfLoansIssued($year);
 
-        $series=[];
-        $labels=[];
-        $data = $analytics->numberOfLoansIssued();
+        $series = [];
+        $labels = [];
 
-        foreach($data as $key=>$value){
-            $series[]=$value;
-            $labels[]=$key;
+        foreach ($data as $key => $value) {
+            $series[] = $value;
+            $labels[] = $key;
         }
 
-        // dd($series,$labels);
-        return response()->json(['series' => $series, 'labels' => $labels]);
+        if (empty($series)) {
+            $series[] = 1; // Or 0 if preferred
+            $labels[] = "No Loan";
+        }
+
+        return response()->json([
+            'series' => $series,
+            'labels' => $labels,
+            'year' => $year
+        ]);
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * Get average loan amount per loan type.
      */
-    public function store(Request $request)
+    public function getAverageLoanAmount(Request $request)
     {
-        // Code to store a newly created resource in storage
+        $year = $request->year ?? now()->year;
+        $data = $this->analytics->averageLoanAmount($year);
+
+        return response()->json(['average_loan_amount' => $data]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        // Code to display the specified resource
-    }
+    // AnalyticsController.php
+public function getAverageLoanComparison(Request $request)
+{
+    $request->validate([
+        'year1' => 'required|integer|min:2000|max:' . (date('Y') + 1),
+        'year2' => 'required|integer|min:2000|max:' . (date('Y') + 1)
+    ]);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        // Code to show the form for editing the specified resource
-    }
+    // dd( $this->analytics->averageLoanAmount($request->year2));
+    $data = [
+        'year1' => [
+            'average' => $this->analytics->averageLoanAmount($request->year1)??0,
+            'year' => $request->year1
+        ],
+        'year2' => [
+            'average' => $this->analytics->averageLoanAmount($request->year2)??0,
+            'year' => $request->year2
+        ],
+        'percentage_change' => $this->calculatePercentageChange(
+            $this->analytics->averageLoanAmount($request->year1),
+            $this->analytics->averageLoanAmount($request->year2)
+        )
+    ];
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        // Code to update the specified resource in storage
-    }
+    return response()->json($data);
+}
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        // Code to remove the specified resource from storage
-    }
+private function calculatePercentageChange($old, $new)
+{
+    if ($old == 0) return 0;
+    return (($new - $old) / $old) * 100;
+}
 }
