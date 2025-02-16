@@ -21,6 +21,20 @@
             max-height: 500px;
             transition: max-height 0.3s ease-in;
         }
+        .process-step {
+            position: relative;
+            padding-left: 2rem;
+        }
+        .process-step::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 1.5rem;
+            height: 1.5rem;
+            background: #4f46e5;
+            border-radius: 50%;
+        }
     </style>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -80,7 +94,7 @@
                     <span class="gradient-text">Simplified</span>
                 </h1>
                 <p class="mb-8 text-lg text-gray-600">Smart lending solutions for personal and business growth</p>
-                <a href="#apply" class="inline-block px-8 py-3 text-white transition-colors bg-indigo-600 rounded-lg hover:bg-indigo-700">
+                <a href="{{ route('user.dashboard') }}" class="inline-block px-8 py-3 text-white transition-colors bg-indigo-600 rounded-lg hover:bg-indigo-700">
                     Apply Now →
                 </a>
             </div>
@@ -89,7 +103,9 @@
         <!-- Features Grid -->
         <section class="px-4 py-16 bg-white" id="features">
             <div class="max-w-6xl mx-auto">
+                <h2 class="mb-12 text-3xl font-bold text-center text-gray-900">Why Choose QuickLoan</h2>
                 <div class="grid gap-8 md:grid-cols-3">
+                    <!-- Feature 1 -->
                     <div class="p-6 transition-colors rounded-xl bg-gray-50 hover:bg-white">
                         <div class="flex items-center justify-center w-12 h-12 mb-4 bg-indigo-100 rounded-lg">
                             <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -97,15 +113,87 @@
                             </svg>
                         </div>
                         <h3 class="mb-2 text-xl font-semibold">Instant Approval</h3>
-                        <p class="text-gray-600">AI-powered decisions in under 5 minutes</p>
+                        <p class="text-gray-600">Get loan decisions in minutes with our AI-powered approval system.</p>
                     </div>
-
-                    <!-- Repeat similar blocks for other features -->
+                    <!-- Feature 2 -->
+                    <div class="p-6 transition-colors rounded-xl bg-gray-50 hover:bg-white">
+                        <div class="flex items-center justify-center w-12 h-12 mb-4 bg-indigo-100 rounded-lg">
+                            <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                        </div>
+                        <h3 class="mb-2 text-xl font-semibold">Competitive Rates</h3>
+                        <p class="text-gray-600">Enjoy some of the most competitive interest rates in the market.</p>
+                    </div>
+                    <!-- Feature 3 -->
+                    <div class="p-6 transition-colors rounded-xl bg-gray-50 hover:bg-white">
+                        <div class="flex items-center justify-center w-12 h-12 mb-4 bg-indigo-100 rounded-lg">
+                            <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+                            </svg>
+                        </div>
+                        <h3 class="mb-2 text-xl font-semibold">Flexible Terms</h3>
+                        <p class="text-gray-600">Choose repayment plans that fit your financial situation.</p>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Other Sections ... -->
+        <!-- Process Section -->
+        <section class="px-4 py-16 bg-gray-50" id="process">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="mb-12 text-3xl font-bold text-center text-gray-900">How It Works</h2>
+                <div class="grid gap-8 md:grid-cols-4">
+                    <div class="process-step">
+                        <h3 class="mb-2 text-xl font-semibold">1. Apply Online</h3>
+                        <p class="text-gray-600">Complete our simple online application in minutes.</p>
+                    </div>
+                    <div class="process-step">
+                        <h3 class="mb-2 text-xl font-semibold">2. Get Approved</h3>
+                        <p class="text-gray-600">Receive instant approval decision with our AI system.</p>
+                    </div>
+                    <div class="process-step">
+                        <h3 class="mb-2 text-xl font-semibold">3. Sign Documents</h3>
+                        <p class="text-gray-600">E-sign your loan documents securely online.</p>
+                    </div>
+                    <div class="process-step">
+                        <h3 class="mb-2 text-xl font-semibold">4. Receive Funds</h3>
+                        <p class="text-gray-600">Get your money as fast as the same day.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section class="px-4 py-16 bg-white" id="testimonials">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="mb-12 text-3xl font-bold text-center text-gray-900">What Our Customers Say</h2>
+                <div class="grid gap-8 md:grid-cols-3">
+                    <div class="p-6 rounded-lg bg-gray-50">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-indigo-100 rounded-full"></div>
+                            <div class="ml-4">
+                                <h4 class="font-semibold">John Doe</h4>
+                                <p class="text-sm text-gray-500">Small Business Owner</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-600">"QuickLoan helped me expand my business with their fast and reliable service. Highly recommended!"</p>
+                    </div>
+                    <!-- Add more testimonials -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action Section -->
+        <section class="px-4 py-16 bg-indigo-600">
+            <div class="max-w-3xl mx-auto text-center">
+                <h2 class="mb-6 text-3xl font-bold text-white">Ready to Get Started?</h2>
+                <p class="mb-8 text-lg text-indigo-100">Take the first step towards your financial goals today.</p>
+                <a href="{{ route('user.dashboard') }}" class="inline-block px-8 py-3 font-medium text-indigo-600 bg-white rounded-lg hover:bg-indigo-50">
+                    Apply Now →
+                </a>
+            </div>
+        </section>
     </main>
 
     <!-- Footer -->
@@ -116,7 +204,30 @@
                     <h4 class="mb-4 font-medium text-white">QuickLoan</h4>
                     <p class="mb-4">Empowering financial futures through innovation</p>
                 </div>
-                <!-- Repeat similar blocks for footer columns -->
+                <div>
+                    <h4 class="mb-4 font-medium text-white">Products</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-indigo-400">Personal Loans</a></li>
+                        <li><a href="#" class="hover:text-indigo-400">Business Loans</a></li>
+                        <li><a href="#" class="hover:text-indigo-400">Credit Lines</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="mb-4 font-medium text-white">Company</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-indigo-400">About Us</a></li>
+                        <li><a href="#" class="hover:text-indigo-400">Careers</a></li>
+                        <li><a href="#" class="hover:text-indigo-400">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="mb-4 font-medium text-white">Legal</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-indigo-400">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-indigo-400">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-indigo-400">Security</a></li>
+                    </ul>
+                </div>
             </div>
             <div class="pt-8 mt-12 text-center border-t border-gray-800">
                 <p>&copy; 2024 QuickLoan. All rights reserved.</p>
