@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers\PdfGenerator;
 use App\Http\Controllers\Controller;
+use App\Models\CapitalBuildUp;
 use App\Models\Loan;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PdfController extends Controller
@@ -24,6 +26,15 @@ class PdfController extends Controller
         // dd($loan);
 
         return (new PdfGenerator('invoices.loan-report',['loan'=>$loan]))->stream();
+
+
+    }
+
+    public function generatenCbuReport(User $user){
+
+        // dd($user);
+
+        return (new PdfGenerator('invoices.cbu-report',['user'=>$user]))->stream();
 
 
     }

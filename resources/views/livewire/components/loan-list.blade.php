@@ -56,7 +56,7 @@ new class extends Component {
             }
         @endphp
 
-        <a href="{{ route($route,['loan'=>$loan]) }}"><strong>{{ $loan->loan_application_no }}</strong></a>
+        <a class="text-info hover:underline " href="{{ route($route,['loan'=>$loan]) }}"><strong>{{ $loan->loan_application_no }}</strong></a>
 
 
 

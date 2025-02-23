@@ -62,18 +62,21 @@ new class extends Component {
     
                 <th>Loan Application</th>
                 <th>Status</th>
-                <th>Action</th>
+            
             </tr>
             </thead>
             <tbody>
             <!-- row 1 -->
              @foreach ($loans as $dataloan)
                 <tr>
-                    <th>{{$dataloan->loan_application_no}}</th>
+                    <td>
+                    <a class="text-info hover:underline " href="{{ route('admin.loan-profile',['loan'=>$dataloan]) }}"><strong>{{ $dataloan->loan_application_no }}</strong></a>
+
+                    </td>
                     <td>{{$dataloan->status}}</td>
                     <td>
                         <button class="btn" wire:click="showModal('{{$dataloan->loan_application_no}}', {{$dataloan->user_id}})">Paid Amotization</button>
-                        <button class="btn btn-primary">Payment</button>
+                 
                     </td>
                 </tr>
             @endforeach

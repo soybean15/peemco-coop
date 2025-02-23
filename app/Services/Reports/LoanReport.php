@@ -16,9 +16,6 @@ class LoanReport
     protected $series;
 
 
-
-
-
     public function __construct($mode = 'monthly', $series = 10)
     {
         $this->mode = $mode;

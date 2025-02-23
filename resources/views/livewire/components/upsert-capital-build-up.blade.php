@@ -95,15 +95,15 @@ new class extends Component {
 }; ?>
 
 <div>
-    <x-modal wire:model="modal" title="Capital Build Up" subtitle="Add/Update" separator>
+    <x-modal wire:model="modal" title="Capital Build Up" subtitle="Add/Update CBU" separator>
 
-        <x-stat title="Total Capital Build up" description="This month" value="22.124" icon="o-square-3-stack-3d"
-            tooltip-bottom="There" />
+        {{-- <x-stat title="Total Capital Build up" description="This month" value="22.124" icon="o-square-3-stack-3d"
+            tooltip-bottom="There" /> --}}
         <x-form>
 
             <x-datetime label="Date" wire:model="date" icon="o-calendar" />
             <x-input label="OR CDV" wire:model="or_cdv" />
-            <x-input label="Amount" wire:model="amount" prefix="PHP" hint="It submits an unmasked value"
+            <x-input label="Amount" wire:model="amount" prefix="PHP"
                 type='number' />
 
         </x-form>

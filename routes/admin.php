@@ -16,6 +16,11 @@ Route::prefix('/')->group(function(){
         Volt::route('/add-users', 'admin.add-users')->name('admin.add-users');
 
         Volt::route('/{user}','admin.user.profile')->name('admin.user');
+
+
+
+    Route::get('/cbu-report-pdf/{user}',[PdfController::class,'generatenCbuReport'])->name( 'admin.generate-cbu-report-pdf');
+
     });
 
     Route::prefix('loan-type')->group(function(){
@@ -78,6 +83,10 @@ Route::prefix('/')->group(function(){
 
 
     });
+
+
+
+
 
 
 });

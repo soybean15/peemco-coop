@@ -14,9 +14,11 @@ new class extends Component {
 
     public $headers;
 
+    public $year;
+
     public function mount(ReportService $service)
     {
-        $report = $service->getCbuReport('monthly', 12);
+        $report = $service->getCbuReport('yearly', 12);
         $this->series = $report->generateGraph();
         // $this->reports = $report->generateReports() ->paginate(5);
 
@@ -32,17 +34,38 @@ new class extends Component {
             ];
     }
 
- #[Computed] // This makes it a computed property in Livewire 3
- public function paginatedReports()
+    #[Computed] 
+    public function paginatedReports()
     {
-        return (new ReportService())->getCbuReport('monthly', 12)->generateReports() ->paginate(5);
+        return (new ReportService())->getCbuReport('yearly', 12)->generateReports($this->year) ->paginate(50);
+    }
+
+
+    public function updatedYear(ReportService $service){
+        
+        $report = $service->getCbuReport('monthly', 12);
+        $this->series = $report->generateGraph($this->year);
     }
 
 
 }; ?>
 
 <div class="p-6 bg-white rounded-lg shadow-md">
-    <x-header title="Reports" separator />
+    <x-header title="Cbu Reports" separator >
+        <x-slot:actions>
+            {{-- {{dd(range(date('Y'), date('Y') - 10))}} --}}
+            <x-select 
+            label="Select Year" 
+             option-value="value"
+    option-label="label"
+            :options="collect(range(date('Y'), date('Y') - 10))->map(fn($year) => ['value' => $year, 'label' => $year])->toArray()" 
+            wire:model.live="year" 
+        />
+        
+        </x-slot:actions>
+    </x-header>
+
+
 
     <div class="mb-6">
         <x-area-chart :series="$series" label="Monthly Capital Build-up Reports" />

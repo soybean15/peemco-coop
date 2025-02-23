@@ -96,8 +96,8 @@ new class extends Component {
             <x-stat title="Loan Number" value="{{ $this->loan->loan_application_no  }}"    description="{{ ucfirst($this->loan->loanType->type) }}"/>
             <x-stat title="Member" value="{{ $this->loan->user->name  }}" />
 
-            <x-stat title="Loan Amount" value="{{ number_format($this->loan->principal_amount ,2)}}" />
-            <x-stat title="Monthly Payment" value="{{ number_format($this->loan->monthly_payment ,2)}}"
+            <x-stat title="Loan Amount" value="P{{ number_format($this->loan->principal_amount ,2)}}" />
+            <x-stat title="Monthly Payment" value="P{{ number_format($this->loan->monthly_payment ,2)}}"
                 description='Rate: {{ $this->loan->monthly_interest_rate }}' />
 
 
@@ -109,13 +109,31 @@ new class extends Component {
     <div class="p-5 mt-3 border">
     <x-header title="Payment Schedule"  size='text-xl' separator/>
     <x-table :headers="$headers" :rows="$loanItems" x-on:refresh-page.window="$wire.$refresh()" wire:model='expanded' expandable >
-
+        @scope('cell_due_date', $loan)
+        <span>{{ \Carbon\Carbon::parse($loan->due_date)->format('F j, Y') }}</span>
+        @endscope
+        @scope('cell_amount_due', $loan)
+        <span>P{{ number_format($loan->amount_due, 2) }}</span>
+        @endscope
+        @scope('cell_past_due', $loan)
+        <span>P{{ number_format($loan->past_due, 2) }}</span>
+        @endscope
+        @scope('cell_amount_paid', $loan)
+        <span>P{{ number_format($loan->amount_paid, 2) }}</span>
+        @endscope
+        @scope('cell_running_balance', $loan)
+        <span>P{{ number_format($loan->running_balance, 2) }}</span>
+        @endscope
+      
         @scope('cell_total_due', $loan)
         <div class="flex items-center">
 
-            <span>{{ $loan->total_due }} </span>
+            <span>P{{ number_format($loan->total_due, 2) }}</span>
+
             @if($loan->penalty >0)
-            <span class="text-red-500">({{ ($loan->penalty) }} )</span>
+            <span class="text-red-500">(P{{ number_format($loan->penalty, 2) }})</span>
+
+    
 
             @endif
 
@@ -150,13 +168,13 @@ new class extends Component {
             @foreach ($loan->penalties->whereNull('status') as $penalty )
                 <x-list-item :item="$penalty" no-separator no-hover>
                     <x-slot:avatar>
-                        <x-badge value="{{ $penalty->penalty_date }}" class="badge-error" />
+                        <x-badge value="{{ \Carbon\Carbon::parse($penalty->penalty_date)->format('F j, Y') }}" class="badge-error" />
                     </x-slot:avatar>
                     <x-slot:value>
-                      Penalty amount: {{$penalty->amount}}
+                      Penalty amount: P{{ number_format($penalty->amount, 2) }}
                     </x-slot:value>
                     <x-slot:sub-value>
-                        Running balance:  {{$penalty->running_balance}}
+                        Running balance: P{{ number_format($penalty->running_balance, 2) }}
                     </x-slot:sub-value>
                     <x-slot:actions>
 

@@ -40,6 +40,11 @@ new class extends Component {
     <x-header title="Capital Build up" subtitle="Your home address" separator>
         <x-slot:actions>
             <x-button label="Add Capital Buildup" x-on:click="$dispatch('add-capital-build-up',{user_id:{{ $this->user->id }}})"/>
+                <a  href="{{ route('admin.generate-cbu-report-pdf', ['user' => $this->user->id]) }}"
+                    target="_blank">
+            <x-button class="btn btn-info" label="Generate Report" icon="o-printer" x-on:click="$dispatch('add-capital-build-up',{user_id:{{ $this->user->id }}})"/>
+            </a>
+
             {{-- upsert-capital-build-up.blade --}}
         </x-slot:actions>
 

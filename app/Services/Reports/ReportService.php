@@ -20,7 +20,7 @@ class ReportService
     }
 
     public function getLoanReport($mode='monthly',$series=10){
-        return new LoanReport();
+        return new LoanReport($mode,$series);
     }
 
 }

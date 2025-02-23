@@ -17,14 +17,15 @@ class CbuReport
         $this->series = $series;
     }
 
-    public function generateReports($month=null)
+    public function generateReports($year = null)
     {
-        if (is_null($month)) {
-            $month = date('n'); // Get current month as a number (1-12)
+        if (is_null($year)) {
+            $year = date('Y'); // Get current year
         }
 
-        $this->reports = CapitalBuildUp::whereMonth('date', $month)
-            ;
+
+        $this->reports = CapitalBuildUp::whereYear('date', $year)
+           ;
 
         return $this->reports;
     }
@@ -64,16 +65,18 @@ class CbuReport
         $data = [];
         $this->graph = CapitalBuildUp::selectRaw('SUM(amount_received) as total, YEAR(date) as year')
             ->groupBy('year')
-            ->orderBy('year') // Ensure chronological order
-            ->take($this->series)
-            ->get()
+            ->orderBy('year', 'asc') // Ensure ascending order
+            ->get() // Fetch all results first
+            ->take($this->series) // Apply limit after sorting
             ->each(function ($item) use (&$data) {
                 $data['values'][] = (float) $item->total;
-                $data['labels'][] = (string) $item->year; // Ensure years are treated as strings for labels
+                $data['labels'][] = (string) $item->year;
             });
-
+    
         $data['name'] = 'Capital Buildup (Yearly)';
-
+    
+   
         return $data;
     }
+    
 }

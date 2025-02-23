@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Loan Statement</title>
     <style>
@@ -19,16 +20,16 @@
 </head>
 <body>
     <div class="header">
-        <div class="title">STATEMENT OF PROMOTE</div>
+        <div class="title">STATEMENT OF ACCOUNT</div>
         <div class="details">
             <div>
-                <div>Name of Borrower: {{$loan->user->name}}</div>
-                <div>Loan Account#: {{$loan->loan_application_no }}</div>
-                <div>Date Granted:{{$loan->date_confirmed}}</div>
+                <div>Name of Borrower: <span class="bold">{{$loan->user->name}}</span></div>
+                <div>Loan Account No: <span class="bold">{{$loan->loan_application_no }}</span></div>
+                <div>Date Granted: <span class="bold">{{ \Carbon\Carbon::parse($loan->date_confirmed)->format('M d, Y') }}</span></div>
             </div>
             <div>
-                <div>Amount of Loan: {{$loan->principal_amount}}</div>
-                <div>Interest Rate: {{$loan->monthly_interest_rate}}</div>
+                <div>Amount of Loan: <span class="bold">P{{number_format($loan->principal_amount, 2) }}</span></div>
+                <div>Interest Rate: <span class="bold">{{$loan->monthly_interest_rate}}</span></div>
                 {{-- <div>Maturity Date: 8/25/2024</div> --}}
             </div>
         </div>
@@ -52,20 +53,18 @@
         <tbody>
             <!-- Repeat this block for each payment entry -->
 
-            @foreach ($loan->items as $item)
+           @foreach ($loan->items as $item)
             <tr>
-                <td>{{
+                <td>{{ \Carbon\Carbon::parse($item->due_date)->format('M d, Y') }}</td>
+                <td class="text-right">P{{ number_format($item->amount_due, 2) }}</td>
 
-                    \Carbon\Carbon::parse($item->due_date)->format('M d, Y')}}</td>
-                <td class="text-right">{{$item->amount_due}}</td>
-                <td>{{$item->penalty}}</td>
+                <td class="text-right">P{{ number_format($item->penalty, 2) }}</td>
                 {{-- <td>{{$item->interest}}</td> --}}
                 {{-- <td></td> --}}
-
-                <td>{{$item->payments?->last()->date ??''}}</td>
-                <td class="text-right">{{$item->payments?->sum('amount_paid')??''}}</td>
-                <td class="text-right">{{$item->payments?->last()??$item->amount_due}}</td>
-                <td>{{$item->penalty}}</td>
+                <td>{{ $item->payments?->last()->date ?? '' }}</td>
+                <td class="text-right">P{{ number_format($item->payments?->sum('amount_paid') ?? 0, 2) }}</td>
+                <td class="text-right">P{{ number_format($item->payments?->last()?->amount_paid ?? $item->amount_due, 2) }}</td>
+                <td class="text-right">P{{ number_format($item->penalty, 2) }}</td>
             </tr>
             @endforeach
 
@@ -88,31 +87,31 @@
 
         <tr>
             <td class="bold">Total</td>
-            <td class="text-right bold">{{ number_format($totalPrincipal + $totalInterest, 2) }}</td>
+            <td class="text-right bold">P{{ number_format($totalPrincipal + $totalInterest, 2) }}</td>
         </tr>
         <tr>
             <td>Principal</td>
-            <td class="text-right">{{ number_format($totalPrincipal, 2) }}</td>
+            <td class="text-right">P{{ number_format($totalPrincipal, 2) }}</td>
         </tr>
         <tr>
             <td>Interest</td>
-            <td class="text-right">{{ number_format($totalInterest, 2) }}</td>
+            <td class="text-right">P{{ number_format($totalInterest, 2) }}</td>
         </tr>
         <tr>
             <td>Penalty and Charges</td>
-            <td class="text-right">{{ number_format($totalPenalty, 2) }}</td>
+            <td class="text-right">P{{ number_format($totalPenalty, 2) }}</td>
         </tr>
         <tr>
             <td class="bold">Total Amounts Payable</td>
-            <td class="text-right bold">{{ number_format($totalAmountPayable, 2) }}</td>
+            <td class="text-right bold">P{{ number_format($totalAmountPayable, 2) }}</td>
         </tr>
         <tr>
             <td>Less Payments</td>
-            <td class="text-right">{{ number_format($totalPayments, 2) }}</td>
+            <td class="text-right">P{{ number_format($totalPayments, 2) }}</td>
         </tr>
         <tr>
             <td class="bold">Total Due</td>
-            <td class="text-right bold">{{ number_format($totalDue, 2) }}</td>
+            <td class="text-right bold">P{{ number_format($totalDue, 2) }}</td>
         </tr>
     </table>
 

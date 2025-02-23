@@ -37,7 +37,15 @@ new class extends Component {
 
 
 
-        <x-table :headers="$headers" :rows="$rows"  no-hover />
+        <x-table :headers="$headers" :rows="$rows"  no-hover >
+            @scope('cell_date', $loan)
+            <span>{{ \Carbon\Carbon::parse($loan->date)->format('F j, Y') }}</span>
+            @endscope
+            @scope('cell_amount_paid', $loan)
+            <span>P{{ number_format($loan->amount_paid, 2) }}</span>
+            @endscope
+
+        </x-table>
     </div>
 
 </div>
