@@ -150,38 +150,56 @@ class User extends Authenticatable implements HasMedia
     }
 
 
+
+
+    public function hasActiveLoan(){
+        if ($this->loans()->doesntExist()) {
+            return false;
+        }
+
+        $activeLoans = $this->loans()
+        ->where('status', 'approved')
+        ->with('items') 
+        ->get();
+
+  
+        if (!$activeLoans->isEmpty()) {
+            return true;
+        }
+
+        return false;
+    }
     public function canProcessLoan()
     {
-        // If user has no loans, can process
+        
         if ($this->loans()->doesntExist()) {
             return true;
         }
-        // Check if user has any pending loans (assuming 'pending' status exists)
         if ($this->loans()->where('status', 'pending')->exists()) {
             return false;
         }
 
-        // Get all active approved loans
         $activeLoans = $this->loans()
             ->where('status', 'approved')
-            ->with('items') // Eager load loan items
+            ->with('items') 
             ->get();
 
-        // If no active loans, can process
+      
         if ($activeLoans->isEmpty()) {
             return true;
         }
 
-        // Check all active loans' 3-month items
+ 
         foreach ($activeLoans as $loan) {
-            $threeMonthItems = $loan->items()
-                ->where('loan_period', 3)
-                ->get();
+            $afterThreeMonths = $loan->items()
+            ->where('loan_period', '>=', 3) 
 
-            // If any 3-month item is not paid, cannot process
-            if ($threeMonthItems->isEmpty() || !$threeMonthItems->every(function ($item) {
-                return $item->status === LoanItemStatusEnum::PAID->value;
-            })) {
+            ->where('status',LoanItemStatusEnum::PAID->value)
+            ->get();
+
+        
+            // If there are no items for the loan or not all are PAID, return false
+            if ($afterThreeMonths->isEmpty() ) {
                 return false;
             }
         }

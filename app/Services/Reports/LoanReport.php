@@ -22,36 +22,28 @@ class LoanReport
         $this->series = $series;
     }
 
-    public function generate()
+    public function generate($year = null)
     {
+        if (is_null($year)) {
+            $year = now()->year;
+        }
 
+        return Loan::whereYear('date_confirmed', $year)
+            ->where('status', 'approved');
     }
 
-    protected function generateMonthlyGraph()
+
+
+    public function generateStat($year = null)
     {
-        $data = [];
-        $this->graph = Loan::selectRaw('SUM(amount_received) as total, CONCAT(YEAR(date), "-", LPAD(MONTH(date), 2, "0"), "-01") as month_year')
-            ->groupBy('month_year')
-            ->orderBy('month_year') // Ensure chronological order
-            ->take($this->series)
-            ->get()
-            ->each(function ($item) use (&$data) {
-                $data['values'][] = (float) $item->total;
-                $data['labels'][] = $item->month_year;
-            });
+        if (is_null($year)) {
+            $year = now()->year;
+        }
 
-        $data['name'] = 'Capital Buildup (Monthly)';
-
-        return $data;
-    }
-
-    public function generateStat()
-    {
-        return Loan::
-            whereYear('date_confirmed', now()->year)
+        return Loan::whereYear('date_confirmed', $year)
             ->where('status', 'approved') // Adjust status as needed
             ->selectRaw('loan_type, COUNT(*) as count')
-            ->groupBy(groups: 'loan_type')
+            ->groupBy('loan_type')
             ->pluck('count', 'loan_type'); // Returns an associative array
     }
 

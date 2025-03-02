@@ -35,7 +35,7 @@ function fetchComparison() {
 }
 
 function displayResults(data) {
-    const percentageChange = ((data.year2.average - data.year1.average) / data.year1.average * 100).toFixed(2);
+    const percentageChange =data.percentage_change;
     const changeClass = percentageChange >= 0 ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100';
     const changeSymbol = percentageChange >= 0 ? '▲' : '▼';
 
@@ -43,11 +43,11 @@ function displayResults(data) {
         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
             <div class="p-6 text-center border rounded-lg shadow-sm bg-gray-50">
                 <div class="text-sm text-gray-500">${data.year1.year} Average</div>
-                <div class="text-2xl font-bold text-gray-800">$${data.year1.average}</div>
+                <div class="text-2xl font-bold text-gray-800">P${data.year1.average}</div>
             </div>
             <div class="p-6 text-center border rounded-lg shadow-sm bg-gray-50">
                 <div class="text-sm text-gray-500">${data.year2.year} Average</div>
-                <div class="text-2xl font-bold text-gray-800">$${data.year2.average}</div>
+                <div class="text-2xl font-bold text-gray-800">P${data.year2.average}</div>
             </div>
         </div>
         <div class="flex justify-center mt-6">

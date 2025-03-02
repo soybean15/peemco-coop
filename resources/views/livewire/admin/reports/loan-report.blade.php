@@ -15,7 +15,6 @@ new class extends Component {
     public $headers;
 
 
-    public $stats;
 
     public $year;
 
@@ -46,7 +45,12 @@ new class extends Component {
     #[Computed] // This makes it a computed property in Livewire 3
     public function paginatedReports()
     {
-        return (new ReportService())->getLoanReport('yearly', 12)->generateReports() ->paginate(5);
+        return (new ReportService())->getLoanReport('yearly', 12)->generate($this->year) ->paginate(20);
+    }
+    #[Computed] // This makes it a computed property in Livewire 3
+    public function stats()
+    {
+        return (new ReportService())->getLoanReport('yearly', 12)->generateStat($this->year);
     }
 
 
@@ -59,7 +63,7 @@ new class extends Component {
             <x-select 
             label="Select Year" 
              option-value="value"
-    option-label="label"
+            option-label="label"
             :options="collect(range(date('Y'), date('Y') - 10))->map(fn($year) => ['value' => $year, 'label' => $year])->toArray()" 
             wire:model.live="year" 
         />
@@ -70,10 +74,10 @@ new class extends Component {
 
 
     <div class="p-4 border rounded-lg shadow bg-white">
-        <h2 class="text-xl font-semibold mb-4 text-gray-700">Loans Summary</h2>
+        <h2 class="text-xl font-semibold mb-4 text-gray-700">Loans Summary for {{$this->year?? now()->year}}</h2>
 
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            @foreach ($stats as $key => $value)
+            @foreach ($this->stats as $key => $value)
                 <x-stat
                     title="{{ ucwords($key) }}"
                     value="{{ number_format($value) }}"
@@ -85,12 +89,21 @@ new class extends Component {
 
     <div class="mt-4 overflow-x-auto">
         <x-table :headers="$headers" :rows="$this->paginatedReports" with-pagination>
-            @scope('cell_user', $cbu)
+            @scope('cell_user_id', $cbu)
                 {{ $cbu->user->name }}
             @endscope
             @scope('cell_added_by', $cbu)
                 {{ $cbu->addedBy->name }}
             @endscope
+            @scope('cell_date_applied', $cbu)
+                {{ \Carbon\Carbon::parse($cbu->date_applied)->format('F j, Y') }}
+            @endscope
+            @scope('cell_principal_amount', $cbu)
+              P{{ number_format($cbu->principal_amount, 2) }}
+            @endscope
+            @scope('cell_monthly_payment', $cbu)
+            P{{ number_format($cbu->monthly_payment, 2) }}
+        @endscope
         </x-table>
     </div>
 

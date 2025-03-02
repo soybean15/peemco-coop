@@ -50,7 +50,7 @@ new class extends Component {
                 <div class="flex items-center space-x-5">
                     {{-- <x-icon name="o-check" class="text-2xl text-green-500 w-9 h-9" label="{{  $this->loan->status }}" /> --}}
 
-                    <a href="{{ route('admin.generate-loan-application-pdf') }}" target="_blank"><x-icon name="o-printer" class="text-info" label="Print Loan Application" /></a>
+                    <a href="{{ route('admin.generate-loan-report-pdf', ['loan' => $this->loan->id]) }}}}" target="_blank"><x-icon name="o-printer" class="text-info" label="Print Loan Application" /></a>
                     {{-- <x-button label="Print Loan Application" icon='o-printer' class="mx-3 btn btn-sm btn-info" link="{{ route('admin.generate-loan-application-pdf') }}"> --}}
                 </div>
 

@@ -36,8 +36,14 @@ class LoanApplication implements HasLoan
 
         $user = User::find($data['user_id']);
 
+        $remarks= null;
+
         if(!$user->canProcessLoan()){
             throw new Exception('User Has Active Loan');
+        }
+
+        if($user->hasActiveLoan()){
+            $remarks='renewal';
         }
 
         // Add conditional validation for "no_of_installment" and "monthly_payment"
@@ -101,7 +107,8 @@ class LoanApplication implements HasLoan
                 'annual_interest_rate' => $annual_rate,
                 'monthly_interest_rate' => $monthly_rate,
                 'monthly_payment' => $monthly_payment??0,
-                'status' => 'pending'
+                'status' => 'pending',
+                'remarks'=>$remarks
             ]
         );
 

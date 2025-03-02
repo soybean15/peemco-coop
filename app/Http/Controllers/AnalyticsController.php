@@ -95,11 +95,11 @@ public function getAverageLoanComparison(Request $request)
     // dd( $this->analytics->averageLoanAmount($request->year2));
     $data = [
         'year1' => [
-            'average' => $this->analytics->averageLoanAmount($request->year1)??0,
+            'average' => number_format($this->analytics->averageLoanAmount($request->year1),2)??0,
             'year' => $request->year1
         ],
         'year2' => [
-            'average' => $this->analytics->averageLoanAmount($request->year2)??0,
+            'average' => number_format($this->analytics->averageLoanAmount($request->year2),2)??0,
             'year' => $request->year2
         ],
         'percentage_change' => $this->calculatePercentageChange(
