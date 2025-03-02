@@ -73,7 +73,7 @@ class Loan extends Model
         return $builder->where('status','approved');
     }
     public function scopeCompleted(Builder $builder){
-        return $builder->where('status','completed');
+        return $builder->where('status','completed')->orWhere('remarks','completed');
     }
 
 

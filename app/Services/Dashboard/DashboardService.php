@@ -62,4 +62,7 @@ class DashboardService
     {
         return $this->totalCollection;
     }
+
+
+    
 }

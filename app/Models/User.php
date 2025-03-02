@@ -171,6 +171,7 @@ class User extends Authenticatable implements HasMedia
     }
     public function canProcessLoan()
     {
+
         
         if ($this->loans()->doesntExist()) {
             return true;
@@ -178,6 +179,10 @@ class User extends Authenticatable implements HasMedia
         if ($this->loans()->where('status', 'pending')->exists()) {
             return false;
         }
+        if ($this->loans()->loanType()->where('type', '!=', 'regular')->exists()) {
+            return false;
+        }
+        
 
         $activeLoans = $this->loans()
             ->where('status', 'approved')
@@ -197,9 +202,10 @@ class User extends Authenticatable implements HasMedia
             ->where('status',LoanItemStatusEnum::PAID->value)
             ->get();
 
-        
+       
             // If there are no items for the loan or not all are PAID, return false
             if ($afterThreeMonths->isEmpty() ) {
+             
                 return false;
             }
         }

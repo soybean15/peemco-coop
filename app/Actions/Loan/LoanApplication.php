@@ -44,6 +44,7 @@ class LoanApplication implements HasLoan
 
         if($user->hasActiveLoan()){
             $remarks='renewal';
+            
         }
 
         // Add conditional validation for "no_of_installment" and "monthly_payment"

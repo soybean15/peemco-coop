@@ -132,9 +132,6 @@ new class extends Component {
 
             @if($loan->penalty >0)
             <span class="text-red-500">(P{{ number_format($loan->penalty, 2) }})</span>
-
-    
-
             @endif
 
 
@@ -150,7 +147,7 @@ new class extends Component {
 
         @elseif($loan->status=='overdue')
         <x-badge :value="$loan->status" class="badge-error" />
-        @elseif($loan->status=='paid')
+        @elseif($loan->status=='paid' || $loan->status=='renewal')
         <x-badge :value="$loan->status" class="badge-success" />
 
         @else

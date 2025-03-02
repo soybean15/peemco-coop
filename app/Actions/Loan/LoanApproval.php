@@ -19,6 +19,14 @@ class LoanApproval implements HasLoan
     {
 
         $loan = $data['loan'];
+
+        if($loan->remarks=='renewal'){
+           $user = $loan->user;
+           $user->loans()->each(function($item  ){
+
+            $item->where('status','approved')->update(['remarks'=>'completed']);
+           });
+        }
         $loan->update(
             [
                 'status'=>'approved',
