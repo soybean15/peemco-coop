@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuickLoan - Modern Financial Solutions</title>
+    <title>Peemco</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         .gradient-text {
@@ -43,7 +43,10 @@
     <header class="sticky top-0 z-50 border-b border-gray-100 bg-white/80 backdrop-blur-md">
         <nav class="container px-4 mx-auto">
             <div class="flex items-center justify-between h-16">
-                <a href="#" class="text-xl font-bold gradient-text">QuickLoan</a>
+                <a href="#" class="text-xl font-bold gradient-text">
+                    <x-brand hasName="true" size="12" class="flex items-center space-x-4 text-3xl font-bold text-gray-800" />
+                    
+                </a>
 
                 <!-- Desktop Nav -->
                 <div class="items-center hidden space-x-6 md:flex">
